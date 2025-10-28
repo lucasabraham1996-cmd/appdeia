@@ -14,13 +14,24 @@
         /* 3. Aplicar la fuente base y estilos de fondo */
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #a78bfa 0%, #6366f1 100%); /* Degradado morado/azul */
+            /* Degradado de fondo dinámico */
+            background: linear-gradient(135deg, #A7D7E4 0%, #2E4057 100%); /* Azul claro a azul oscuro */
+            background-size: 400% 400%; /* Permite la animación del degradado */
+            animation: backgroundAnimation 15s ease infinite alternate; /* Animación */
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 1rem;
         }
+
+        /* Keyframes para la animación del fondo */
+        @keyframes backgroundAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         /* Estilo para el contenedor principal */
         #game-container {
             background-color: white;
@@ -52,18 +63,7 @@
             color: #4f46e5;
             box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
         }
-        .ai-image-placeholder {
-            min-height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #f0f9ff; /* Azul claro */
-            border: 2px dashed #93c5fd; /* Borde punteado azul */
-            color: #3b82f6; /* Texto azul */
-            font-style: italic;
-            text-align: center;
-            padding: 1rem;
-        }
+        /* Removido .ai-image-placeholder ya que usaremos una imagen real */
     </style>
 </head>
 <body>
@@ -71,15 +71,11 @@
     <div class="w-full max-w-3xl">
         <div id="game-container" class="transition-all duration-300">
             
-            <!-- Encabezado -->
-            <header class="text-center mb-8 relative">
-                <!-- BOTÓN FULLSCREEN AÑADIDO -->
-                <button id="fullscreen-button" title="Jugar en Pantalla Completa" class="absolute top-0 right-0 p-2 text-slate-400 hover:text-indigo-600 transition-colors">
+            <!-- Encabezado --><header class="text-center mb-8 relative">
+                <!-- BOTÓN FULLSCREEN AÑADIDO --><button id="fullscreen-button" title="Jugar en Pantalla Completa" class="absolute top-0 right-0 p-2 text-slate-400 hover:text-indigo-600 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1v4m0 0h-4m4-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 0h-4m4 4l-5-5"></path></svg>
                 </button>
-                <!-- FIN BOTÓN FULLSCREEN -->
-
-                <h1 class="text-4xl sm:text-5xl font-extrabold text-indigo-700 leading-tight">
+                <!-- FIN BOTÓN FULLSCREEN --><h1 class="text-4xl sm:text-5xl font-extrabold text-indigo-700 leading-tight">
                     🌟 Desafío <span class="text-purple-600">IA & Datos</span> 🚀
                 </h1>
                 <p class="text-xl text-slate-600 mt-2">
@@ -144,12 +140,14 @@
                 title: '🎮 IA o Humano (1/3)',
                 content: {
                     type: 'image',
-                    // Simulación de la petición del usuario
-                    prompt: 'imagen1.png (Simulando una foto subida). Es un retrato de una abuela sonriendo, pero la textura de la piel se ve demasiado perfecta y los ojos tienen un brillo extraño.'
+                    // IMAGEN REAL DE LA ABUELA AÑADIDA AQUÍ
+                    src: 'https://i.ibb.co/sdkLdV3Z/Gemini-Generated-Image-ue0x7nue0x7nue0x.png',
+                    alt: 'Retrato de una abuela sonriente, con un brillo inusual en los ojos.',
+                    prompt: 'Esta imagen parece un retrato familiar. La textura de la piel se ve demasiado perfecta y los ojos tienen un brillo extraño, casi artificial.'
                 },
-                question: 'Esta foto, "imagen1.png", que parece ser un retrato familiar, ¿fue generada por IA o es una foto humana real?',
+                question: 'Esta foto de la abuela, ¿fue generada por IA o es una foto humana real?',
                 answer: 'ia',
-                explanation: '¡Acertaste! Es de IA. Las IAs son geniales creando retratos, pero a veces fallan en detalles sutiles como la textura "demasiado perfecta" de la piel o reflejos extraños en los ojos. Es un error común de las IAs actuales.'
+                explanation: '¡Acertaste! Es de IA. Aunque la imagen es emotiva, esos pequeños "fallos" sutiles en la textura y el brillo de los ojos son a menudo indicativos de imágenes generadas por modelos de IA.'
             },
             {
                 type: 'ai-human',
@@ -300,25 +298,15 @@
                 case 'ai-human':
                     let mediaHtml = '';
                     if (game.content.type === 'image') {
-                        // --- HTML DE IMAGEN ACTUALIZADO ---
-                        // Usamos un placeholder real y mostramos el prompt como descripción
-                        let imageUrl = 'https://placehold.co/600x400/a78bfa/ffffff?text=Arte+IA&font=inter';
-                        let altText = "Imagen de arte generada por IA";
-                        
-                        if (game.content.prompt.includes("imagen1.png")) {
-                            imageUrl = 'https://placehold.co/600x400/eeeeee/999999?text=imagen1.png&font=inter';
-                            altText = "Placeholder para imagen1.png";
-                        }
-
+                        // AHORA USA LA URL REAL DE LA IMAGEN
                         mediaHtml = `
                             <div class="mb-6 text-center">
-                                <img src="${imageUrl}" alt="${altText}" class="w-full max-w-md mx-auto rounded-lg shadow-md mb-3 border-4 border-white">
+                                <img src="${game.content.src}" alt="${game.content.alt}" class="w-full max-w-md mx-auto rounded-lg shadow-md mb-3 border-4 border-white">
                                 <p class="text-sm text-slate-600 italic px-4">
                                     <span class="font-bold">Descripción:</span> "${game.content.prompt}"
                                 </p>
                             </div>
                         `;
-                        // --- FIN DE ACTUALIZACIÓN ---
                     } else {
                         mediaHtml = `<div class="bg-blue-50 p-5 rounded-xl border border-blue-200 text-blue-800 italic text-center text-lg mb-6 shadow-sm">"${game.content.text}"</div>`;
                     }
@@ -428,31 +416,38 @@
             showFeedback(isCorrect, explanation);
         }
         
-        // --- FUNCIÓN FULLSCREEN (EN SU LUGAR CORRECTO) ---
-        function toggleFullScreen() {
+        // --- FUNCIÓN FULLSCREEN (MODIFICADA CON TRY...CATCH) ---
+        async function toggleFullScreen() { // Convertida a async
             const doc = document.documentElement;
-            if (!document.fullscreenElement) {
-                // Pedir pantalla completa
-                if (doc.requestFullscreen) {
-                    doc.requestFullscreen();
-                } else if (doc.mozRequestFullScreen) { // Firefox
-                    doc.mozRequestFullScreen();
-                } else if (doc.webkitRequestFullscreen) { // Chrome, Safari y Opera
-                    doc.webkitRequestFullscreen();
-                } else if (doc.msRequestFullscreen) { // IE/Edge
-                    doc.msRequestFullscreen();
+            try {
+                if (!document.fullscreenElement) {
+                    // Pedir pantalla completa
+                    if (doc.requestFullscreen) {
+                        await doc.requestFullscreen();
+                    } else if (doc.mozRequestFullScreen) { // Firefox
+                        await doc.mozRequestFullScreen();
+                    } else if (doc.webkitRequestFullscreen) { // Chrome, Safari y Opera
+                        await doc.webkitRequestFullscreen();
+                    } else if (doc.msRequestFullscreen) { // IE/Edge
+                        await doc.msRequestFullscreen();
+                    }
+                } else {
+                    // Salir de pantalla completa
+                    if (document.exitFullscreen) {
+                        await document.exitFullscreen();
+                    } else if (document.mozCancelFullScreen) { // Firefox
+                        await document.mozCancelFullScreen();
+                    } else if (document.webkitExitFullscreen) { // Chrome, Safari y Opera
+                        await doc.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) { // IE/Edge
+                        await doc.msExitFullscreen();
+                    }
                 }
-            } else {
-                // Salir de pantalla completa
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.mozCancelFullScreen) { // Firefox
-                    document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) { // Chrome, Safari y Opera
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { // IE/Edge
-                    document.msExitFullscreen();
-                }
+            } catch (err) {
+                // Capturar el error de política de permisos
+                console.error("Error al intentar cambiar a pantalla completa (probablemente no permitido en este iframe):", err);
+                // Opcionalmente, puedes mostrar un mensaje en el UI aquí si lo deseas
+                // feedbackArea.innerHTML = "<p class='text-red-500 text-center'>El modo de pantalla completa no está permitido.</p>";
             }
         }
 

@@ -14,8 +14,8 @@
         /* 3. Aplicar la fuente base y estilos de fondo */
         body {
             font-family: 'Inter', sans-serif;
-            /* Degradado de fondo dinámico */
-            background: linear-gradient(135deg, #A7D7E4 0%, #2E4057 100%); /* Azul claro a azul oscuro */
+            /* Degradado de fondo dinámico - AZUL MÁS OSCURO */
+            background: linear-gradient(135deg, #1A2980 0%, #26D0CE 100%); /* Azul oscuro a cian */
             background-size: 400% 400%; /* Permite la animación del degradado */
             animation: backgroundAnimation 15s ease infinite alternate; /* Animación */
             min-height: 100vh;
@@ -32,14 +32,17 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Estilo para el contenedor principal */
+        /* Estilo para el contenedor principal - EFECTO GLASEADO APLICADO */
         #game-container {
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.2); /* Fondo blanco translúcido */
+            backdrop-filter: blur(10px); /* Efecto de glaseado */
+            -webkit-backdrop-filter: blur(10px); /* Para compatibilidad con Safari */
             border-radius: 1.5rem; /* Bordes más redondeados */
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
             padding: 2.5rem;
             transition: all 0.3s ease-in-out;
             max-width: 48rem; /* Ancho máximo aumentado */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Borde sutil para el glaseado */
         }
         /* Animación de entrada */
         .fade-in {
@@ -52,6 +55,8 @@
         /* Estilos de botones de elección */
         .choice-button {
             transition: all 0.2s ease-in-out;
+            /* Texto oscuro para mejor contraste sobre fondo glaseado */
+            color: #1A2980; 
         }
         .choice-button:hover {
             transform: translateY(-2px);
@@ -63,7 +68,6 @@
             color: #4f46e5;
             box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
         }
-        /* Removido .ai-image-placeholder ya que usaremos una imagen real */
     </style>
 </head>
 <body>
@@ -72,13 +76,13 @@
         <div id="game-container" class="transition-all duration-300">
             
             <!-- Encabezado --><header class="text-center mb-8 relative">
-                <!-- BOTÓN FULLSCREEN AÑADIDO --><button id="fullscreen-button" title="Jugar en Pantalla Completa" class="absolute top-0 right-0 p-2 text-slate-400 hover:text-indigo-600 transition-colors">
+                <!-- BOTÓN FULLSCREEN AÑADIDO --><button id="fullscreen-button" title="Jugar en Pantalla Completa" class="absolute top-0 right-0 p-2 text-white hover:text-blue-200 transition-colors">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1v4m0 0h-4m4-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 0h-4m4 4l-5-5"></path></svg>
                 </button>
-                <!-- FIN BOTÓN FULLSCREEN --><h1 class="text-4xl sm:text-5xl font-extrabold text-indigo-700 leading-tight">
-                    🌟 Desafío <span class="text-purple-600">IA & Datos</span> 🚀
+                <!-- FIN BOTÓN FULLSCREEN --><h1 class="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
+                    🌟 Desafío <span class="text-blue-300">IA & Datos</span> 🚀
                 </h1>
-                <p class="text-xl text-slate-600 mt-2">
+                <p class="text-xl text-blue-100 mt-2">
                     Pon a prueba tu intuición y conocimiento
                 </p>
             </header>
@@ -90,7 +94,7 @@
                 <!-- La retroalimentación (correcto/incorrecto) irá aquí --></div>
 
             <!-- Controles --><footer id="controls" class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <button id="restart-button" class="w-full sm:w-auto bg-slate-200 text-slate-700 font-semibold py-3 px-6 rounded-xl hover:bg-slate-300 transition-all text-lg">
+                <button id="restart-button" class="w-full sm:w-auto bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl hover:bg-blue-800 transition-all text-lg">
                     🔄 Reiniciar Juego
                 </button>
                 <!-- El botón de "Comprobar" o "Siguiente" se añadirá aquí dinámicamente --><div id="action-button-container" class="w-full sm:w-auto"></div>
@@ -110,38 +114,39 @@
 
         // --- BASE DE DATOS DEL JUEGO ---
         const gameData = [
-            // --- Nivel 1: Predice el Futuro ---
+            // --- Nivel 1: Predice el Futuro (AHORA TIPO 'NETWORK' CON OPCIONES) ---
             {
-                type: 'predict',
-                title: '📊 Predice el Futuro (1/3)',
-                question: 'Una cafetería vendió ☕ <strong>120, 145, 170 y 195</strong> cafés en los últimos cuatro días. Siguiendo esta tendencia, ¿cuántos venderá mañana?',
-                answer: '220',
-                explanation: '¡Exacto! La tendencia es sumar 25 cafés cada día. Esto es un ejemplo de <strong>regresión lineal</strong>, un modelo que busca patrones de crecimiento constante.'
-            },
-            // --- PREGUNTAS FALTANTES EN EL ARCHIVO ROTO ---
-            // (Añadidas de nuevo para completar el juego)
-            {
-                type: 'predict',
-                title: '📊 Predice el Futuro (2/3)',
-                question: 'Una app de meditación tuvo 🧘‍♀️ <strong>500, 1000, 2000 y 4000</strong> descargas en sus primeras cuatro semanas. Si sigue duplicándose, ¿cuántas obtendrá la quinta semana?',
-                answer: '8000',
-                explanation: '¡Correcto! La tendencia se está duplicando (x2) cada semana. Esto es <strong>crecimiento exponencial</strong>. Los modelos predictivos pueden identificar patrones mucho más complejos.'
+                type: 'network', // <--- CAMBIO DE TIPO
+                title: '📊 Predice el Futuro (1/5)',
+                question: 'Un gamer jugó 🎮 <strong>10, 20, y 40</strong> minutos en los últimos 3 días. ¿Cuántos minutos crees que jugará mañana?',
+                options: ['80', '60', '70', '50'], // <--- OPCIONES AÑADIDAS
+                answer: '70',
+                explanation: '¡Es una trampa! La respuesta obvia es 80 (duplicando). Pero un analista de datos también vería el patrón +10, +20, y luego <strong>+30</strong>. ¡Ambas son predicciones válidas, pero esta es más sutil! (Si elegiste 80, también es un patrón lógico).'
             },
             {
-                type: 'predict',
-                title: '📊 Predice el Futuro (3/3)',
-                question: 'Un blog de noticias tecnológicas tuvo 📈 <strong>1000, 950, 900 y 850</strong> visitas en los últimos cuatro días. Si su ritmo de visitas sigue disminuyendo igual, ¿cuántas tendrá mañana?',
+                type: 'network', // <--- CAMBIO DE TIPO
+                title: '📊 Predice el Futuro (2/5)',
+                question: 'Una app tuvo 🧘‍♀️ <strong>500, 600, 800, y 1100</strong> descargas. ¿Cuántas tendrá en la siguiente medición?',
+                options: ['1400', '1500', '1600', '1200'], // <--- OPCIONES AÑADIDAS
+                answer: '1500',
+                explanation: '¡Bien visto! El patrón no era constante. El aumento crecía: primero +100 (500 a 600), luego +200 (600 a 800), luego +300 (800 a 1100). El siguiente paso lógico es sumar <strong>+400</strong>, lo que da 1500.'
+            },
+            {
+                type: 'network', // <--- CAMBIO DE TIPO
+                title: '📊 Predice el Futuro (3/5)',
+                question: 'Un blog tuvo 📈 <strong>1000, 950, 900, y 850</strong> visitas. Pero justo ayer, un artículo se hizo viral y saltó a 5000 visitas. Si quisieras predecir un día "normal" (sin el evento viral), ¿cuántas visitas esperarías?',
+                options: ['5000', '800', '750', '4000'], // <--- OPCIONES AÑADIDAS
                 answer: '800',
-                explanation: '¡Muy bien! La tendencia es restar 50 visitas cada día. Los modelos no solo predicen aumentos, sino también disminuciones. ¡La Ciencia de Datos nos ayuda a entender el pasado para mirar al futuro!'
+                explanation: '¡Perfecto! Esto se llama <strong>limpieza de datos</strong>. El analista debe ignorar el "outlier" (valor atípico) de 5000 para encontrar la tendencia real, que era <strong>-50</strong> por día. La predicción normal era 800.'
             },
-            // --- Nivel 2: IA o Humano (PREGUNTAS ACTUALIZADAS) ---
+
+            // --- Nivel 2: IA o Humano (Sin cambios) ---
             {
                 type: 'ai-human',
                 title: '🎮 IA o Humano (1/3)',
                 content: {
                     type: 'image',
-                    // IMAGEN REAL DE LA ABUELA AÑADIDA AQUÍ
-                    src: 'https://i.ibb.co/sdkLdV3Z/Gemini-Generated-Image-ue0x7nue0x7nue0x.png',
+                    src: 'https://chatgpt.com/backend-api/estuary/content?id=file_00000000cfe861f5849832a453abfeb8&ts=489377&p=fs&cid=1&sig=b1c993e4192042c3555cb449819d21e98d3308418286132ebf5ddd9831d9dbca&v=0',
                     alt: 'Retrato de una abuela sonriente, con un brillo inusual en los ojos.',
                     prompt: 'Esta imagen parece un retrato familiar. La textura de la piel se ve demasiado perfecta y los ojos tienen un brillo extraño, casi artificial.'
                 },
@@ -171,7 +176,7 @@
                 answer: 'ia',
                 explanation: '¡Es de una IA! Este es un truco. Aunque un humano PODRÍA escribir esto, las IAs son *extremadamente* buenas generando texto técnico, formal y lleno de jerga. A menudo lo hacen de forma más densa y rápida que un humano.'
             },
-            // --- Nivel 3: Arma tu Red Neuronal ---
+            // --- Nivel 3: Arma tu Red Neuronal (Sin cambios) ---
             {
                 type: 'network',
                 title: '🧩 Arma tu Red Neuronal (1/3)',
@@ -195,13 +200,31 @@
                 options: ['Capa de Entrada', 'Capa Oculta', 'Capa de Salida'],
                 answer: 'Capa de Salida',
                 explanation: '¡Perfecto! La <strong>Capa de Salida (Output Layer)</strong> es la "boca" de la red. Entrega la conclusión final después de todo el procesamiento. ¡Has armado tu red neuronal completa y entiendes su flujo de información!'
+            },
+
+            // --- PREGUNTAS DE EMOJIS (AHORA TIPO 'NETWORK' CON OPCIONES) ---
+            {
+                type: 'network', // <--- CAMBIO DE TIPO
+                title: '📊 Predice el Futuro (4/5)',
+                question: 'Sigue la secuencia de emojis: 🧠 ➡️ 🧠💡 ➡️ 🧠💡📈. ¿Cuál es el siguiente set de emojis?',
+                options: ['🧠💡📈🤖', '🧠💡🤖', '🧠💡📈', '💡📈🤖'], // <--- OPCIONES AÑADIDAS
+                answer: '🧠💡📈🤖',
+                explanation: '¡Genial! El patrón añade un nuevo concepto de IA cada vez: Cerebro ➡️ Idea ➡️ Crecimiento (Datos) ➡️ IA (Robot). Estabas prediciendo una secuencia conceptual.'
+            },
+            {
+                type: 'network', // <--- CAMBIO DE TIPO
+                title: '📊 Predice el Futuro (5/5)',
+                question: 'Patrón difícil: ☀️🌳 ➡️ 🌙🌱 ➡️ ☀️🌲 (un árbol más grande). ¿Qué sigue en la secuencia lógica?',
+                options: ['☀️🌿', '🌙🌲', '🌙🌿', '☀️🌱'], // <--- OPCIONES AÑADIDAS
+                answer: '🌙🌿',
+                explanation: '¡Excelente! El patrón es: "Sol hace crecer un árbol" y "Luna hace crecer una planta". La segunda vez que aparece el Sol, el árbol es más grande (🌳 -> 🌲), así que la segunda vez que aparece la Luna, la planta también debe crecer (🌱 -> 🌿).'
             }
         ];
 
         // --- LÓGICA DEL JUEGO ---
         let currentGameIndex = 0;
-        let score = 0; // <-- AÑADIDO: Contador de puntos
-        let selectedChoice = null; // Para guardar la opción seleccionada en juegos de elección
+        let score = 0; 
+        let selectedChoice = null; 
 
         // Elementos del DOM
         const gameContent = document.getElementById('game-content');
@@ -229,8 +252,6 @@
                 gameTitle.innerHTML = '🎉 ¡Juego Terminado! 🎉';
                 gameSubtitle.textContent = 'Este es tu puntaje final';
 
-                // --- NUEVA PANTALLA FINAL CON PUNTAJE ---
-                // FIX: Asegurarse de que gameData.length no sea 0 para evitar dividir por cero
                 let finalPercentage = 0;
                 if (gameData.length > 0) {
                     finalPercentage = Math.round((score / gameData.length) * 100);
@@ -245,97 +266,72 @@
 
                 gameContent.innerHTML = `
                     <div class="text-center">
-                        <div class="text-7xl font-extrabold text-indigo-700 mb-4">${score} / ${gameData.length}</div>
-                        <div class="text-3xl font-bold text-purple-600 mb-3">${finalPercentage}% de aciertos</div>
-                        <p class="text-xl text-slate-700 mt-6 font-semibold">
+                        <div class="text-7xl font-extrabold text-blue-700 mb-4">${score} / ${gameData.length}</div>
+                        <div class="text-3xl font-bold text-blue-500 mb-3">${finalPercentage}% de aciertos</div>
+                        <p class="text-xl text-blue-800 mt-6 font-semibold">
                             ${congratsMessage}
                         </p>
-                        <p class="text-slate-600 mt-3 text-lg">
+                        <p class="text-blue-700 mt-3 text-lg">
                             ¡Presiona "Reiniciar" para mezclar las preguntas y jugar de nuevo!
                         </p>
                     </div>
                 `;
-                // --- FIN DE PANTALLA FINAL ---
                 return;
             }
 
             const game = gameData[index];
 
             // Restaurar título original
-            gameTitle.innerHTML = '🌟 Desafío <span class="text-purple-600">IA & Datos</span> 🚀';
+            gameTitle.innerHTML = '🌟 Desafío <span class="text-blue-300">IA & Datos</span> 🚀';
             gameSubtitle.textContent = 'Pon a prueba tu intuición y conocimiento';
 
-            let contentHtml = `<h2 class="text-2xl font-bold text-indigo-700 mb-6 text-center">${game.title}</h2>`;
+            // Cambiado el color del título de la pregunta para contraste con el glaseado
+            let contentHtml = `<h2 class="text-2xl font-bold text-blue-800 mb-6 text-center">${game.title}</h2>`;
 
             // Renderizar según el tipo de juego
             switch (game.type) {
-                case 'predict':
-                    contentHtml += `
-                        <p class="text-lg text-slate-700 mb-6 text-center">${game.question}</p>
-                        <input type="text" id="predict-input" class="w-full sm:w-2/3 mx-auto block text-lg p-3 border-2 border-slate-300 rounded-lg focus:border-purple-500 focus:ring-2 focus:ring-purple-200 transition-all shadow-sm" placeholder="✍️ Escribe tu respuesta...">
-                    `;
-                    
-                    // FIX: Inyectar el HTML en el DOM ANTES de configurar los listeners
-                    gameContent.innerHTML = contentHtml; 
-                    
-                    createActionButton('Comprobar ✅', () => checkPredictAnswer(game.answer, game.explanation));
-                    // Permitir enviar con "Enter"
-                    setTimeout(() => {
-                        const inputElement = document.getElementById('predict-input');
-                        if (inputElement) {
-                            inputElement.focus();
-                            inputElement.addEventListener('keypress', function(e) {
-                                if (e.key === 'Enter') {
-                                    // FIX: Asegurarse de que el botón de comprobar exista antes de hacer clic
-                                    const checkButton = actionButtonContainer.querySelector('button');
-                                    if(checkButton) checkButton.click();
-                                }
-                            });
-                        }
-                    }, 100);
-                    break;
+                // --- CASO 'PREDICT' ELIMINADO ---
+                // Ya no es necesario, se maneja con 'network'
 
                 case 'ai-human':
                     let mediaHtml = '';
                     if (game.content.type === 'image') {
-                        // AHORA USA LA URL REAL DE LA IMAGEN
                         mediaHtml = `
                             <div class="mb-6 text-center">
                                 <img src="${game.content.src}" alt="${game.content.alt}" class="w-full max-w-md mx-auto rounded-lg shadow-md mb-3 border-4 border-white">
-                                <p class="text-sm text-slate-600 italic px-4">
+                                <p class="text-sm text-blue-700 italic px-4">
                                     <span class="font-bold">Descripción:</span> "${game.content.prompt}"
                                 </p>
                             </div>
                         `;
                     } else {
-                        mediaHtml = `<div class="bg-blue-50 p-5 rounded-xl border border-blue-200 text-blue-800 italic text-center text-lg mb-6 shadow-sm">"${game.content.text}"</div>`;
+                        mediaHtml = `<div class="bg-blue-100 p-5 rounded-xl border border-blue-300 text-blue-900 italic text-center text-lg mb-6 shadow-sm bg-opacity-70">"${game.content.text}"</div>`;
                     }
                     contentHtml += `
                         ${mediaHtml}
-                        <p class="text-xl text-slate-700 mb-6 text-center font-semibold">${game.question}</p>
+                        <p class="text-xl text-blue-800 mb-6 text-center font-semibold">${game.question}</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <button id="ai-button" class="choice-button bg-gradient-to-r from-purple-500 to-indigo-500 text-white p-4 rounded-xl font-bold text-lg hover:from-purple-600 hover:to-indigo-600 transition-all shadow-lg" data-answer="ia">🤖 Hecho por IA</button>
-                            <button id="human-button" class="choice-button bg-gradient-to-r from-green-500 to-teal-500 text-white p-4 rounded-xl font-bold text-lg hover:from-green-600 hover:to-teal-600 transition-all shadow-lg" data-answer="humano">👤 Hecho por Humano</button>
+                            <button id="ai-button" class="choice-button bg-gradient-to-r from-purple-600 to-indigo-700 text-white p-4 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-indigo-800 transition-all shadow-lg" data-answer="ia">🤖 Hecho por IA</button>
+                            <button id="human-button" class="choice-button bg-gradient-to-r from-green-600 to-teal-700 text-white p-4 rounded-xl font-bold text-lg hover:from-green-700 hover:to-teal-800 transition-all shadow-lg" data-answer="humano">👤 Hecho por Humano</button>
                         </div>
                     `;
-                    gameContent.innerHTML = contentHtml; // Renderizar antes de adjuntar eventos
-                    // Adjuntar eventos después de que el HTML esté en el DOM
+                    gameContent.innerHTML = contentHtml; 
                     document.getElementById('ai-button').addEventListener('click', () => handleChoice(game, 'ia'));
                     document.getElementById('human-button').addEventListener('click', () => handleChoice(game, 'humano'));
                     break;
 
-                case 'network':
+                case 'network': // <--- AHORA MANEJA AMBOS, RED NEURONAL Y PREDICCIÓN
                     contentHtml += `
-                        <p class="text-xl text-slate-700 mb-6 text-center font-semibold">${game.question}</p>
+                        <p class="text-xl text-blue-800 mb-6 text-center font-semibold">${game.question}</p>
                         <div class="flex flex-col gap-4">
                             ${game.options.map((option, idx) => `
-                                <button id="option-${idx}" class="choice-button w-full text-left bg-indigo-50 text-indigo-800 p-4 rounded-xl font-semibold text-lg hover:bg-indigo-100 border-2 border-transparent hover:border-purple-400 transition-all shadow-sm" data-answer="${option}">
+                                <button id="option-${idx}" class="choice-button w-full text-left bg-blue-100 text-blue-900 p-4 rounded-xl font-semibold text-lg hover:bg-blue-200 border-2 border-transparent hover:border-blue-500 transition-all shadow-sm bg-opacity-70" data-answer="${option}">
                                     ${option}
                                 </button>
                             `).join('')}
                         </div>
                     `;
-                    gameContent.innerHTML = contentHtml; // Renderizar antes de adjuntar eventos
+                    gameContent.innerHTML = contentHtml; 
                     game.options.forEach((option, idx) => {
                         document.getElementById(`option-${idx}`).addEventListener('click', () => handleChoice(game, option));
                     });
@@ -348,15 +344,14 @@
         // Manejar la selección de botones en juegos de elección
         function handleChoice(game, choice) {
             selectedChoice = choice;
-            // Desactivar todos los botones de elección y marcar el seleccionado
             document.querySelectorAll('.choice-button').forEach(button => {
-                button.disabled = true; // Deshabilitar para evitar múltiples clics
+                button.disabled = true; 
                 button.classList.remove('selected');
-                if (button.dataset.answer === choice) {
+                if (button.dataset.answer.toLowerCase() === choice.toLowerCase()) { // FIX: Comparar en minúsculas
                     button.classList.add('selected');
                 }
             });
-            checkAnswer(selectedChoice === game.answer.toLowerCase(), game.explanation);
+            checkAnswer(selectedChoice.toLowerCase() === game.answer.toLowerCase(), game.explanation); // FIX: Comparar en minúsculas
         }
 
 
@@ -371,30 +366,29 @@
             actionButtonContainer.appendChild(button);
         }
 
-        // --- FUNCIÓN showFeedback (RESTAURADA) ---
+        // --- FUNCIÓN showFeedback ---
         function showFeedback(isCorrect, explanation) {
             feedbackArea.innerHTML = '';
             const feedbackDiv = document.createElement('div');
-            feedbackDiv.className = `p-5 rounded-xl fade-in text-lg shadow-md ${isCorrect ? 'bg-green-50 border border-green-300' : 'bg-red-50 border border-red-300'}`;
+            feedbackDiv.className = `p-5 rounded-xl fade-in text-lg shadow-md ${isCorrect ? 'bg-green-100 border border-green-400 text-green-800' : 'bg-red-100 border border-red-400 text-red-800'} bg-opacity-80`; /* Ajuste de color y opacidad */
             
             if (isCorrect) {
-                score++; // <-- AÑADIDO: Incrementar puntos
+                score++; 
                 feedbackDiv.innerHTML = `
-                    <h3 class="font-bold text-xl text-green-800 flex items-center mb-2">
+                    <h3 class="font-bold text-xl flex items-center mb-2">
                         <span class="mr-2">🎉</span> ¡Correcto! (+1 punto)
                     </h3>
-                    <p class="text-green-700">${explanation}</p>
+                    <p>${explanation}</p>
                 `;
             } else {
                 feedbackDiv.innerHTML = `
-                    <h3 class="font-bold text-xl text-red-800 flex items-center mb-2">
+                    <h3 class="font-bold text-xl flex items-center mb-2">
                         <span class="mr-2">❌</span> ¡Incorrecto!
                     </h3>
-                    <p class="text-red-700">${explanation}</p>
+                    <p>${explanation}</p>
                 `;
             }
             
-            // --- MODIFICADO: Siempre crear botón "Siguiente" ---
             feedbackArea.appendChild(feedbackDiv);
             createActionButton('Siguiente →', () => {
                 currentGameIndex++;
@@ -402,69 +396,57 @@
             });
         }
 
-        // --- FUNCIONES FALTANTES (RESTAURADAS) ---
-        // Comprobar respuesta de predicción
-        function checkPredictAnswer(correctAnswer, explanation) {
-            const input = document.getElementById('predict-input');
-            if (!input) return; // Guarda de seguridad
-            const userAnswer = input.value.trim();
-            showFeedback(userAnswer === correctAnswer, explanation);
-        }
-
-        // Comprobar respuesta de elección (IA/Humano, Red Neuronal)
+        // --- FUNCIÓN checkPredictAnswer ELIMINADA ---
+        // Ya no es necesaria, su lógica se maneja en 'handleChoice' y 'checkAnswer'
+        
+        // Comprobar respuesta de elección (IA/Humano, Red Neuronal, Predicción)
         function checkAnswer(isCorrect, explanation) {
             showFeedback(isCorrect, explanation);
         }
         
         // --- FUNCIÓN FULLSCREEN (MODIFICADA CON TRY...CATCH) ---
-        async function toggleFullScreen() { // Convertida a async
+        async function toggleFullScreen() { 
             const doc = document.documentElement;
             try {
                 if (!document.fullscreenElement) {
-                    // Pedir pantalla completa
                     if (doc.requestFullscreen) {
                         await doc.requestFullscreen();
-                    } else if (doc.mozRequestFullScreen) { // Firefox
+                    } else if (doc.mozRequestFullScreen) { 
                         await doc.mozRequestFullScreen();
-                    } else if (doc.webkitRequestFullscreen) { // Chrome, Safari y Opera
+                    } else if (doc.webkitRequestFullscreen) { 
                         await doc.webkitRequestFullscreen();
-                    } else if (doc.msRequestFullscreen) { // IE/Edge
+                    } else if (doc.msRequestFullscreen) { 
                         await doc.msRequestFullscreen();
                     }
                 } else {
-                    // Salir de pantalla completa
                     if (document.exitFullscreen) {
                         await document.exitFullscreen();
-                    } else if (document.mozCancelFullScreen) { // Firefox
+                    } else if (document.mozCancelFullScreen) { 
                         await document.mozCancelFullScreen();
-                    } else if (document.webkitExitFullscreen) { // Chrome, Safari y Opera
-                        await doc.webkitExitFullscreen();
-                    } else if (document.msExitFullscreen) { // IE/Edge
+                    } else if (document.webkitExitFullscreen) { 
+                        await document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) { 
                         await doc.msExitFullscreen();
                     }
                 }
             } catch (err) {
-                // Capturar el error de política de permisos
                 console.error("Error al intentar cambiar a pantalla completa (probablemente no permitido en este iframe):", err);
-                // Opcionalmente, puedes mostrar un mensaje en el UI aquí si lo deseas
-                // feedbackArea.innerHTML = "<p class='text-red-500 text-center'>El modo de pantalla completa no está permitido.</p>";
             }
         }
 
         // --- Inicialización ---
         restartButton.addEventListener('click', () => {
             currentGameIndex = 0;
-            score = 0; // <-- AÑADIDO: Reiniciar puntos
-            shuffleArray(gameData); // <-- AÑADIDO: Volver a barajar
+            score = 0; 
+            shuffleArray(gameData); 
             renderGame(currentGameIndex);
         });
 
         // Cargar el primer juego al iniciar
         document.addEventListener('DOMContentLoaded', () => {
-            // AÑADIDO: Listener para el botón de pantalla completa
             document.getElementById('fullscreen-button').addEventListener('click', toggleFullScreen);
             
-            shuffleArray(gameData); // <-- AÑADIDO: Barajar al inicio
+            shuffleArray(gameData); 
             renderGame(currentGameIndex);
         });
     </script>

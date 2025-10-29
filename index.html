@@ -116,47 +116,34 @@
         const gameData = [
             // --- Nivel 1: Predice el Futuro (AHORA TIPO 'NETWORK' CON OPCIONES) ---
             {
-                type: 'network', // <--- CAMBIO DE TIPO
+                type: 'network', 
                 title: '📊 Predice el Futuro (1/5)',
                 question: 'Un gamer jugó 🎮 <strong>10, 20, y 40</strong> minutos en los últimos 3 días. ¿Cuántos minutos crees que jugará mañana?',
-                options: ['80', '60', '70', '50'], // <--- OPCIONES AÑADIDAS
+                options: ['80', '60', '70', '50'], 
                 answer: '70',
                 explanation: '¡Es una trampa! La respuesta obvia es 80 (duplicando). Pero un analista de datos también vería el patrón +10, +20, y luego <strong>+30</strong>. ¡Ambas son predicciones válidas, pero esta es más sutil! (Si elegiste 80, también es un patrón lógico).'
             },
             {
-                type: 'network', // <--- CAMBIO DE TIPO
+                type: 'network', 
                 title: '📊 Predice el Futuro (2/5)',
                 question: 'Una app tuvo 🧘‍♀️ <strong>500, 600, 800, y 1100</strong> descargas. ¿Cuántas tendrá en la siguiente medición?',
-                options: ['1400', '1500', '1600', '1200'], // <--- OPCIONES AÑADIDAS
+                options: ['1400', '1500', '1600', '1200'], 
                 answer: '1500',
                 explanation: '¡Bien visto! El patrón no era constante. El aumento crecía: primero +100 (500 a 600), luego +200 (600 a 800), luego +300 (800 a 1100). El siguiente paso lógico es sumar <strong>+400</strong>, lo que da 1500.'
             },
             {
-                type: 'network', // <--- CAMBIO DE TIPO
+                type: 'network', 
                 title: '📊 Predice el Futuro (3/5)',
                 question: 'Un blog tuvo 📈 <strong>1000, 950, 900, y 850</strong> visitas. Pero justo ayer, un artículo se hizo viral y saltó a 5000 visitas. Si quisieras predecir un día "normal" (sin el evento viral), ¿cuántas visitas esperarías?',
-                options: ['5000', '800', '750', '4000'], // <--- OPCIONES AÑADIDAS
+                options: ['5000', '800', '750', '4000'], 
                 answer: '800',
                 explanation: '¡Perfecto! Esto se llama <strong>limpieza de datos</strong>. El analista debe ignorar el "outlier" (valor atípico) de 5000 para encontrar la tendencia real, que era <strong>-50</strong> por día. La predicción normal era 800.'
             },
 
-            // --- Nivel 2: IA o Humano (Sin cambios) ---
+            // --- Nivel 2: IA o Humano (Ahora 5 preguntas) ---
             {
                 type: 'ai-human',
-                title: '🎮 IA o Humano (1/3)',
-                content: {
-                    type: 'image',
-                    src: 'https://chatgpt.com/backend-api/estuary/content?id=file_00000000cfe861f5849832a453abfeb8&ts=489377&p=fs&cid=1&sig=b1c993e4192042c3555cb449819d21e98d3308418286132ebf5ddd9831d9dbca&v=0',
-                    alt: 'Retrato de una abuela sonriente, con un brillo inusual en los ojos.',
-                    prompt: 'Esta imagen parece un retrato familiar. La textura de la piel se ve demasiado perfecta y los ojos tienen un brillo extraño, casi artificial.'
-                },
-                question: 'Esta foto de la abuela, ¿fue generada por IA o es una foto humana real?',
-                answer: 'ia',
-                explanation: '¡Acertaste! Es de IA. Aunque la imagen es emotiva, esos pequeños "fallos" sutiles en la textura y el brillo de los ojos son a menudo indicativos de imágenes generadas por modelos de IA.'
-            },
-            {
-                type: 'ai-human',
-                title: '🎮 IA o Humano (2/3)',
+                title: '🎮 IA o Humano (1/5)',
                 content: {
                     type: 'text',
                     text: 'Fui a la tienda pero se me olvidó la lista, obvio. Traje pan, leche... y creo que lo más importante no. Jajaja. Mañana será otro día.'
@@ -167,7 +154,7 @@
             },
             {
                 type: 'ai-human',
-                title: '🎮 IA o Humano (3/3)',
+                title: '🎮 IA o Humano (2/5)',
                 content: {
                     type: 'text',
                     text: 'El análisis de sentimiento del mercado indica una volatilidad alcista, correlacionada con los patrones de inversión en derivados de tecnología emergente. Se recomienda una estrategia de diversificación de portafolio para mitigar el riesgo.'
@@ -176,6 +163,46 @@
                 answer: 'ia',
                 explanation: '¡Es de una IA! Este es un truco. Aunque un humano PODRÍA escribir esto, las IAs son *extremadamente* buenas generando texto técnico, formal y lleno de jerga. A menudo lo hacen de forma más densa y rápida que un humano.'
             },
+            // --- NUEVA PREGUNTA DEL PAPA ---
+            {
+                type: 'ai-human',
+                title: '🎮 IA o Humano (3/5)',
+                content: {
+                    type: 'image',
+                    src: 'https://piktochart.com/wp-content/uploads/2023/11/pope-wearing-balenciaga-jacket-viral-ai-images.jpeg',
+                    alt: 'El Papa Francisco usando una llamativa campera blanca de plumas.'
+                },
+                question: 'Esta famosa imagen del Papa con una campera de plumas blanca, ¿es real o fue hecha con IA?',
+                answer: 'ia',
+                explanation: '¡Correcto! Es de IA. Esta fue una de las imágenes generadas por IA más famosas (creada con Midjourney). Engañó a millones. La IA es increíblemente buena creando imágenes fotorrealistas de eventos que nunca ocurrieron.'
+            },
+            // --- NUEVA PREGUNTA DE MESSI Y MARADONA ---
+            {
+                type: 'ai-human',
+                title: '🎮 IA o Humano (4/5)',
+                content: {
+                    type: 'image',
+                    src: 'https://e00-marca.uecdn.es/assets/multimedia/imagenes/2022/12/21/16716075487739.jpg',
+                    alt: 'Lionel Messi y Diego Maradona abrazándose en el campo de juego.'
+                },
+                question: 'Una foto de dos leyendas del fútbol. ¿Es una imagen real o fue generada por IA?',
+                answer: 'humano',
+                explanation: '¡Exacto! Esta imagen es 100% real y captura un momento icónico entre dos de los más grandes futbolistas de la historia. Las IAs a veces tienen problemas con manos o fondos, pero aquí todo luce auténtico.'
+            },
+            // --- NUEVA PREGUNTA PERRO Y GATO ABRAZADOS ---
+            {
+                type: 'ai-human',
+                title: '🎮 IA o Humano (5/5)',
+                content: {
+                    type: 'image',
+                    src: 'https://us.123rf.com/450wm/perfectlab/perfectlab2304/perfectlab230400170/202429290-pets-cat-and-dog-hugging-together-outdoor-animal-friendship-in-the-family-generative-ai.jpg',
+                    alt: 'Un perro y un gato abrazándose tiernamente al aire libre.'
+                },
+                question: 'Una escena de amistad animal. ¿Es una foto real o fue hecha con IA?',
+                answer: 'ia',
+                explanation: '¡Bien observado! Aunque es una imagen adorable, la perfección de la escena y ciertos detalles en el pelaje o la perspectiva suelen delatar que fue generada por una IA, que crea situaciones "ideales".'
+            },
+            
             // --- Nivel 3: Arma tu Red Neuronal (Sin cambios) ---
             {
                 type: 'network',
@@ -204,18 +231,18 @@
 
             // --- PREGUNTAS DE EMOJIS (AHORA TIPO 'NETWORK' CON OPCIONES) ---
             {
-                type: 'network', // <--- CAMBIO DE TIPO
+                type: 'network', 
                 title: '📊 Predice el Futuro (4/5)',
                 question: 'Sigue la secuencia de emojis: 🧠 ➡️ 🧠💡 ➡️ 🧠💡📈. ¿Cuál es el siguiente set de emojis?',
-                options: ['🧠💡📈🤖', '🧠💡🤖', '🧠💡📈', '💡📈🤖'], // <--- OPCIONES AÑADIDAS
+                options: ['🧠💡📈🤖', '🧠💡🤖', '🧠💡📈', '💡📈🤖'], 
                 answer: '🧠💡📈🤖',
                 explanation: '¡Genial! El patrón añade un nuevo concepto de IA cada vez: Cerebro ➡️ Idea ➡️ Crecimiento (Datos) ➡️ IA (Robot). Estabas prediciendo una secuencia conceptual.'
             },
             {
-                type: 'network', // <--- CAMBIO DE TIPO
+                type: 'network', 
                 title: '📊 Predice el Futuro (5/5)',
                 question: 'Patrón difícil: ☀️🌳 ➡️ 🌙🌱 ➡️ ☀️🌲 (un árbol más grande). ¿Qué sigue en la secuencia lógica?',
-                options: ['☀️🌿', '🌙🌲', '🌙🌿', '☀️🌱'], // <--- OPCIONES AÑADIDAS
+                options: ['☀️🌿', '🌙🌲', '🌙🌿', '☀️🌱'], 
                 answer: '🌙🌿',
                 explanation: '¡Excelente! El patrón es: "Sol hace crecer un árbol" y "Luna hace crecer una planta". La segunda vez que aparece el Sol, el árbol es más grande (🌳 -> 🌲), así que la segunda vez que aparece la Luna, la planta también debe crecer (🌱 -> 🌿).'
             }
@@ -266,12 +293,12 @@
 
                 gameContent.innerHTML = `
                     <div class="text-center">
-                        <div class="text-7xl font-extrabold text-blue-700 mb-4">${score} / ${gameData.length}</div>
-                        <div class="text-3xl font-bold text-blue-500 mb-3">${finalPercentage}% de aciertos</div>
-                        <p class="text-xl text-blue-800 mt-6 font-semibold">
+                        <div class="text-7xl font-extrabold text-white mb-4">${score} / ${gameData.length}</div>
+                        <div class="text-3xl font-bold text-blue-300 mb-3">${finalPercentage}% de aciertos</div>
+                        <p class="text-xl text-white mt-6 font-semibold">
                             ${congratsMessage}
                         </p>
-                        <p class="text-blue-700 mt-3 text-lg">
+                        <p class="text-blue-100 mt-3 text-lg">
                             ¡Presiona "Reiniciar" para mezclar las preguntas y jugar de nuevo!
                         </p>
                     </div>
@@ -290,26 +317,21 @@
 
             // Renderizar según el tipo de juego
             switch (game.type) {
-                // --- CASO 'PREDICT' ELIMINADO ---
-                // Ya no es necesario, se maneja con 'network'
-
                 case 'ai-human':
                     let mediaHtml = '';
                     if (game.content.type === 'image') {
                         mediaHtml = `
                             <div class="mb-6 text-center">
                                 <img src="${game.content.src}" alt="${game.content.alt}" class="w-full max-w-md mx-auto rounded-lg shadow-md mb-3 border-4 border-white">
-                                <p class="text-sm text-blue-700 italic px-4">
-                                    <span class="font-bold">Descripción:</span> "${game.content.prompt}"
-                                </p>
-                            </div>
+                                <!-- Eliminada la descripción: <p class="text-sm text-blue-100 italic px-4"><span class="font-bold">Descripción:</span> "${game.content.prompt}"</p> --></div>
                         `;
                     } else {
-                        mediaHtml = `<div class="bg-blue-100 p-5 rounded-xl border border-blue-300 text-blue-900 italic text-center text-lg mb-6 shadow-sm bg-opacity-70">"${game.content.text}"</div>`;
+                        // --- CAMBIO: AÑADIDO font-bold ---
+                        mediaHtml = `<div class="bg-blue-100 p-5 rounded-xl border border-blue-300 text-blue-900 italic text-center text-lg mb-6 shadow-sm bg-opacity-70 font-bold">"${game.content.text}"</div>`;
                     }
                     contentHtml += `
                         ${mediaHtml}
-                        <p class="text-xl text-blue-800 mb-6 text-center font-semibold">${game.question}</p>
+                        <!-- CAMBIO: text-white AÑADIDO --><p class="text-xl text-white mb-6 text-center font-semibold">${game.question}</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <button id="ai-button" class="choice-button bg-gradient-to-r from-purple-600 to-indigo-700 text-white p-4 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-indigo-800 transition-all shadow-lg" data-answer="ia">🤖 Hecho por IA</button>
                             <button id="human-button" class="choice-button bg-gradient-to-r from-green-600 to-teal-700 text-white p-4 rounded-xl font-bold text-lg hover:from-green-700 hover:to-teal-800 transition-all shadow-lg" data-answer="humano">👤 Hecho por Humano</button>
@@ -322,7 +344,7 @@
 
                 case 'network': // <--- AHORA MANEJA AMBOS, RED NEURONAL Y PREDICCIÓN
                     contentHtml += `
-                        <p class="text-xl text-blue-800 mb-6 text-center font-semibold">${game.question}</p>
+                        <!-- CAMBIO: text-white AÑADIDO --><p class="text-xl text-white mb-6 text-center font-semibold">${game.question}</p>
                         <div class="flex flex-col gap-4">
                             ${game.options.map((option, idx) => `
                                 <button id="option-${idx}" class="choice-button w-full text-left bg-blue-100 text-blue-900 p-4 rounded-xl font-semibold text-lg hover:bg-blue-200 border-2 border-transparent hover:border-blue-500 transition-all shadow-sm bg-opacity-70" data-answer="${option}">
@@ -347,11 +369,11 @@
             document.querySelectorAll('.choice-button').forEach(button => {
                 button.disabled = true; 
                 button.classList.remove('selected');
-                if (button.dataset.answer.toLowerCase() === choice.toLowerCase()) { // FIX: Comparar en minúsculas
+                if (button.dataset.answer.toLowerCase() === choice.toLowerCase()) { 
                     button.classList.add('selected');
                 }
             });
-            checkAnswer(selectedChoice.toLowerCase() === game.answer.toLowerCase(), game.explanation); // FIX: Comparar en minúsculas
+            checkAnswer(selectedChoice.toLowerCase() === game.answer.toLowerCase(), game.explanation); 
         }
 
 
@@ -395,9 +417,6 @@
                 renderGame(currentGameIndex);
             });
         }
-
-        // --- FUNCIÓN checkPredictAnswer ELIMINADA ---
-        // Ya no es necesaria, su lógica se maneja en 'handleChoice' y 'checkAnswer'
         
         // Comprobar respuesta de elección (IA/Humano, Red Neuronal, Predicción)
         function checkAnswer(isCorrect, explanation) {

@@ -5,29 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌟 Desafío de IA y Ciencia de Datos 🚀</title>
     
-
-<script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carga de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
+    <!-- Carga de Fuentes de Google -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* 3. Aplicar la fuente base y estilos de fondo */
+        /* Aplicar la fuente base y estilos de fondo */
         body {
             font-family: 'Inter', sans-serif;
-            /* Degradado de fondo dinámico - AZUL MÁS OSCURO */
+            /* Degradado de fondo dinámico */
             background: linear-gradient(135deg, #1A2980 0%, #26D0CE 100%); /* Azul oscuro a cian */
             background-size: 400% 400%; /* Permite la animación del degradado */
             animation: backgroundAnimation 15s ease infinite alternate; /* Animación */
+            
+            /* --- MODIFICACIONES PARA SCROLL EN MÓVIL --- */
+            background-attachment: fixed; /* 1. Fija el fondo para que no se desplace con el contenido */
             min-height: 100vh;
             display: flex;
-            align-items: center;
+            align-items: flex-start; /* 2. Alinea la tarjeta al inicio (arriba) en lugar de centrarla */
             justify-content: center;
-            padding: 1rem;
-            overflow: hidden; /* Evitar scrollbars por animaciones */
+            padding: 2rem 1rem; /* 3. Añade padding vertical para que no pegue al borde */
+            /* overflow: hidden; <-- 4. ELIMINADO para permitir scroll si el contenido es muy alto */
         }
 
         /* Keyframes para la animación del fondo */
@@ -37,7 +39,7 @@
             100% { background-position: 0% 50%; }
         }
 
-        /* Estilo para el contenedor principal - EFECTO GLASEADO APLICADO */
+        /* Estilo para el contenedor principal - EFECTO GLASEADO */
         #game-container {
             background-color: rgba(255, 255, 255, 0.2); /* Fondo blanco translúcido */
             backdrop-filter: blur(10px); /* Efecto de glaseado */
@@ -49,6 +51,7 @@
             max-width: 48rem; /* Ancho máximo aumentado */
             border: 1px solid rgba(255, 255, 255, 0.3); /* Borde sutil para el glaseado */
         }
+        
         /* Animación de entrada */
         .fade-in {
             animation: fadeIn 0.6s ease-out;
@@ -57,6 +60,7 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+        
         /* Estilos de botones de elección */
         .choice-button {
             transition: all 0.2s ease-in-out;
@@ -68,7 +72,7 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         
-        /* --- NUEVOS ESTILOS PARA FEEDBACK ANIMADO --- */
+        /* --- ESTILOS PARA FEEDBACK ANIMADO --- */
         #feedback-overlay {
             position: fixed;
             top: 0;
@@ -121,53 +125,45 @@
     </style>
 </head>
 <body>
-    
+    <!-- Capa para animaciones de feedback (confeti, etc.) -->
+    <div id="feedback-overlay"></div>
 
-<div id="feedback-overlay"></div>
-
+    <!-- Contenedor principal del juego -->
     <div class="w-full max-w-3xl">
         <div id="game-container" class="transition-all duration-300">
             
-            
-
-<header class="text-center mb-8 relative">
+            <!-- Encabezado con título y cronómetro -->
+            <header class="text-center mb-8 relative">
                 
-                
-
-<div class="flex justify-center mb-4">
+                <!-- Botón de Pantalla Completa -->
+                <div class="flex justify-center mb-4">
                     <button id="fullscreen-button" title="Jugar en Pantalla Completa" class="p-2 text-white hover:text-blue-200 transition-colors bg-white/20 backdrop-blur-sm rounded-lg shadow-lg">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1v4m0 0h-4m4-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 0h-4m4 4l-5-5"></path></svg>
                     </button>
                 </div>
 
-                
-
-<h1 class="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
+                <h1 class="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
                     🌟 Desafío <span class="text-blue-300">IA & Datos</span> 🚀
                 </h1>
                 <p class="text-xl text-blue-100 mt-2">
                     Pon a prueba tu intuición y conocimiento
                 </p>
 
-                
-
-<div class="flex justify-center mt-4">
+                <!-- Contenedor del Cronómetro -->
+                <div class="flex justify-center mt-4">
                     <div id="timer-container" class="p-2 text-white font-semibold flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-lg shadow-lg">
                         ⏱️ <span id="timer">03:00</span>
                     </div>
                 </div>
             </header>
 
-            
+            <!-- Contenido principal del juego (preguntas, opciones) -->
+            <main id="game-content" class="mb-8 min-h-[250px] sm:min-h-[200px] flex flex-col justify-center">
+                <!-- El contenido de la pregunta se renderiza aquí -->
+            </main>
 
-<main id="game-content" class="mb-8 min-h-[250px] sm:min-h-[200px] flex flex-col justify-center">
-                
-
-</main>
-
-            
-
-<div id="intro-screen" class="text-center">
+            <!-- Pantalla de Introducción -->
+            <div id="intro-screen" class="text-center">
                 <h2 class="text-3xl font-bold text-white mb-4">¿Listo para el desafío?</h2>
                 <p class="text-xl text-blue-100 mb-8">Tienes <span class="font-bold text-blue-300">3 minutos</span> para responder 13 preguntas.</p>
                 <button id="start-button" class="w-full sm:w-auto bg-green-500 text-white font-bold py-4 px-10 rounded-xl hover:bg-green-600 transition-all text-xl shadow-lg transform hover:scale-105">
@@ -175,22 +171,19 @@
                 </button>
             </div>
 
-            
+            <!-- Área de Feedback (Correcto/Incorrecto) -->
+            <div id="feedback-area" class="mb-8">
+                <!-- El feedback se renderiza aquí -->
+            </div>
 
-<div id="feedback-area" class="mb-8">
-                
-
-</div>
-
-            
-
-<footer id="controls" class="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <!-- Controles (Reiniciar, Siguiente) -->
+            <footer id="controls" class="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <button id="restart-button" class="w-full sm:w-auto bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl hover:bg-blue-800 transition-all text-lg">
                     🔄 Reiniciar Juego
                 </button>
                 
-
-<div id="action-button-container" class="w-full sm:w-auto"></div>
+                <!-- Contenedor para el botón de acción (Siguiente/Comprobar) -->
+                <div id="action-button-container" class="w-full sm:w-auto"></div>
             </footer>
             
         </div>
@@ -251,7 +244,6 @@
                 answer: 'ia',
                 explanation: '¡Es de una IA! Este es un truco. Aunque un humano PODRÍA escribir esto, las IAs son *extremadamente* buenas generando texto técnico, formal y lleno de jerga. A menudo lo hacen de forma más densa y rápida que un humano.'
             },
-            // --- NUEVA PREGUNTA DEL PAPA ---
             {
                 type: 'ai-human',
                 question: 'Esta famosa imagen del Papa con una campera de plumas blanca, ¿es real o fue hecha con IA?',
@@ -263,7 +255,6 @@
                 answer: 'ia',
                 explanation: '¡Correcto! Es de IA. Esta fue una de las imágenes generadas por IA más famosas (creada con Midjourney). Engañó a millones. La IA es increíblemente buena creando imágenes fotorrealistas de eventos que nunca ocurrieron.'
             },
-            // --- NUEVA PREGUNTA DE MESSI Y MARADONA ---
             {
                 type: 'ai-human',
                 question: 'Una foto de dos leyendas del fútbol. ¿Es una imagen real o fue generada por IA?',
@@ -275,7 +266,6 @@
                 answer: 'humano',
                 explanation: '¡Exacto! Esta imagen es 100% real y captura un momento icónico entre dos de los más grandes futbolistas de la historia. Las IAs a veces tienen problemas con manos o fondos, pero aquí todo luce auténtico.'
             },
-            // --- NUEVA PREGUNTA PERRO Y GATO ABRAZADOS ---
             {
                 type: 'ai-human',
                 question: 'Una escena de amistad animal. ¿Es una foto real o fue hecha con IA?',
@@ -288,7 +278,7 @@
                 explanation: '¡Bien observado! Aunque es una imagen adorable, la perfección de la escena y ciertos detalles en el pelaje o la perspectiva suelen delatar que fue generada por una IA, que crea situaciones "ideales".'
             },
             
-            // --- Nivel 3: Arma tu Red Neuronal (Sin cambios) ---
+            // --- Nivel 3: Arma tu Red Neuronal ---
             {
                 type: 'network',
                 question: 'Es la 🥇 PRIMERA capa de la red. Recibe los datos crudos (ej: los píxeles de una foto 🖼️, o las palabras de una frase 💬). ¿Cómo se llama?',
@@ -311,7 +301,7 @@
                 explanation: '¡Perfecto! La <strong>Capa de Salida (Output Layer)</strong> es la "boca" de la red. Entrega la conclusión final después de todo el procesamiento. ¡Has armado tu red neuronal completa y entiendes su flujo de información!'
             },
 
-            // --- PREGUNTAS DE EMOJIS (AHORA TIPO 'NETWORK' CON OPCIONES) ---
+            // --- PREGUNTAS DE EMOJIS (TIPO 'NETWORK') ---
             {
                 type: 'network', 
                 question: 'Sigue la secuencia de emojis: 🧠 ➡️ 🧠💡 ➡️ 🧠💡📈. ¿Cuál es el siguiente set de emojis?',
@@ -388,7 +378,7 @@
             gameSubtitle.textContent = 'Pon a prueba tu intuición y conocimiento';
 
             // El título de la pregunta ahora incluye el número general de la pregunta
-            let contentHtml = `<h2 class="text-2xl font-bold text-blue-800 mb-6 text-center">(${index + 1}/${gameData.length}) ${game.question}</h2>`;
+            let contentHtml = `<h2 class="text-2xl font-bold text-white mb-6 text-center">(${index + 1}/${gameData.length}) ${game.question}</h2>`;
 
             // Renderizar según el tipo de juego
             switch (game.type) {
@@ -397,15 +387,17 @@
                     if (game.content.type === 'image') {
                         mediaHtml = `
                             <div class="mb-6 text-center">
-                                <img src="${game.content.src}" alt="${game.content.alt}" class="w-full max-w-md mx-auto rounded-lg shadow-md mb-3 border-4 border-white">
+                                <img src="${game.content.src}" alt="${game.content.alt}" class="w-full max-w-md mx-auto rounded-lg shadow-md mb-3 border-4 border-white"
+                                 onerror="this.onerror=null;this.src='https://placehold.co/600x400/1A2980/FFFFFF?text=Error+Cargando+Imagen';">
                             </div>
                         `;
                     } else {
                         mediaHtml = `<div class="bg-blue-100 p-5 rounded-xl border border-blue-300 text-blue-900 italic text-center text-lg mb-6 shadow-sm bg-opacity-70 font-bold">"${game.content.text}"</div>`;
                     }
+                    
+                    // *** CORRECCIÓN ***: Se eliminó el <p> duplicado que mostraba game.question
                     contentHtml += `
                         ${mediaHtml}
-                        <p class="text-xl text-white mb-6 text-center font-semibold">${game.question}</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <button id="ai-button" class="choice-button bg-gradient-to-r from-purple-600 to-indigo-700 text-white p-4 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-indigo-800 transition-all shadow-lg" data-answer="ia">🤖 Hecho por IA</button>
                             <button id="human-button" class="choice-button bg-gradient-to-r from-green-600 to-teal-700 text-white p-4 rounded-xl font-bold text-lg hover:from-green-700 hover:to-teal-800 transition-all shadow-lg" data-answer="humano">👤 Hecho por Humano</button>
@@ -417,8 +409,8 @@
                     break;
 
                 case 'network': 
+                    // *** CORRECCIÓN ***: Se eliminó el <p> duplicado que mostraba game.question
                     contentHtml += `
-                        <p class="text-xl text-white mb-6 text-center font-semibold">${game.question}</p>
                         <div class="flex flex-col gap-4">
                             ${game.options.map((option, idx) => `
                                 <button id="option-${idx}" class="choice-button w-full text-left bg-blue-100 text-blue-900 p-4 rounded-xl font-semibold text-lg hover:bg-blue-200 border-2 border-transparent hover:border-blue-500 transition-all shadow-sm bg-opacity-70" data-answer="${option}">
@@ -437,7 +429,6 @@
 
         // --- Funciones de Ayuda ---
 
-        // (FUNCIÓN RE-AÑADIDA)
         // Crear botón de acción principal (Comprobar / Siguiente)
         function createActionButton(text, onClick, isDisabled = false) {
             actionButtonContainer.innerHTML = '';
@@ -494,7 +485,8 @@
                         <h3 class="font-bold text-xl flex items-center mb-2">
                             <span class="mr-2">🎉</span> ¡Correcto! (+1 punto)
                         </h3>
-                        <p>${explanation}</p>
+                        <!-- MODIFICADO: Se añadió un prefijo "Explicación:" para mayor claridad -->
+                        <p class="mt-2"><strong class="text-green-900">Explicación:</strong> ${explanation}</p>
                     </div>
                 `;
             } else {
@@ -504,12 +496,13 @@
                         <h3 class="font-bold text-xl flex items-center mb-2">
                             <span class="mr-2">❌</span> ¡Incorrecto!
                         </h3>
-                        <p>${explanation}</p>
+                        <!-- MODIFICADO: Se añadió un prefijo "Explicación:" para mayor claridad -->
+                        <p class="mt-2"><strong class="text-red-900">Explicación:</strong> ${explanation}</p>
                     </div>
                 `;
             }
             
-            // --- MOSTRAR BOTÓN 'SIGUIENTE' (YA NO HAY AVANCE AUTOMÁTICO) ---
+            // --- MOSTRAR BOTÓN 'SIGUIENTE' ---
             actionButtonContainer.innerHTML = ''; // Limpiar por si acaso
             
             if (currentGameIndex + 1 < gameData.length && timeLeft > 0) {
@@ -572,11 +565,7 @@
             
             let finalPercentage = 0;
             if (gameData.length > 0) {
-                // Calcular porcentaje basado en las preguntas respondidas si se acaba el tiempo
-                let questionsAttempted = timeExpired ? currentGameIndex : gameData.length;
-                if (questionsAttempted === 0) questionsAttempted = 1; // Evitar dividir por cero
-                
-                // Ajuste: El puntaje final es sobre el TOTAL de preguntas
+                // Calcular porcentaje basado en el TOTAL de preguntas
                 finalPercentage = Math.round((score / gameData.length) * 100);
             }
             
@@ -677,21 +666,21 @@
                 if (!document.fullscreenElement) {
                     if (doc.requestFullscreen) {
                         await doc.requestFullscreen();
-                    } else if (doc.mozRequestFullScreen) { 
+                    } else if (doc.mozRequestFullScreen) { /* Firefox */
                         await doc.mozRequestFullScreen();
-                    } else if (doc.webkitRequestFullscreen) { 
+                    } else if (doc.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
                         await doc.webkitRequestFullscreen();
-                    } else if (doc.msRequestFullscreen) { 
+                    } else if (doc.msRequestFullscreen) { /* IE/Edge */
                         await doc.msRequestFullscreen();
                     }
                 } else {
                     if (document.exitFullscreen) {
                         await document.exitFullscreen();
-                    } else if (document.mozCancelFullScreen) { 
+                    } else if (document.mozCancelFullScreen) { /* Firefox */
                         await document.mozCancelFullScreen();
-                    } else if (document.webkitExitFullscreen) { 
+                    } else if (document.webkitExitFullscreen) { /* Chrome, Safari & Opera */
                         await document.webkitExitFullscreen();
-                    } else if (document.msExitFullscreen) { 
+                    } else if (document.msExitFullscreen) { /* IE/Edge */
                         await doc.msExitFullscreen();
                     }
                 }
@@ -706,6 +695,13 @@
             startButton.addEventListener('click', startGame);
             fullscreenButton.addEventListener('click', toggleFullScreen);
             restartButton.addEventListener('click', restartGame);
+            
+            // Añadir un fallback para las imágenes que no carguen
+            document.addEventListener('error', (e) => {
+                if (e.target.tagName === 'IMG') {
+                     e.target.src = 'https://placehold.co/600x400/1A2980/FFFFFF?text=Error+Cargando+Imagen';
+                }
+            }, true); // Usar captura de eventos para pillar todos los errores de imagen
         });
     </script>
 </body>

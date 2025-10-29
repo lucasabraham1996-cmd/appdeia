@@ -4,9 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌟 Desafío de IA y Ciencia de Datos 🚀</title>
-    <!-- 1. Cargar Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- 2. Cargar la fuente Inter --><link rel="preconnect" href="https://fonts.googleapis.com">
+
+<script src="https://cdn.tailwindcss.com"></script>
+    
+    
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     
@@ -23,6 +27,7 @@
             align-items: center;
             justify-content: center;
             padding: 1rem;
+            overflow: hidden; /* Evitar scrollbars por animaciones */
         }
 
         /* Keyframes para la animación del fondo */
@@ -58,46 +63,134 @@
             /* Texto oscuro para mejor contraste sobre fondo glaseado */
             color: #1A2980; 
         }
-        .choice-button:hover {
+        .choice-button:hover:not(:disabled) { /* No aplicar hover si está deshabilitado */
             transform: translateY(-2px);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
-        .choice-button.selected {
-            border-color: #4f46e5; /* Color morado */
-            background-color: #eef2ff; /* Fondo más claro para seleccionado */
-            color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.3);
+        
+        /* --- NUEVOS ESTILOS PARA FEEDBACK ANIMADO --- */
+        #feedback-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none; /* Permite hacer clic a través de él */
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 20px;
+            opacity: 1;
+        }
+
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(110vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .feedback-cross {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            font-size: 20rem; /* Cruz gigante */
+            line-height: 1;
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.5);
+            animation: cross-fade 1.5s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+        }
+
+        @keyframes cross-fade {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        /* --- ESTILOS DE INICIO / OCULTO --- */
+        #game-content, #feedback-area, #controls, #timer-container, #fullscreen-button {
+            display: none; /* Oculto al inicio */
+        }
+        #intro-screen {
+            display: block; /* Visible al inicio */
         }
     </style>
 </head>
 <body>
+    
+
+<div id="feedback-overlay"></div>
 
     <div class="w-full max-w-3xl">
         <div id="game-container" class="transition-all duration-300">
             
-            <!-- Encabezado --><header class="text-center mb-8 relative">
-                <!-- BOTÓN FULLSCREEN AÑADIDO --><button id="fullscreen-button" title="Jugar en Pantalla Completa" class="absolute top-0 right-0 p-2 text-white hover:text-blue-200 transition-colors">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1v4m0 0h-4m4-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 0h-4m4 4l-5-5"></path></svg>
-                </button>
-                <!-- FIN BOTÓN FULLSCREEN --><h1 class="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
+            
+
+<header class="text-center mb-8 relative">
+                
+                
+
+<div class="flex justify-center mb-4">
+                    <button id="fullscreen-button" title="Jugar en Pantalla Completa" class="p-2 text-white hover:text-blue-200 transition-colors bg-white/20 backdrop-blur-sm rounded-lg shadow-lg">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1v4m0 0h-4m4-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 0h-4m4 4l-5-5"></path></svg>
+                    </button>
+                </div>
+
+                
+
+<h1 class="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
                     🌟 Desafío <span class="text-blue-300">IA & Datos</span> 🚀
                 </h1>
                 <p class="text-xl text-blue-100 mt-2">
                     Pon a prueba tu intuición y conocimiento
                 </p>
+
+                
+
+<div class="flex justify-center mt-4">
+                    <div id="timer-container" class="p-2 text-white font-semibold flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-lg shadow-lg">
+                        ⏱️ <span id="timer">03:00</span>
+                    </div>
+                </div>
             </header>
 
-            <!-- Área de contenido del juego (dinámica) --><main id="game-content" class="mb-8 min-h-[250px] sm:min-h-[200px] flex flex-col justify-center">
-                <!-- El contenido del juego se inyectará aquí --></main>
+            
 
-            <!-- Área de retroalimentación (dinámica) --><div id="feedback-area" class="mb-8">
-                <!-- La retroalimentación (correcto/incorrecto) irá aquí --></div>
+<main id="game-content" class="mb-8 min-h-[250px] sm:min-h-[200px] flex flex-col justify-center">
+                
 
-            <!-- Controles --><footer id="controls" class="flex flex-col sm:flex-row justify-between items-center gap-4">
+</main>
+
+            
+
+<div id="intro-screen" class="text-center">
+                <h2 class="text-3xl font-bold text-white mb-4">¿Listo para el desafío?</h2>
+                <p class="text-xl text-blue-100 mb-8">Tienes <span class="font-bold text-blue-300">3 minutos</span> para responder 13 preguntas.</p>
+                <button id="start-button" class="w-full sm:w-auto bg-green-500 text-white font-bold py-4 px-10 rounded-xl hover:bg-green-600 transition-all text-xl shadow-lg transform hover:scale-105">
+                    ¡Comenzar a Jugar!
+                </button>
+            </div>
+
+            
+
+<div id="feedback-area" class="mb-8">
+                
+
+</div>
+
+            
+
+<footer id="controls" class="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <button id="restart-button" class="w-full sm:w-auto bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl hover:bg-blue-800 transition-all text-lg">
                     🔄 Reiniciar Juego
                 </button>
-                <!-- El botón de "Comprobar" o "Siguiente" se añadirá aquí dinámicamente --><div id="action-button-container" class="w-full sm:w-auto"></div>
+                
+
+<div id="action-button-container" class="w-full sm:w-auto"></div>
             </footer>
             
         </div>
@@ -117,7 +210,6 @@
             // --- Nivel 1: Predice el Futuro (AHORA TIPO 'NETWORK' CON OPCIONES) ---
             {
                 type: 'network', 
-                title: '📊 Predice el Futuro (1/5)',
                 question: 'Un gamer jugó 🎮 <strong>10, 20, y 40</strong> minutos en los últimos 3 días. ¿Cuántos minutos crees que jugará mañana?',
                 options: ['80', '60', '70', '50'], 
                 answer: '70',
@@ -125,7 +217,6 @@
             },
             {
                 type: 'network', 
-                title: '📊 Predice el Futuro (2/5)',
                 question: 'Una app tuvo 🧘‍♀️ <strong>500, 600, 800, y 1100</strong> descargas. ¿Cuántas tendrá en la siguiente medición?',
                 options: ['1400', '1500', '1600', '1200'], 
                 answer: '1500',
@@ -133,7 +224,6 @@
             },
             {
                 type: 'network', 
-                title: '📊 Predice el Futuro (3/5)',
                 question: 'Un blog tuvo 📈 <strong>1000, 950, 900, y 850</strong> visitas. Pero justo ayer, un artículo se hizo viral y saltó a 5000 visitas. Si quisieras predecir un día "normal" (sin el evento viral), ¿cuántas visitas esperarías?',
                 options: ['5000', '800', '750', '4000'], 
                 answer: '800',
@@ -143,62 +233,57 @@
             // --- Nivel 2: IA o Humano (Ahora 5 preguntas) ---
             {
                 type: 'ai-human',
-                title: '🎮 IA o Humano (1/5)',
+                question: 'Este mensaje de texto, con sus errores y su estilo casual... ¿es de una IA o de un humano?',
                 content: {
                     type: 'text',
                     text: 'Fui a la tienda pero se me olvidó la lista, obvio. Traje pan, leche... y creo que lo más importante no. Jajaja. Mañana será otro día.'
                 },
-                question: 'Este mensaje de texto, con sus errores y su estilo casual... ¿es de una IA o de un humano?',
                 answer: 'humano',
                 explanation: '¡Correcto! Es 100% humano. El "obvio", el "jajaja" y la estructura de pensamiento (olvidar la lista) son patrones muy típicos de la comunicación humana informal, algo que a las IAs les cuesta replicar con naturalidad.'
             },
             {
                 type: 'ai-human',
-                title: '🎮 IA o Humano (2/5)',
+                question: 'Este análisis financiero, tan formal y técnico... ¿fue escrito por una IA o por un analista humano experto?',
                 content: {
                     type: 'text',
                     text: 'El análisis de sentimiento del mercado indica una volatilidad alcista, correlacionada con los patrones de inversión en derivados de tecnología emergente. Se recomienda una estrategia de diversificación de portafolio para mitigar el riesgo.'
                 },
-                question: 'Este análisis financiero, tan formal y técnico... ¿fue escrito por una IA o por un analista humano experto?',
                 answer: 'ia',
                 explanation: '¡Es de una IA! Este es un truco. Aunque un humano PODRÍA escribir esto, las IAs son *extremadamente* buenas generando texto técnico, formal y lleno de jerga. A menudo lo hacen de forma más densa y rápida que un humano.'
             },
             // --- NUEVA PREGUNTA DEL PAPA ---
             {
                 type: 'ai-human',
-                title: '🎮 IA o Humano (3/5)',
+                question: 'Esta famosa imagen del Papa con una campera de plumas blanca, ¿es real o fue hecha con IA?',
                 content: {
                     type: 'image',
                     src: 'https://piktochart.com/wp-content/uploads/2023/11/pope-wearing-balenciaga-jacket-viral-ai-images.jpeg',
                     alt: 'El Papa Francisco usando una llamativa campera blanca de plumas.'
                 },
-                question: 'Esta famosa imagen del Papa con una campera de plumas blanca, ¿es real o fue hecha con IA?',
                 answer: 'ia',
                 explanation: '¡Correcto! Es de IA. Esta fue una de las imágenes generadas por IA más famosas (creada con Midjourney). Engañó a millones. La IA es increíblemente buena creando imágenes fotorrealistas de eventos que nunca ocurrieron.'
             },
             // --- NUEVA PREGUNTA DE MESSI Y MARADONA ---
             {
                 type: 'ai-human',
-                title: '🎮 IA o Humano (4/5)',
+                question: 'Una foto de dos leyendas del fútbol. ¿Es una imagen real o fue generada por IA?',
                 content: {
                     type: 'image',
-                    src: 'https://e00-marca.uecdn.es/assets/multimedia/imagenes/2022/12/21/16716075487739.jpg',
+                    src: 'https://media.ambito.com/p/439378d5634b839a9b9d26f52dda7a05/adjuntos/239/imagenes/042/744/0042744007/1200x675/smart/messi-diego.jpeg',
                     alt: 'Lionel Messi y Diego Maradona abrazándose en el campo de juego.'
                 },
-                question: 'Una foto de dos leyendas del fútbol. ¿Es una imagen real o fue generada por IA?',
                 answer: 'humano',
                 explanation: '¡Exacto! Esta imagen es 100% real y captura un momento icónico entre dos de los más grandes futbolistas de la historia. Las IAs a veces tienen problemas con manos o fondos, pero aquí todo luce auténtico.'
             },
             // --- NUEVA PREGUNTA PERRO Y GATO ABRAZADOS ---
             {
                 type: 'ai-human',
-                title: '🎮 IA o Humano (5/5)',
+                question: 'Una escena de amistad animal. ¿Es una foto real o fue hecha con IA?',
                 content: {
                     type: 'image',
                     src: 'https://us.123rf.com/450wm/perfectlab/perfectlab2304/perfectlab230400170/202429290-pets-cat-and-dog-hugging-together-outdoor-animal-friendship-in-the-family-generative-ai.jpg',
                     alt: 'Un perro y un gato abrazándose tiernamente al aire libre.'
                 },
-                question: 'Una escena de amistad animal. ¿Es una foto real o fue hecha con IA?',
                 answer: 'ia',
                 explanation: '¡Bien observado! Aunque es una imagen adorable, la perfección de la escena y ciertos detalles en el pelaje o la perspectiva suelen delatar que fue generada por una IA, que crea situaciones "ideales".'
             },
@@ -206,7 +291,6 @@
             // --- Nivel 3: Arma tu Red Neuronal (Sin cambios) ---
             {
                 type: 'network',
-                title: '🧩 Arma tu Red Neuronal (1/3)',
                 question: 'Es la 🥇 PRIMERA capa de la red. Recibe los datos crudos (ej: los píxeles de una foto 🖼️, o las palabras de una frase 💬). ¿Cómo se llama?',
                 options: ['Capa de Salida', 'Capa Oculta', 'Capa de Entrada'],
                 answer: 'Capa de Entrada',
@@ -214,7 +298,6 @@
             },
             {
                 type: 'network',
-                title: '🧩 Arma tu Red Neuronal (2/3)',
                 question: 'Es el 🧠 "cerebro" de la red. Aquí es donde ocurren los cálculos complejos y donde la red "aprende" a encontrar patrones. Puede haber muchas de estas capas, actuando como "filtros".',
                 options: ['Capa Oculta', 'Capa de Salida', 'Capa de Entrada'],
                 answer: 'Capa Oculta',
@@ -222,7 +305,6 @@
             },
             {
                 type: 'network',
-                title: '🧩 Arma tu Red Neuronal (3/3)',
                 question: 'Es la 🏆 ÚLTIMA capa de la red. Da la respuesta final y concreta (Ej: "Es un gato 🐱", "Es spam 🗑️", "El precio será $150 💰"). ¡El resultado que esperábamos!',
                 options: ['Capa de Entrada', 'Capa Oculta', 'Capa de Salida'],
                 answer: 'Capa de Salida',
@@ -232,7 +314,6 @@
             // --- PREGUNTAS DE EMOJIS (AHORA TIPO 'NETWORK' CON OPCIONES) ---
             {
                 type: 'network', 
-                title: '📊 Predice el Futuro (4/5)',
                 question: 'Sigue la secuencia de emojis: 🧠 ➡️ 🧠💡 ➡️ 🧠💡📈. ¿Cuál es el siguiente set de emojis?',
                 options: ['🧠💡📈🤖', '🧠💡🤖', '🧠💡📈', '💡📈🤖'], 
                 answer: '🧠💡📈🤖',
@@ -240,7 +321,6 @@
             },
             {
                 type: 'network', 
-                title: '📊 Predice el Futuro (5/5)',
                 question: 'Patrón difícil: ☀️🌳 ➡️ 🌙🌱 ➡️ ☀️🌲 (un árbol más grande). ¿Qué sigue en la secuencia lógica?',
                 options: ['☀️🌿', '🌙🌲', '🌙🌿', '☀️🌱'], 
                 answer: '🌙🌿',
@@ -252,17 +332,37 @@
         let currentGameIndex = 0;
         let score = 0; 
         let selectedChoice = null; 
+        let timerInterval; // Para guardar la referencia del intervalo del cronómetro
+        const TIME_LIMIT_SECONDS = 180; // 3 minutos
+        let timeLeft = TIME_LIMIT_SECONDS;
+        let gameInProgress = false; // Flag para evitar doble clicks
 
         // Elementos del DOM
+        const gameContainer = document.getElementById('game-container');
         const gameContent = document.getElementById('game-content');
         const feedbackArea = document.getElementById('feedback-area');
         const actionButtonContainer = document.getElementById('action-button-container');
         const restartButton = document.getElementById('restart-button');
         const gameTitle = document.querySelector('#game-container h1');
         const gameSubtitle = document.querySelector('#game-container p');
+        const timerDisplay = document.getElementById('timer');
+        const feedbackOverlay = document.getElementById('feedback-overlay'); 
+        
+        // Elementos de la UI de inicio/juego
+        const introScreen = document.getElementById('intro-screen');
+        const startButton = document.getElementById('start-button');
+        const timerContainer = document.getElementById('timer-container');
+        const fullscreenButton = document.getElementById('fullscreen-button');
+        const controls = document.getElementById('controls');
+
 
         // Función para renderizar el juego actual
         function renderGame(index) {
+            // Si el tiempo se acabó, no renderizar más preguntas
+            if (timeLeft <= 0 || !gameInProgress) {
+                return;
+            }
+
             // Limpiar áreas
             gameContent.innerHTML = '';
             feedbackArea.innerHTML = '';
@@ -274,35 +374,10 @@
             void gameContent.offsetWidth; // Truco para reiniciar la animación
             gameContent.classList.add('fade-in');
 
-            // --- Pantalla de victoria ---
+            // --- Pantalla de victoria (si se terminan las preguntas antes del tiempo) ---
             if (index >= gameData.length) {
-                gameTitle.innerHTML = '🎉 ¡Juego Terminado! 🎉';
-                gameSubtitle.textContent = 'Este es tu puntaje final';
-
-                let finalPercentage = 0;
-                if (gameData.length > 0) {
-                    finalPercentage = Math.round((score / gameData.length) * 100);
-                }
-                
-                let congratsMessage = "¡Buen intento! Sigue practicando. 🧠";
-                if (finalPercentage >= 90) {
-                    congratsMessage = "¡Excelente! Eres un experto en IA. 🚀";
-                } else if (finalPercentage >= 60) {
-                    congratsMessage = "¡Muy bien! Tienes una gran intuición para los datos. 👍";
-                }
-
-                gameContent.innerHTML = `
-                    <div class="text-center">
-                        <div class="text-7xl font-extrabold text-white mb-4">${score} / ${gameData.length}</div>
-                        <div class="text-3xl font-bold text-blue-300 mb-3">${finalPercentage}% de aciertos</div>
-                        <p class="text-xl text-white mt-6 font-semibold">
-                            ${congratsMessage}
-                        </p>
-                        <p class="text-blue-100 mt-3 text-lg">
-                            ¡Presiona "Reiniciar" para mezclar las preguntas y jugar de nuevo!
-                        </p>
-                    </div>
-                `;
+                stopTimer();
+                showFinalScore(false); // Mostrar puntaje final porque se completó el juego
                 return;
             }
 
@@ -312,8 +387,8 @@
             gameTitle.innerHTML = '🌟 Desafío <span class="text-blue-300">IA & Datos</span> 🚀';
             gameSubtitle.textContent = 'Pon a prueba tu intuición y conocimiento';
 
-            // Cambiado el color del título de la pregunta para contraste con el glaseado
-            let contentHtml = `<h2 class="text-2xl font-bold text-blue-800 mb-6 text-center">${game.title}</h2>`;
+            // El título de la pregunta ahora incluye el número general de la pregunta
+            let contentHtml = `<h2 class="text-2xl font-bold text-blue-800 mb-6 text-center">(${index + 1}/${gameData.length}) ${game.question}</h2>`;
 
             // Renderizar según el tipo de juego
             switch (game.type) {
@@ -323,15 +398,14 @@
                         mediaHtml = `
                             <div class="mb-6 text-center">
                                 <img src="${game.content.src}" alt="${game.content.alt}" class="w-full max-w-md mx-auto rounded-lg shadow-md mb-3 border-4 border-white">
-                                <!-- Eliminada la descripción: <p class="text-sm text-blue-100 italic px-4"><span class="font-bold">Descripción:</span> "${game.content.prompt}"</p> --></div>
+                            </div>
                         `;
                     } else {
-                        // --- CAMBIO: AÑADIDO font-bold ---
                         mediaHtml = `<div class="bg-blue-100 p-5 rounded-xl border border-blue-300 text-blue-900 italic text-center text-lg mb-6 shadow-sm bg-opacity-70 font-bold">"${game.content.text}"</div>`;
                     }
                     contentHtml += `
                         ${mediaHtml}
-                        <!-- CAMBIO: text-white AÑADIDO --><p class="text-xl text-white mb-6 text-center font-semibold">${game.question}</p>
+                        <p class="text-xl text-white mb-6 text-center font-semibold">${game.question}</p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <button id="ai-button" class="choice-button bg-gradient-to-r from-purple-600 to-indigo-700 text-white p-4 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-indigo-800 transition-all shadow-lg" data-answer="ia">🤖 Hecho por IA</button>
                             <button id="human-button" class="choice-button bg-gradient-to-r from-green-600 to-teal-700 text-white p-4 rounded-xl font-bold text-lg hover:from-green-700 hover:to-teal-800 transition-all shadow-lg" data-answer="humano">👤 Hecho por Humano</button>
@@ -342,9 +416,9 @@
                     document.getElementById('human-button').addEventListener('click', () => handleChoice(game, 'humano'));
                     break;
 
-                case 'network': // <--- AHORA MANEJA AMBOS, RED NEURONAL Y PREDICCIÓN
+                case 'network': 
                     contentHtml += `
-                        <!-- CAMBIO: text-white AÑADIDO --><p class="text-xl text-white mb-6 text-center font-semibold">${game.question}</p>
+                        <p class="text-xl text-white mb-6 text-center font-semibold">${game.question}</p>
                         <div class="flex flex-col gap-4">
                             ${game.options.map((option, idx) => `
                                 <button id="option-${idx}" class="choice-button w-full text-left bg-blue-100 text-blue-900 p-4 rounded-xl font-semibold text-lg hover:bg-blue-200 border-2 border-transparent hover:border-blue-500 transition-all shadow-sm bg-opacity-70" data-answer="${option}">
@@ -366,61 +440,222 @@
         // Manejar la selección de botones en juegos de elección
         function handleChoice(game, choice) {
             selectedChoice = choice;
+            const isCorrect = choice.toLowerCase() === game.answer.toLowerCase();
+
             document.querySelectorAll('.choice-button').forEach(button => {
-                button.disabled = true; 
-                button.classList.remove('selected');
-                if (button.dataset.answer.toLowerCase() === choice.toLowerCase()) { 
-                    button.classList.add('selected');
+                button.disabled = true;
+                const buttonAnswer = button.dataset.answer.toLowerCase();
+
+                // 1. Limpiar todas las clases de hover, gradientes y fondos base
+                button.classList.remove('bg-gradient-to-r', 'from-purple-600', 'to-indigo-700', 'hover:from-purple-700', 'hover:to-indigo-800', 'from-green-600', 'to-teal-700', 'hover:from-green-700', 'hover:to-teal-800', 'bg-blue-100', 'hover:bg-blue-200', 'bg-opacity-70');
+                button.classList.add('text-white'); // Asegurar texto blanco para contraste
+
+                // 2. Aplicar color de feedback
+                if (buttonAnswer === choice.toLowerCase()) {
+                    // Este es el botón que el usuario clickeó
+                    if (isCorrect) {
+                        button.classList.add('bg-green-500'); // VERDE
+                    } else {
+                        button.classList.add('bg-red-500'); // ROJO
+                    }
+                } else if (!isCorrect && buttonAnswer === game.answer.toLowerCase()) {
+                    // Si el usuario se equivocó, este es el botón correcto
+                    button.classList.add('bg-green-500', 'opacity-60'); // VERDE (atenuado)
+                } else {
+                    // Botones no seleccionados y no correctos
+                    button.classList.add('bg-gray-400', 'opacity-50'); // GRIS
                 }
             });
-            checkAnswer(selectedChoice.toLowerCase() === game.answer.toLowerCase(), game.explanation); 
+
+            checkAnswer(isCorrect, game.explanation);
         }
 
-
-        // Crear botón de acción principal (Comprobar / Siguiente)
-        function createActionButton(text, onClick, isDisabled = false) {
-            actionButtonContainer.innerHTML = '';
-            const button = document.createElement('button');
-            button.textContent = text;
-            button.className = 'w-full sm:w-auto bg-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-blue-700 transition-all text-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed';
-            button.onclick = onClick;
-            button.disabled = isDisabled;
-            actionButtonContainer.appendChild(button);
-        }
-
-        // --- FUNCIÓN showFeedback ---
+        // --- FUNCIÓN showFeedback (AVANCE AUTOMÁTICO) ---
         function showFeedback(isCorrect, explanation) {
-            feedbackArea.innerHTML = '';
-            const feedbackDiv = document.createElement('div');
-            feedbackDiv.className = `p-5 rounded-xl fade-in text-lg shadow-md ${isCorrect ? 'bg-green-100 border border-green-400 text-green-800' : 'bg-red-100 border border-red-400 text-red-800'} bg-opacity-80`; /* Ajuste de color y opacidad */
+            feedbackOverlay.innerHTML = ''; // Limpiar animaciones anteriores
             
             if (isCorrect) {
                 score++; 
-                feedbackDiv.innerHTML = `
-                    <h3 class="font-bold text-xl flex items-center mb-2">
-                        <span class="mr-2">🎉</span> ¡Correcto! (+1 punto)
-                    </h3>
-                    <p>${explanation}</p>
+                createConfetti(); // <-- LANZAR CONFETI
+                feedbackArea.innerHTML = `
+                    <div class="p-5 rounded-xl fade-in text-lg shadow-md bg-green-100 border border-green-400 text-green-800 bg-opacity-80">
+                        <h3 class="font-bold text-xl flex items-center mb-2">
+                            <span class="mr-2">🎉</span> ¡Correcto! (+1 punto)
+                        </h3>
+                        <p>${explanation}</p>
+                    </div>
                 `;
             } else {
-                feedbackDiv.innerHTML = `
-                    <h3 class="font-bold text-xl flex items-center mb-2">
-                        <span class="mr-2">❌</span> ¡Incorrecto!
-                    </h3>
-                    <p>${explanation}</p>
+                showBigCross(); // <-- MOSTRAR CRUZ
+                feedbackArea.innerHTML = `
+                    <div class="p-5 rounded-xl fade-in text-lg shadow-md bg-red-100 border border-red-400 text-red-800 bg-opacity-80">
+                        <h3 class="font-bold text-xl flex items-center mb-2">
+                            <span class="mr-2">❌</span> ¡Incorrecto!
+                        </h3>
+                        <p>${explanation}</p>
+                    </div>
                 `;
             }
             
-            feedbackArea.appendChild(feedbackDiv);
-            createActionButton('Siguiente →', () => {
-                currentGameIndex++;
-                renderGame(currentGameIndex);
-            });
+            // --- AVANCE AUTOMÁTICO ---
+            actionButtonContainer.innerHTML = ''; // Limpiar botón "Siguiente"
+            
+            setTimeout(() => {
+                if (currentGameIndex + 1 < gameData.length && timeLeft > 0) {
+                    currentGameIndex++;
+                    renderGame(currentGameIndex);
+                } else if (timeLeft > 0) { // Se acabaron las preguntas y aún hay tiempo
+                    stopTimer();
+                    showFinalScore(false);
+                }
+                // Si el tiempo se acabó, showFinalScore ya fue llamado por el cronómetro
+            }, 2500); // 2.5 segundos para leer la explicación
         }
         
         // Comprobar respuesta de elección (IA/Humano, Red Neuronal, Predicción)
         function checkAnswer(isCorrect, explanation) {
             showFeedback(isCorrect, explanation);
+        }
+
+        // --- FUNCIONES DEL CRONÓMETRO ---
+        function startTimer() {
+            clearInterval(timerInterval); // Limpiar cualquier intervalo anterior
+            timeLeft = TIME_LIMIT_SECONDS; // Resetear tiempo
+            gameInProgress = true;
+            updateTimerDisplay(); // Actualizar display inmediatamente
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+                if (timeLeft <= 0) {
+                    stopTimer();
+                    showFinalScore(true); // Mostrar puntaje final al terminar el tiempo
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+            gameInProgress = false;
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            if (timeLeft <= 30 && timeLeft > 0) { // Menos de 30 segundos, ponerlo en rojo
+                timerDisplay.classList.add('text-red-400', 'font-bold');
+            } else {
+                timerDisplay.classList.remove('text-red-400', 'font-bold');
+            }
+        }
+
+        // --- FUNCIÓN PARA MOSTRAR LA PANTALLA FINAL ---
+        function showFinalScore(timeExpired) {
+            stopTimer(); // Asegurarse de que el timer esté detenido
+            gameTitle.innerHTML = timeExpired ? '⏰ ¡Tiempo Terminado! ⏰' : '🎉 ¡Juego Terminado! 🎉';
+            gameSubtitle.textContent = 'Este es tu puntaje final';
+            feedbackOverlay.innerHTML = ''; // Limpiar cualquier animación
+            gameContent.innerHTML = ''; // Limpiar contenido del juego
+            
+            let finalPercentage = 0;
+            if (gameData.length > 0) {
+                // Calcular porcentaje basado en las preguntas respondidas si se acaba el tiempo
+                let questionsAttempted = timeExpired ? currentGameIndex : gameData.length;
+                if (questionsAttempted === 0) questionsAttempted = 1; // Evitar dividir por cero
+                
+                // Ajuste: El puntaje final es sobre el TOTAL de preguntas
+                finalPercentage = Math.round((score / gameData.length) * 100);
+            }
+            
+            let congratsMessage = "¡Buen intento! Sigue practicando. 🧠";
+            if (finalPercentage >= 90) {
+                congratsMessage = "¡Excelente! Eres un experto en IA. 🚀";
+            } else if (finalPercentage >= 60) {
+                congratsMessage = "¡Muy bien! Tienes una gran intuición para los datos. 👍";
+            }
+
+            gameContent.innerHTML = `
+                <div class="text-center fade-in">
+                    <div class="text-7xl font-extrabold text-white mb-4">${score} / ${gameData.length}</div>
+                    <div class="text-3xl font-bold text-blue-300 mb-3">${finalPercentage}% de aciertos</div>
+                    <p class="text-xl text-white mt-6 font-semibold">
+                        ${congratsMessage}
+                    </p>
+                    <p class="text-blue-100 mt-3 text-lg">
+                        ¡Presiona "Reiniciar" para mezclar las preguntas y jugar de nuevo!
+                    </p>
+                </div>
+            `;
+            // Limpiar área de feedback y botón de acción
+            feedbackArea.innerHTML = '';
+            actionButtonContainer.innerHTML = '';
+        }
+
+        // --- LÓGICA DE INICIO Y REINICIO ---
+        function startGame() {
+            // Ocultar intro
+            introScreen.style.display = 'none';
+            // Mostrar elementos del juego
+            gameContent.style.display = 'flex';
+            controls.style.display = 'flex';
+            timerContainer.style.display = 'flex';
+            fullscreenButton.style.display = 'block';
+
+            // Resetear estado
+            currentGameIndex = 0;
+            score = 0;
+            feedbackOverlay.innerHTML = ''; 
+            shuffleArray(gameData); 
+            startTimer(); // <-- EL CRONÓMETRO EMPIEZA AQUÍ
+            renderGame(currentGameIndex);
+        }
+
+        function restartGame() {
+            stopTimer();
+            // Ocultar elementos del juego
+            gameContent.style.display = 'none';
+            controls.style.display = 'none';
+            timerContainer.style.display = 'none';
+            fullscreenButton.style.display = 'none';
+            feedbackArea.innerHTML = '';
+            
+            // Mostrar intro
+            introScreen.style.display = 'block';
+
+            // Resetear visualmente el timer
+            timerDisplay.textContent = '03:00';
+            timerDisplay.classList.remove('text-red-400', 'font-bold');
+        }
+        
+        // --- FUNCIONES DE ANIMACIÓN DE FEEDBACK ---
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                const colors = ['#26D0CE', '#1A2980', '#4f46e5', '#a78bfa'];
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.left = (Math.random() * 110) - 5 + 'vw'; 
+                piece.style.top = (Math.random() * -150) + 'px'; 
+                piece.style.animation = `confetti-fall ${Math.random() * 2 + 3}s linear ${Math.random() * 1}s forwards`;
+                piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+                
+                setTimeout(() => {
+                    piece.remove();
+                }, 5000); 
+                feedbackOverlay.appendChild(piece);
+            }
+        }
+
+        function showBigCross() {
+            const cross = document.createElement('div');
+            cross.innerHTML = '❌';
+            cross.className = 'feedback-cross';
+            feedbackOverlay.appendChild(cross);
+            
+            setTimeout(() => {
+                cross.remove();
+            }, 1500); // Coincide con la duración de la animación
         }
         
         // --- FUNCIÓN FULLSCREEN (MODIFICADA CON TRY...CATCH) ---
@@ -454,19 +689,11 @@
         }
 
         // --- Inicialización ---
-        restartButton.addEventListener('click', () => {
-            currentGameIndex = 0;
-            score = 0; 
-            shuffleArray(gameData); 
-            renderGame(currentGameIndex);
-        });
-
-        // Cargar el primer juego al iniciar
         document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('fullscreen-button').addEventListener('click', toggleFullScreen);
-            
-            shuffleArray(gameData); 
-            renderGame(currentGameIndex);
+            // Asignar listeners a los botones principales
+            startButton.addEventListener('click', startGame);
+            fullscreenButton.addEventListener('click', toggleFullScreen);
+            restartButton.addEventListener('click', restartGame);
         });
     </script>
 </body>

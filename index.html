@@ -515,6 +515,10 @@
                 showFinalScore(false);
             }
             // Si el tiempo se acabó, showFinalScore ya fue llamado por el cronómetro
+
+            // --- ¡MODIFICACIÓN! ---
+            // Asegura que el usuario vea el feedback haciendo scroll automático
+            feedbackArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
         
         // Comprobar respuesta de elección (IA/Humano, Red Neuronal, Predicción)

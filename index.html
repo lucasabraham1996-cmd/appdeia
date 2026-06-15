@@ -1,725 +1,571 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🌟 Desafío de IA y Ciencia de Datos 🚀</title>
-    
-    <!-- Carga de Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Carga de Fuentes de Google -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    
-    <style>
-        /* Aplicar la fuente base y estilos de fondo */
-        body {
-            font-family: 'Inter', sans-serif;
-            /* Degradado de fondo dinámico */
-            background: linear-gradient(135deg, #1A2980 0%, #26D0CE 100%); /* Azul oscuro a cian */
-            background-size: 400% 400%; /* Permite la animación del degradado */
-            animation: backgroundAnimation 15s ease infinite alternate; /* Animación */
-            
-            /* --- MODIFICACIONES PARA SCROLL EN MÓVIL --- */
-            background-attachment: fixed; /* 1. Fija el fondo para que no se desplace con el contenido */
-            min-height: 100vh;
-            display: flex;
-            align-items: flex-start; /* 2. Alinea la tarjeta al inicio (arriba) en lugar de centrarla */
-            justify-content: center;
-            padding: 2rem 1rem; /* 3. Añade padding vertical para que no pegue al borde */
-            /* overflow: hidden; <-- 4. ELIMINADO para permitir scroll si el contenido es muy alto */
-        }
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Jugá con Cervantes</title>
+<style>
+:root{
+  --red:#c9252d; --dark:#07111f; --muted:#d9e2f2; --glass:rgba(255,255,255,.12); --stroke:rgba(255,255,255,.22);
+  --green:#00a86b; --green2:#0ddf92; --blue:#0877ff; --blue2:#00c2ff; --white:#fff;
+  --shadow:0 24px 80px rgba(0,0,0,.32); --radius:28px;
+}
+*{box-sizing:border-box} html,body{height:100%; margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; color:#fff; background:#07111f; overflow:hidden}
+body:before{content:"";position:fixed;inset:-20%;background:radial-gradient(circle at 20% 10%,rgba(201,37,45,.55),transparent 26%),radial-gradient(circle at 82% 22%,rgba(8,119,255,.55),transparent 26%),radial-gradient(circle at 55% 88%,rgba(0,168,107,.45),transparent 26%),linear-gradient(135deg,#07111f,#111827 45%,#0b1220);filter:saturate(1.15);z-index:-2}
+body:after{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:42px 42px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.85),rgba(0,0,0,.2));z-index:-1}
+button,input,select,textarea{font:inherit} button{cursor:pointer;border:0;color:#fff}
+.app{height:100%; display:flex; flex-direction:column; padding:18px; gap:14px}
+.topbar{height:92px; display:flex;align-items:center;justify-content:space-between; padding:0 28px; border:1px solid rgba(255,255,255,.16); background:linear-gradient(135deg,rgba(8,119,255,.92),rgba(0,57,154,.88)); backdrop-filter:blur(20px); border-radius:30px; box-shadow:0 22px 60px rgba(1,34,89,.38)}
+.brand{display:flex;align-items:center;gap:18px;min-width:0}.brand img{height:54px;max-width:240px;object-fit:contain;background:transparent;padding:0;border-radius:0;filter:drop-shadow(0 10px 18px rgba(0,0,0,.18))}.brand h1{font-size:28px;margin:0;line-height:1.02;letter-spacing:-.03em;font-weight:900}.brand span{display:block;font-size:13px;color:#d8e4ff;margin-top:4px;opacity:.95}.pill{display:flex;align-items:center;gap:10px;padding:11px 16px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.12);backdrop-filter:blur(10px);border-radius:999px;color:#f2f7ff;font-size:13px;box-shadow:inset 0 1px rgba(255,255,255,.18)}.main{flex:1;min-height:0;border:1px solid var(--stroke);background:rgba(255,255,255,.09);backdrop-filter:blur(22px);border-radius:32px;box-shadow:var(--shadow);overflow:hidden;position:relative}.screen{display:none;height:100%;overflow:auto;padding:26px}.screen.active{display:block}.hero{height:100%;display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:stretch}.welcome{padding:34px;border-radius:30px;background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.06));border:1px solid var(--stroke);display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;position:relative}.welcome:after{content:"C";position:absolute;right:-30px;bottom:-70px;font-size:310px;font-weight:900;color:rgba(255,255,255,.06);line-height:.8}.kicker{font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#bcd2ff;font-weight:800}.welcome h2{font-size:58px;line-height:.92;margin:14px 0 12px;letter-spacing:-.05em}.welcome p{font-size:18px;line-height:1.45;color:#e2ebff;max-width:620px}.choiceGrid{display:grid;grid-template-rows:1fr 1fr;gap:18px}.areaCard{position:relative;border-radius:30px;padding:28px;border:1px solid var(--stroke);overflow:hidden;box-shadow:0 20px 55px rgba(0,0,0,.25);display:flex;flex-direction:column;justify-content:space-between;min-height:250px}.areaCard.green{background:linear-gradient(135deg,rgba(0,168,107,.92),rgba(0,70,50,.78))}.areaCard.blue{background:linear-gradient(135deg,rgba(8,119,255,.94),rgba(0,37,95,.78))}.areaCard:after{content:"";position:absolute;right:-55px;top:-70px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,.14)}.areaCard h3{font-size:38px;margin:0;letter-spacing:-.04em}.areaCard p{color:rgba(255,255,255,.86);font-size:16px;max-width:430px}.modernBtn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 18px;border-radius:18px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.24);box-shadow:inset 0 1px rgba(255,255,255,.25),0 12px 30px rgba(0,0,0,.18);font-weight:800;letter-spacing:.01em;transition:.15s transform,.15s background}.modernBtn:hover{transform:translateY(-2px);background:rgba(255,255,255,.25)}.modernBtn.primary{background:linear-gradient(135deg,var(--red),#ff5160)}.modernBtn.green{background:linear-gradient(135deg,var(--green),var(--green2));color:#04251a}.modernBtn.blue{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#03162d}.ghost{background:rgba(255,255,255,.09)}.headerRow{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:18px}.titleBlock h2{font-size:38px;margin:0;letter-spacing:-.045em}.titleBlock p{margin:6px 0 0;color:#dce8ff}.gameGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.gameCard{min-height:260px;border:1px solid var(--stroke);background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.06));border-radius:28px;padding:24px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between}.gameCard .emoji{font-size:44px}.gameCard h3{font-size:25px;margin:12px 0 8px}.gameCard p{color:#d7e4ff;line-height:1.35;margin:0}.tag{display:inline-flex;width:max-content;padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid var(--stroke);font-size:12px;color:#e6efff}.panel{border:1px solid var(--stroke);background:rgba(255,255,255,.1);border-radius:28px;padding:20px}.twoCol{display:grid;grid-template-columns:430px 1fr;gap:18px}.threeCol{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.field{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}.field label{font-size:13px;color:#cfe0ff;font-weight:800}.field input,.field textarea,.field select{width:100%;border:1px solid rgba(255,255,255,.22);background:rgba(4,12,28,.58);color:#fff;border-radius:15px;padding:12px;outline:none}.field textarea{min-height:80px;resize:vertical}.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{border-radius:999px;padding:8px 10px;background:rgba(255,255,255,.12);border:1px solid var(--stroke);font-size:12px}.companyCapture{background:linear-gradient(135deg,rgba(255,255,255,.98),rgba(235,244,255,.95));color:#0b1324;border-radius:24px;padding:22px;min-height:520px}.captureTop{display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid #e5eaf4;padding-bottom:12px;margin-bottom:16px}.captureTop img{height:44px;object-fit:contain}.captureTop b{color:#c9252d}.companyName{font-size:40px;line-height:.95;margin:8px 0;font-weight:950;letter-spacing:-.05em}.slogan{font-size:18px;color:#44546a}.bizRows{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.bizBox{border:1px solid #dbe4f2;border-radius:16px;padding:12px;background:#fff}.bizBox small{display:block;color:#68758a;text-transform:uppercase;font-size:10px;font-weight:900;letter-spacing:.08em}.bizBox strong{display:block;color:#0b1324;font-size:18px;margin-top:3px}.logoStage{display:flex;gap:14px;align-items:flex-start;margin-top:18px}.logoTools{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.toolBtn{color:#0b1324;background:#eef4ff;border:1px solid #dbe4f2;border-radius:12px;padding:10px;font-weight:800}.toolBtn.active{background:#c9252d;color:#fff}canvas.logoCanvas{background:#fff;border:2px dashed #cbd6e6;border-radius:18px;touch-action:none}.smallNote{font-size:12px;color:#aebee0;line-height:1.35}.pitchObject{display:grid;grid-template-columns:140px 1fr;gap:16px;align-items:center}.objectEmoji{font-size:82px;text-align:center;padding:20px;background:rgba(255,255,255,.12);border-radius:24px}.checkList{margin:12px 0 0;padding-left:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px}.checkList li{padding:10px;border:1px solid var(--stroke);border-radius:14px;background:rgba(255,255,255,.08)}.timer{font-size:68px;font-weight:950;letter-spacing:-.06em}.wheelWrap{display:grid;grid-template-columns:360px 1fr;gap:20px}.wheel{width:320px;height:320px;border-radius:50%;border:12px solid rgba(255,255,255,.22);background:conic-gradient(#0d8f61 0 36deg,#0f3e31 36deg 72deg,#19bb7d 72deg 108deg,#103d68 108deg 144deg,#109bdf 144deg 180deg,#c9252d 180deg 216deg,#67121c 216deg 252deg,#ff7b86 252deg 288deg,#f0b429 288deg 324deg,#6246ea 324deg 360deg);display:grid;place-items:center;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative}.wheel:after{content:"C";font-size:72px;font-weight:950;background:#fff;color:#c9252d;border-radius:50%;width:118px;height:118px;display:grid;place-items:center}.situationPhoto{min-height:170px;border-radius:22px;background-size:cover;background-position:center;position:relative;overflow:hidden;margin-bottom:14px}.situationPhoto:after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.72),transparent)}.option{display:block;width:100%;text-align:left;padding:14px;margin:8px 0;border-radius:16px;background:rgba(255,255,255,.1);border:1px solid var(--stroke);color:#fff}.option.correct{outline:3px solid #34d399}.option.wrong{outline:3px solid #fb7185}.scoreBig{font-size:58px;font-weight:950}.puzzle{display:grid;grid-template-columns:1fr 1fr;gap:18px}.sortable,.dropzone{min-height:420px;border:1px dashed rgba(255,255,255,.3);border-radius:22px;padding:14px;background:rgba(255,255,255,.07)}.piece{padding:14px;border-radius:16px;background:linear-gradient(135deg,rgba(8,119,255,.45),rgba(0,194,255,.22));border:1px solid rgba(255,255,255,.24);margin:10px 0;font-weight:850;touch-action:none}.logicGrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.questionCard{padding:18px;border-radius:22px;background:rgba(255,255,255,.08);border:1px solid var(--stroke)}.questionCard h4{margin:0 0 10px;font-size:18px}.aiGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.aiCard{border:1px solid var(--stroke);background:rgba(255,255,255,.08);border-radius:22px;overflow:hidden}.aiCard img{width:100%;height:170px;object-fit:cover;display:block;background:#0b1324}.aiCard .content{padding:13px}.aiBtns{display:flex;gap:8px}.aiBtns button{flex:1;padding:10px;border-radius:12px;background:rgba(255,255,255,.12);border:1px solid var(--stroke)}.result{padding:12px;border-radius:16px;margin-top:10px;background:rgba(255,255,255,.1);border:1px solid var(--stroke)}.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:rgba(6,15,32,.9);border:1px solid var(--stroke);padding:13px 16px;border-radius:16px;box-shadow:var(--shadow);display:none;z-index:10}.toast.show{display:block}.modal{position:fixed;inset:0;background:rgba(0,0,0,.62);display:none;align-items:center;justify-content:center;padding:20px;z-index:9}.modal.show{display:flex}.modalBox{width:min(760px,96vw);max-height:88vh;overflow:auto;background:rgba(10,19,35,.96);border:1px solid var(--stroke);border-radius:28px;padding:22px;box-shadow:var(--shadow)}.modalBox h3{font-size:30px;margin:0 0 10px}.badgeScore{display:inline-flex;align-items:center;gap:8px;padding:10px 13px;background:rgba(255,255,255,.12);border:1px solid var(--stroke);border-radius:999px;font-weight:900}.footerActions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.hide{display:none!important}@media(max-width:980px){.hero{grid-template-columns:1fr}.welcome h2{font-size:42px}.gameGrid,.aiGrid,.logicGrid,.threeCol{grid-template-columns:1fr}.twoCol,.wheelWrap,.puzzle{grid-template-columns:1fr}body{overflow:auto}.app{height:auto;min-height:100%}.main{overflow:visible}.screen{overflow:visible}.topbar{height:auto}.brand h1{display:none}}
 
-        /* Keyframes para la animación del fondo */
-        @keyframes backgroundAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+/* ===== Cervantes premium v4 ===== */
+:root{
+  --premium-blue:#075fe8;
+  --premium-blue-2:#00b7ff;
+  --premium-green:#00bf7a;
+  --premium-green-2:#9cffd6;
+}
+body:before{
+  background:
+    radial-gradient(circle at 12% 4%,rgba(0,183,255,.48),transparent 28%),
+    radial-gradient(circle at 86% 12%,rgba(0,191,122,.22),transparent 30%),
+    radial-gradient(circle at 52% 94%,rgba(7,95,232,.48),transparent 34%),
+    linear-gradient(135deg,#03132e 0%,#071a3c 45%,#04101f 100%);
+}
+.app{padding:18px;gap:16px}
+.topbar{
+  min-height:96px;height:auto;border-radius:34px;
+  background:linear-gradient(135deg,rgba(7,95,232,.98),rgba(0,141,255,.92) 50%,rgba(0,62,168,.96));
+  position:relative;overflow:hidden;border:1px solid rgba(255,255,255,.16);
+  box-shadow:0 22px 60px rgba(1,34,89,.38);
+}
+.topbar:before{
+  content:"";position:absolute;inset:-80px auto auto 42%;width:420px;height:220px;
+  background:rgba(255,255,255,.18);filter:blur(38px);transform:rotate(-12deg);
+}
+.topbar:after{
+  content:"Educación en movimiento";position:absolute;right:24px;bottom:-14px;
+  font-size:54px;line-height:1;font-weight:950;letter-spacing:-.06em;
+  color:rgba(255,255,255,.08);white-space:nowrap;pointer-events:none;
+}
+.brand,.pill{position:relative;z-index:1}
+.brand img{
+  height:58px;max-width:252px;object-fit:contain;background:transparent!important;
+  padding:0!important;border-radius:0!important;
+  filter:brightness(0) invert(1) drop-shadow(0 14px 20px rgba(0,0,0,.18));
+}
+.brand h1{font-size:34px;letter-spacing:-.055em;font-weight:950}
+.brand span{font-size:14px}
+.pill{
+  background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.28);
+  font-weight:850;box-shadow:inset 0 1px rgba(255,255,255,.18);
+}
+.main{
+  border-radius:38px;
+  background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.06)),rgba(4,13,30,.58);
+  box-shadow:0 34px 110px rgba(0,0,0,.38);
+}
+.screen{padding:30px;animation:screenIn .28s ease both}
+@keyframes screenIn{from{opacity:0;transform:translateY(10px) scale(.995)}to{opacity:1;transform:translateY(0) scale(1)}}
+.welcome{
+  border-radius:36px;padding:38px;
+  background:linear-gradient(135deg,rgba(255,255,255,.18),rgba(255,255,255,.07)),radial-gradient(circle at 18% 16%,rgba(0,183,255,.18),transparent 35%);
+}
+.welcome:before{
+  content:"CONGRESO · STAND INTERACTIVO";position:absolute;left:34px;bottom:28px;
+  font-size:13px;letter-spacing:.16em;color:rgba(255,255,255,.42);font-weight:900;
+}
+.kicker{
+  display:inline-flex;width:max-content;padding:10px 13px;border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;background:rgba(255,255,255,.10);color:#dff3ff;
+}
+.welcome h2{font-size:64px;letter-spacing:-.065em;max-width:780px}
+.welcome p{font-size:19px;color:#eef6ff}
+.areaCard{
+  border-radius:36px;transform:translateZ(0);
+  transition:transform .18s ease,box-shadow .18s ease,filter .18s ease;isolation:isolate;
+}
+.areaCard:hover{transform:translateY(-4px) scale(1.006);box-shadow:0 30px 80px rgba(0,0,0,.34)}
+.areaCard:before{
+  content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,.18),transparent);
+  transform:translateX(-100%);transition:transform .7s ease;z-index:-1;
+}
+.areaCard:hover:before{transform:translateX(100%)}
+.areaCard.green{
+  background:radial-gradient(circle at 84% 18%,rgba(255,255,255,.2),transparent 25%),linear-gradient(135deg,#00bf7a,#04724e 62%,#053325);
+}
+.areaCard.blue{
+  background:radial-gradient(circle at 84% 18%,rgba(255,255,255,.22),transparent 25%),linear-gradient(135deg,#0877ff,#0048bd 62%,#061d52);
+}
+.areaCard h3{font-size:42px}
+.modernBtn{
+  border-radius:20px;padding:15px 20px;backdrop-filter:blur(12px);
+  box-shadow:inset 0 1px rgba(255,255,255,.30),0 16px 34px rgba(0,0,0,.20);
+}
+.modernBtn:active{transform:translateY(1px) scale(.99)}
+.gameCard,.panel,.modalBox,.companyCapture,.aiCard{border-radius:30px}
+.gameCard{
+  min-height:286px;background:linear-gradient(135deg,rgba(255,255,255,.18),rgba(255,255,255,.065));
+  transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
+}
+.gameCard:hover{transform:translateY(-5px);border-color:rgba(255,255,255,.34);box-shadow:0 24px 70px rgba(0,0,0,.28)}
+.gameCard .emoji{
+  width:68px;height:68px;display:grid;place-items:center;border-radius:22px;
+  background:rgba(255,255,255,.12);box-shadow:inset 0 1px rgba(255,255,255,.25);
+}
+.titleBlock h2{font-size:42px}
+.field input,.field textarea,.field select{border-radius:18px;background:rgba(3,14,36,.66)}
+.option,.piece,.checkList li{transition:transform .12s ease,background .12s ease}
+.option:hover,.piece:hover{transform:translateY(-2px);background:rgba(255,255,255,.16)}
+.captureTop img{background:transparent!important;padding:0!important;border-radius:0!important}
+.aiCard img{height:185px}
+.footerActions{gap:12px}
+@media(max-width:980px){
+  .topbar:after{font-size:34px;right:18px}
+  .brand h1{display:block;font-size:24px}
+  .brand span{font-size:12px}
+  .brand img{height:46px;max-width:190px}
+  .welcome h2{font-size:44px}
+}
 
-        /* Estilo para el contenedor principal - EFECTO GLASEADO */
-        #game-container {
-            background-color: rgba(255, 255, 255, 0.2); /* Fondo blanco translúcido */
-            backdrop-filter: blur(10px); /* Efecto de glaseado */
-            -webkit-backdrop-filter: blur(10px); /* Para compatibilidad con Safari */
-            border-radius: 1.5rem; /* Bordes más redondeados */
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
-            padding: 2.5rem;
-            transition: all 0.3s ease-in-out;
-            max-width: 48rem; /* Ancho máximo aumentado */
-            border: 1px solid rgba(255, 255, 255, 0.3); /* Borde sutil para el glaseado */
-        }
-        
-        /* Animación de entrada */
-        .fade-in {
-            animation: fadeIn 0.6s ease-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* Estilos de botones de elección */
-        .choice-button {
-            transition: all 0.2s ease-in-out;
-            /* Texto oscuro para mejor contraste sobre fondo glaseado */
-            color: #1A2980; 
-        }
-        .choice-button:hover:not(:disabled) { /* No aplicar hover si está deshabilitado */
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-        
-        /* --- ESTILOS PARA FEEDBACK ANIMADO --- */
-        #feedback-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none; /* Permite hacer clic a través de él */
-            z-index: 1000;
-            overflow: hidden;
-        }
 
-        .confetti-piece {
-            position: absolute;
-            width: 10px;
-            height: 20px;
-            opacity: 1;
-        }
+/* ===== Ajustes V5: Jugá con Cervantes ===== */
+.topbar .brand h1::after{content:" · Jugá con Cervantes";font-weight:850;opacity:.92}
+.spinPointer{width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-top:34px solid #fff;filter:drop-shadow(0 8px 10px rgba(0,0,0,.35));position:absolute;left:50%;top:-8px;transform:translateX(-50%);z-index:3}
+.realWheel{width:380px;height:380px;border-radius:50%;border:12px solid rgba(255,255,255,.28);box-shadow:0 28px 80px rgba(0,0,0,.38), inset 0 0 0 2px rgba(255,255,255,.12);position:relative;overflow:hidden;transition:transform 3.2s cubic-bezier(.12,.72,.12,1);background:conic-gradient(#00bf7a 0deg 36deg,#0877ff 36deg 72deg,#f59e0b 72deg 108deg,#ef4444 108deg 144deg,#8b5cf6 144deg 180deg,#14b8a6 180deg 216deg,#22c55e 216deg 252deg,#0ea5e9 252deg 288deg,#f97316 288deg 324deg,#d946ef 324deg 360deg)}
+.realWheel::after{content:"";position:absolute;inset:92px;background:rgba(5,14,32,.95);border-radius:50%;border:2px solid rgba(255,255,255,.28);box-shadow:inset 0 1px rgba(255,255,255,.22)}
+.wheelLabel{position:absolute;left:50%;top:50%;width:48%;height:28px;transform-origin:0 0;font-weight:950;font-size:12px;text-transform:uppercase;letter-spacing:.02em;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.45);z-index:2;display:flex;align-items:center;justify-content:flex-end;padding-right:18px}
+.wheelCenter{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:116px;height:116px;border-radius:50%;background:#fff;color:#075fe8;z-index:4;display:grid;place-items:center;text-align:center;font-weight:950;line-height:1.02;box-shadow:0 12px 32px rgba(0,0,0,.25)}
+.wheelList{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}.wheelList span{font-size:12px;padding:9px 10px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16)}
+.piece small,.chosenPiece small{display:block;font-weight:650;opacity:.78;margin-top:4px;line-height:1.25}
+.chosenPiece{position:relative;padding:14px 78px 14px 14px;border-radius:16px;background:linear-gradient(135deg,rgba(8,119,255,.45),rgba(0,194,255,.22));border:1px solid rgba(255,255,255,.24);margin:10px 0;font-weight:850}
+.moveBtns{position:absolute;right:8px;top:50%;transform:translateY(-50%);display:flex;gap:5px}.moveBtns button{width:30px;height:30px;border-radius:10px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.18)}
+.logicDifficulty{display:inline-flex;gap:6px;align-items:center;padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);font-size:12px;font-weight:900;margin-bottom:12px}
 
-        @keyframes confetti-fall {
-            to {
-                transform: translateY(110vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
 
-        .feedback-cross {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            font-size: 20rem; /* Cruz gigante */
-            line-height: 1;
-            opacity: 0;
-            transform: translate(-50%, -50%) scale(0.5);
-            animation: cross-fade 1.5s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
-        }
+/* ===== V6: navegación corregida + mobile/tablet compacto/táctil ===== */
+html,body{
+  width:100%;
+  min-height:100%;
+  overflow:auto;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+body{
+  overscroll-behavior:none;
+}
+.app{
+  height:100dvh;
+  min-height:100dvh;
+  padding:clamp(8px,1.6vw,18px);
+  gap:clamp(8px,1.4vw,16px);
+}
+.topbar{
+  min-height:clamp(64px,9dvh,94px);
+  padding:clamp(10px,1.8vw,24px);
+  border-radius:clamp(18px,3vw,34px);
+}
+.topbar:after{font-size:clamp(26px,5vw,54px)}
+.brand{gap:clamp(8px,1.4vw,18px)}
+.brand img{height:clamp(34px,6vw,58px);max-width:clamp(138px,26vw,252px)}
+.brand h1{font-size:clamp(18px,3.1vw,34px)}
+.brand h1::after{display:none!important}
+.brand span{font-size:clamp(10px,1.4vw,14px)}
+.pill{
+  min-height:44px;
+  padding:10px 13px;
+  white-space:nowrap;
+}
+.main{
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+  border-radius:clamp(20px,3.4vw,38px);
+}
+.screen{
+  height:100%;
+  overflow:auto;
+  padding:clamp(12px,2vw,30px);
+  -webkit-overflow-scrolling:touch;
+}
+.hero{
+  min-height:100%;
+  gap:clamp(10px,1.8vw,22px);
+}
+.welcome{
+  padding:clamp(18px,3vw,38px);
+  border-radius:clamp(20px,3vw,36px);
+}
+.welcome h2{
+  font-size:clamp(34px,6vw,64px);
+}
+.welcome p{
+  font-size:clamp(14px,1.8vw,19px);
+}
+.choiceGrid{
+  gap:clamp(10px,1.6vw,18px);
+}
+.areaCard{
+  min-height:clamp(172px,28dvh,250px);
+  padding:clamp(18px,2.4vw,28px);
+  border-radius:clamp(20px,3vw,36px);
+}
+.areaCard h3{font-size:clamp(28px,4vw,42px)}
+.areaCard p{font-size:clamp(13px,1.6vw,16px)}
+.gameGrid{
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:clamp(10px,1.5vw,18px);
+}
+.gameCard{
+  min-height:clamp(178px,28dvh,286px);
+  padding:clamp(15px,2vw,24px);
+}
+.gameCard h3{font-size:clamp(19px,2.2vw,25px)}
+.gameCard p{font-size:clamp(13px,1.45vw,16px)}
+.modernBtn,.option,.toolBtn,.aiBtns button,.moveBtns button{
+  min-height:44px;
+  touch-action:manipulation;
+}
+.twoCol{grid-template-columns:minmax(300px,430px) 1fr}
+.wheelWrap{grid-template-columns:minmax(280px,410px) 1fr}
+.realWheel{
+  width:min(360px,72vw);
+  height:min(360px,72vw);
+}
+.wheelWrap .panel:first-child > div[style]{
+  width:min(360px,72vw)!important;
+}
+.wheelCenter{
+  width:clamp(82px,20vw,116px);
+  height:clamp(82px,20vw,116px);
+  font-size:clamp(12px,2vw,16px);
+}
+.realWheel::after{inset:clamp(68px,17vw,92px)}
+.wheelLabel{font-size:clamp(9px,1.7vw,12px);padding-right:12px}
+.aiGrid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.aiCard img{height:clamp(120px,21dvh,185px)}
+.companyCapture{min-height:auto}
+.logoStage{flex-wrap:wrap}
+canvas.logoCanvas{
+  width:min(240px,70vw)!important;
+  height:min(240px,70vw)!important;
+}
+@media(max-width:900px){
+  .app{height:100dvh;min-height:100dvh}
+  .topbar{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:8px;
+  }
+  .brand span{display:none}
+  .hero{
+    grid-template-columns:1fr;
+  }
+  .choiceGrid{
+    grid-template-rows:auto auto;
+  }
+  .gameGrid,.aiGrid{
+    grid-template-columns:1fr;
+  }
+  .twoCol,.wheelWrap,.puzzle,.logicGrid,.threeCol{
+    grid-template-columns:1fr!important;
+  }
+  .screen{
+    padding:12px;
+  }
+  .headerRow{
+    align-items:flex-start;
+    flex-direction:column;
+  }
+  .headerRow .modernBtn{
+    width:100%;
+  }
+  .areaCard{
+    min-height:150px;
+  }
+  .gameCard{
+    min-height:155px;
+  }
+  .wheelList{
+    grid-template-columns:1fr;
+    max-height:150px;
+    overflow:auto;
+  }
+  .checkList{
+    grid-template-columns:1fr;
+  }
+  .captureTop{
+    gap:10px;
+  }
+  .companyName{
+    font-size:clamp(28px,8vw,40px);
+  }
+  .bizRows{
+    grid-template-columns:1fr;
+  }
+}
+@media(max-width:520px){
+  .topbar{
+    grid-template-columns:1fr;
+  }
+  .pill{
+    width:100%;
+    justify-content:center;
+  }
+  .brand img{max-width:170px}
+  .welcome:before{display:none}
+  .kicker{font-size:11px}
+  .main{border-radius:18px}
+  .screen{padding:10px}
+  .areaCard,.gameCard,.panel{border-radius:18px}
+  .modernBtn{width:100%;justify-content:center}
+  .footerActions{flex-direction:column}
+}
 
-        @keyframes cross-fade {
-            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
-            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
-            100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
-        }
-        
-        /* --- ESTILOS DE INICIO / OCULTO --- */
-        #game-content, #feedback-area, #controls, #timer-container, #fullscreen-button {
-            display: none; /* Oculto al inicio */
-        }
-        #intro-screen {
-            display: block; /* Visible al inicio */
-        }
-    </style>
+</style>
 </head>
 <body>
-    <!-- Capa para animaciones de feedback (confeti, etc.) -->
-    <div id="feedback-overlay"></div>
-
-    <!-- Contenedor principal del juego -->
-    <div class="w-full max-w-3xl">
-        <div id="game-container" class="transition-all duration-300">
-            
-            <!-- Encabezado con título y cronómetro -->
-            <header class="text-center mb-8 relative">
-                
-                <!-- Botón de Pantalla Completa -->
-                <div class="flex justify-center mb-4">
-                    <button id="fullscreen-button" title="Jugar en Pantalla Completa" class="p-2 text-white hover:text-blue-200 transition-colors bg-white/20 backdrop-blur-sm rounded-lg shadow-lg">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1v4m0 0h-4m4-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 0h-4m4 4l-5-5"></path></svg>
-                    </button>
-                </div>
-
-                <h1 class="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
-                    🌟 Desafío <span class="text-blue-300">IA & Datos</span> 🚀
-                </h1>
-                <p class="text-xl text-blue-100 mt-2">
-                    Pon a prueba tu intuición y conocimiento
-                </p>
-
-                <!-- Contenedor del Cronómetro -->
-                <div class="flex justify-center mt-4">
-                    <div id="timer-container" class="p-2 text-white font-semibold flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-lg shadow-lg">
-                        ⏱️ <span id="timer">03:00</span>
-                    </div>
-                </div>
-            </header>
-
-            <!-- Contenido principal del juego (preguntas, opciones) -->
-            <main id="game-content" class="mb-8 min-h-[250px] sm:min-h-[200px] flex flex-col justify-center">
-                <!-- El contenido de la pregunta se renderiza aquí -->
-            </main>
-
-            <!-- Pantalla de Introducción -->
-            <div id="intro-screen" class="text-center">
-                <h2 class="text-3xl font-bold text-white mb-4">¿Listo para el desafío?</h2>
-                <p class="text-xl text-blue-100 mb-8">Tienes <span class="font-bold text-blue-300">3 minutos</span> para responder 13 preguntas.</p>
-                <button id="start-button" class="w-full sm:w-auto bg-green-500 text-white font-bold py-4 px-10 rounded-xl hover:bg-green-600 transition-all text-xl shadow-lg transform hover:scale-105">
-                    ¡Comenzar a Jugar!
-                </button>
-            </div>
-
-            <!-- Área de Feedback (Correcto/Incorrecto) -->
-            <!-- MODIFICACIÓN: Este div ya no se usará para la explicación, pero lo dejamos por si acaso -->
-            <div id="feedback-area" class="mb-8">
-                <!-- El feedback se renderiza aquí -->
-            </div>
-
-            <!-- Controles (Reiniciar, Siguiente) -->
-            <footer id="controls" class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <button id="restart-button" class="w-full sm:w-auto bg-blue-700 text-white font-semibold py-3 px-6 rounded-xl hover:bg-blue-800 transition-all text-lg">
-                    🔄 Reiniciar Juego
-                </button>
-                
-                <!-- Contenedor para el botón de acción (Siguiente/Comprobar) -->
-                <div id="action-button-container" class="w-full sm:w-auto"></div>
-            </footer>
-            
+<div class="app">
+  <div class="topbar">
+    <div class="brand"><img src="https://i.ibb.co/4nqvFQGM/logo.png" onerror="this.style.display='none'" alt="Cervantes"><div><h1>Educación en movimiento</h1><span>Activaciones interactivas Cervantes · Empresariales y Tecnológicas</span></div></div>
+    <div class="pill">📱 Modo tablet · Tocá y jugá</div>
+  </div>
+  <main class="main">
+    <section id="home" class="screen active">
+      <div class="hero">
+        <div class="welcome">
+          <div><div class="kicker">Cervantes · educación que deja huella</div><h2>Elegí un área y empezá a jugar.</h2><p>Seis experiencias rápidas para descubrir carreras, competir, sumar puntos y llevarse una creación lista para compartir.</p></div>
+          <div class="footerActions"><button class="modernBtn primary" onclick="show('business')">🚀 Ver juegos</button><button class="modernBtn ghost" onclick="openModal('info')">ℹ️ Cómo usar en el stand</button></div>
         </div>
-    </div>
+        <div class="choiceGrid">
+          <div class="areaCard green"><div><span class="tag">Empresarial</span><h3>Carreras Empresariales</h3><p>Marca, ventas, decisiones y comunicación para resolver desafíos reales.</p></div><button class="modernBtn" onclick="show('business')">Ingresar al área →</button></div>
+          <div class="areaCard blue"><div><span class="tag">Tecnológico</span><h3>Carreras Tecnológicas</h3><p>Diseño de apps, lógica, errores, datos e inteligencia artificial.</p></div><button class="modernBtn" onclick="show('tech')">Ingresar al área →</button></div>
+        </div>
+      </div>
+    </section>
 
-    <script>
-        // --- FUNCIÓN PARA BARAJAR ---
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-        }
+    <section id="business" class="screen">
+      <div class="headerRow"><div class="titleBlock"><h2 style="color:#3df0aa">Carreras Empresariales</h2><p>Elegí una activación para jugar en el stand.</p></div><button class="modernBtn ghost" onclick="show('home')">← Inicio</button></div>
+      <div class="gameGrid">
+        <div class="gameCard"><div><div class="emoji">🏷️</div><h3>Armá tu marca</h3><p>Sorteá o completá producto, público, marca, slogan, precio y diseñá tu logo.</p></div><button class="modernBtn green" onclick="startBrand()">Jugar</button></div>
+        <div class="gameCard"><div><div class="emoji">🎤</div><h3>Vendeme esto</h3><p>Objeto aleatorio, requisitos obligatorios y 30 segundos para convencer.</p></div><button class="modernBtn green" onclick="startPitch()">Jugar</button></div>
+        <div class="gameCard"><div><div class="emoji">🎡</div><h3>Ruleta empresarial</h3><p>10 problemas con opciones más exigentes y puntaje por decisión.</p></div><button class="modernBtn green" onclick="startWheel()">Jugar</button></div>
+      </div>
+    </section>
 
-        // --- BASE DE DATOS DEL JUEGO ---
-        const gameData = [
-            // --- Nivel 1: Predice el Futuro (AHORA TIPO 'NETWORK' CON OPCIONES) ---
-            {
-                type: 'network', 
-                question: 'Un gamer jugó 🎮 <strong>10, 20, y 40</strong> minutos en los últimos 3 días. ¿Cuántos minutos crees que jugará mañana?',
-                options: ['80', '60', '70', '50'], 
-                answer: '70',
-                explanation: '¡Es una trampa! La respuesta obvia es 80 (duplicando). Pero un analista de datos también vería el patrón +10, +20, y luego <strong>+30</strong>. ¡Ambas son predicciones válidas, pero esta es más sutil! (Si elegiste 80, también es un patrón lógico).'
-            },
-            {
-                type: 'network', 
-                question: 'Una app tuvo 🧘‍♀️ <strong>500, 600, 800, y 1100</strong> descargas. ¿Cuántas tendrá en la siguiente medición?',
-                options: ['1400', '1500', '1600', '1200'], 
-                answer: '1500',
-                explanation: '¡Bien visto! El patrón no era constante. El aumento crecía: primero +100 (500 a 600), luego +200 (600 a 800), luego +300 (800 a 1100). El siguiente paso lógico es sumar <strong>+400</strong>, lo que da 1500.'
-            },
-            {
-                type: 'network', 
-                question: 'Un blog tuvo 📈 <strong>1000, 950, 900, y 850</strong> visitas. Pero justo ayer, un artículo se hizo viral y saltó a 5000 visitas. Si quisieras predecir un día "normal" (sin el evento viral), ¿cuántas visitas esperarías?',
-                options: ['5000', '800', '750', '4000'], 
-                answer: '800',
-                explanation: '¡Perfecto! Esto se llama <strong>limpieza de datos</strong>. El analista debe ignorar el "outlier" (valor atípico) de 5000 para encontrar la tendencia real, que era <strong>-50</strong> por día. La predicción normal era 800.'
-            },
+    <section id="tech" class="screen">
+      <div class="headerRow"><div class="titleBlock"><h2 style="color:#5ac8ff">Carreras Tecnológicas</h2><p>Desafíos para probar lógica, diseño, sistemas e IA.</p></div><button class="modernBtn ghost" onclick="show('home')">← Inicio</button></div>
+      <div class="gameGrid">
+        <div class="gameCard"><div><div class="emoji">🧩</div><h3>Puzzle de app</h3><p>Ordená las partes de una app. Si queda perfecta, sumás 100 pts.</p></div><button class="modernBtn blue" onclick="startPuzzle()">Jugar</button></div>
+        <div class="gameCard"><div><div class="emoji">🧠</div><h3>Desafío de lógica</h3><p>Más preguntas, patrones, algoritmos y detección de errores.</p></div><button class="modernBtn blue" onclick="startLogic()">Jugar</button></div>
+        <div class="gameCard"><div><div class="emoji">🤖</div><h3>IA vs Humano</h3><p>Observá imágenes y decidí si parecen reales/humanas o generadas con IA.</p></div><button class="modernBtn blue" onclick="startAI()">Jugar</button></div>
+      </div>
+    </section>
 
-            // --- Nivel 2: IA o Humano (Ahora 5 preguntas) ---
-            {
-                type: 'ai-human',
-                question: 'Este mensaje de texto, con sus errores y su estilo casual... ¿es de una IA o de un humano?',
-                content: {
-                    type: 'text',
-                    text: 'Fui a la tienda pero se me olvidó la lista, obvio. Traje pan, leche... y creo que lo más importante no. Jajaja. Mañana será otro día.'
-                },
-                answer: 'humano',
-                explanation: '¡Correcto! Es 100% humano. El "obvio", el "jajaja" y la estructura de pensamiento (olvidar la lista) son patrones muy típicos de la comunicación humana informal, algo que a las IAs les cuesta replicar con naturalidad.'
-            },
-            {
-                type: 'ai-human',
-                question: 'Este análisis financiero, tan formal y técnico... ¿fue escrito por una IA o por un analista humano experto?',
-                content: {
-                    type: 'text',
-                    text: 'El análisis de sentimiento del mercado indica una volatilidad alcista, correlacionada con los patrones de inversión en derivados de tecnología emergente. Se recomienda una estrategia de diversificación de portafolio para mitigar el riesgo.'
-                },
-                answer: 'ia',
-                explanation: '¡Es de una IA! Este es un truco. Aunque un humano PODRÍA escribir esto, las IAs son *extremadamente* buenas generando texto técnico, formal y lleno de jerga. A menudo lo hacen de forma más densa y rápida que un humano.'
-            },
-            {
-                type: 'ai-human',
-                question: 'Esta famosa imagen del Papa con una campera de plumas blanca, ¿es real o fue hecha con IA?',
-                content: {
-                    type: 'image',
-                    src: 'https://piktochart.com/wp-content/uploads/2023/11/pope-wearing-balenciaga-jacket-viral-ai-images.jpeg',
-                    alt: 'El Papa Francisco usando una llamativa campera blanca de plumas.'
-                },
-                answer: 'ia',
-                explanation: '¡Correcto! Es de IA. Esta fue una de las imágenes generadas por IA más famosas (creada con Midjourney). Engañó a millones. La IA es increíblemente buena creando imágenes fotorrealistas de eventos que nunca ocurrieron.'
-            },
-            {
-                type: 'ai-human',
-                question: 'Una foto de dos leyendas del fútbol. ¿Es una imagen real o fue generada por IA?',
-                content: {
-                    type: 'image',
-                    src: 'https://media.ambito.com/p/439378d5634b839a9b9d26f52dda7a05/adjuntos/239/imagenes/042/744/0042744007/1200x675/smart/messi-diego.jpeg',
-                    alt: 'Lionel Messi y Diego Maradona abrazándose en el campo de juego.'
-                },
-                answer: 'humano',
-                explanation: '¡Exacto! Esta imagen es 100% real y captura un momento icónico entre dos de los más grandes futbolistas de la historia. Las IAs a veces tienen problemas con manos o fondos, pero aquí todo luce auténtico.'
-            },
-            {
-                type: 'ai-human',
-                question: 'Una escena de amistad animal. ¿Es una foto real o fue hecha con IA?',
-                content: {
-                    type: 'image',
-                    src: 'https://us.123rf.com/450wm/perfectlab/perfectlab2304/perfectlab230400170/202429290-pets-cat-and-dog-hugging-together-outdoor-animal-friendship-in-the-family-generative-ai.jpg',
-                    alt: 'Un perro y un gato abrazándose tiernamente al aire libre.'
-                },
-                answer: 'ia',
-                explanation: '¡Bien observado! Aunque es una imagen adorable, la perfección de la escena y ciertos detalles en el pelaje o la perspectiva suelen delatar que fue generada por una IA, que crea situaciones "ideales".'
-            },
-            
-            // --- Nivel 3: Arma tu Red Neuronal ---
-            {
-                type: 'network',
-                question: 'Es la 🥇 PRIMERA capa de la red. Recibe los datos crudos (ej: los píxeles de una foto 🖼️, o las palabras de una frase 💬). ¿Cómo se llama?',
-                options: ['Capa de Salida', 'Capa Oculta', 'Capa de Entrada'],
-                answer: 'Capa de Entrada',
-                explanation: '¡Exacto! La <strong>Capa de Entrada (Input Layer)</strong> es como los "sentidos" (ojos, oídos) de la red. Es la puerta por donde entra toda la información del mundo exterior. ¡Fundamental!'
-            },
-            {
-                type: 'network',
-                question: 'Es el 🧠 "cerebro" de la red. Aquí es donde ocurren los cálculos complejos y donde la red "aprende" a encontrar patrones. Puede haber muchas de estas capas, actuando como "filtros".',
-                options: ['Capa Oculta', 'Capa de Salida', 'Capa de Entrada'],
-                answer: 'Capa Oculta',
-                explanation: '¡Correcto! Las <strong>Capas Ocultas (Hidden Layers)</strong> hacen el trabajo pesado. Procesan la información, la transforman y extraen características, como si fueran pequeños especialistas trabajando en equipo.'
-            },
-            {
-                type: 'network',
-                question: 'Es la 🏆 ÚLTIMA capa de la red. Da la respuesta final y concreta (Ej: "Es un gato 🐱", "Es spam 🗑️", "El precio será $150 💰"). ¡El resultado que esperábamos!',
-                options: ['Capa de Entrada', 'Capa Oculta', 'Capa de Salida'],
-                answer: 'Capa de Salida',
-                explanation: '¡Perfecto! La <strong>Capa de Salida (Output Layer)</strong> es la "boca" de la red. Entrega la conclusión final después de todo el procesamiento. ¡Has armado tu red neuronal completa y entiendes su flujo de información!'
-            },
+    <section id="brandGame" class="screen"></section>
+    <section id="pitchGame" class="screen"></section>
+    <section id="wheelGame" class="screen"></section>
+    <section id="puzzleGame" class="screen"></section>
+    <section id="logicGame" class="screen"></section>
+    <section id="aiGame" class="screen"></section>
+  </main>
+</div>
+<div id="toast" class="toast"></div>
+<div id="modal" class="modal"><div class="modalBox" id="modalContent"></div></div>
+<script>
+const logoURL='https://i.ibb.co/4nqvFQGM/logo.png';
+function $(id){return document.getElementById(id)}
+function show(id){
+ const target=$(id);
+ if(!target){console.warn('Pantalla no encontrada:',id); return;}
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ target.classList.add('active');
+ window.scrollTo({top:0,left:0,behavior:'smooth'});
+}
+function toggleFullScreen(){
+ const doc=document, el=doc.documentElement;
+ if(!doc.fullscreenElement && el.requestFullscreen){el.requestFullscreen().catch(()=>toast('Pantalla completa no disponible'))}
+ else if(doc.exitFullscreen){doc.exitFullscreen()}
+}
+function goHome(){show('home')}
+function toast(t){const el=$('toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600)}
+function openModal(type, html){const m=$('modal'), c=$('modalContent'); c.innerHTML= html || `<h3>Cómo usarla en el stand</h3><p>Ideal para una tablet en horizontal. Abrí el archivo <b>index.html</b> en navegador, elegí un área y dejá que los chicos jueguen. En “Armá tu marca”, la app genera una captura descargable y también intenta compartirla con Gmail si la tablet lo permite.</p><div class="footerActions"><button class="modernBtn primary" onclick="closeModal()">Entendido</button></div>`;m.classList.add('show')}
+function closeModal(){$('modal').classList.remove('show')}
+$('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()})
+function pick(a){return a[Math.floor(Math.random()*a.length)]}
 
-            // --- PREGUNTAS DE EMOJIS (TIPO 'NETWORK') ---
-            {
-                type: 'network', 
-                question: 'Sigue la secuencia de emojis: 🧠 ➡️ 🧠💡 ➡️ 🧠💡📈. ¿Cuál es el siguiente set de emojis?',
-                options: ['🧠💡📈🤖', '🧠💡🤖', '🧠💡📈', '💡📈🤖'], 
-                answer: '🧠💡📈🤖',
-                explanation: '¡Genial! El patrón añade un nuevo concepto de IA cada vez: Cerebro ➡️ Idea ➡️ Crecimiento (Datos) ➡️ IA (Robot). Estabas prediciendo una secuencia conceptual.'
-            },
-            {
-                type: 'network', 
-                question: 'Patrón difícil: ☀️🌳 ➡️ 🌙🌱 ➡️ ☀️🌲 (un árbol más grande). ¿Qué sigue en la secuencia lógica?',
-                options: ['☀️🌿', '🌙🌲', '🌙🌿', '☀️🌱'], 
-                answer: '🌙🌿',
-                explanation: '¡Excelente! El patrón es: "Sol hace crecer un árbol" y "Luna hace crecer una planta". La segunda vez que aparece el Sol, el árbol es más grande (🌳 -> 🌲), así que la segunda vez que aparece la Luna, la planta también debe crecer (🌱 -> 🌿).'
-            }
-        ];
+// BRAND GAME
+const brandData={
+ productos:['Indumentaria deportiva reciclada','Botella térmica inteligente','App de organización escolar','Snack saludable para recreos','Mochila antirrobo','Cuaderno reutilizable','Servicio de diseño para clubes','Café listo para llevar','Lámpara LED para estudiar','Auriculares económicos'],
+ publicos:['estudiantes de secundario','deportistas amateurs','emprendedores jóvenes','familias que buscan ahorrar','personas que estudian y trabajan','clubes de barrio','gamers','docentes','creadores de contenido','oficinas pequeñas'],
+ nombres:['Impulso','Nexo','Vibra','Modo Pro','Huella','Nova','Click','Raíz','Punto Cero','Tribu'],
+ slogans:['hacelo simple, hacelo mejor','tu idea empieza hoy','más orden, menos vueltas','pensado para tu ritmo','creá sin límites','lo práctico también puede ser genial'],
+ precios:['$3.999 lanzamiento','$7.500 promo estudiantes','$12.000 pack inicial','$19.999 edición limitada','$2.500 por mes','$5.000 con descuento escolar']
+};
+let logoTool='circle', drawing=false, last=null;
+function startBrand(){
+ $('brandGame').innerHTML=`<div class="headerRow"><div class="titleBlock"><h2 style="color:#3df0aa">🏷️ Armá tu marca</h2><p>Completá los datos, diseñá un logo y generá la captura.</p></div><button class="modernBtn ghost" onclick="show('business')">← Empresariales</button></div>
+ <div class="twoCol">
+  <div class="panel">
+    ${field('producto','Producto')}${field('publico','Público objetivo')}${field('nombreMarca','Nombre de marca')}${field('slogan','Slogan')}${field('precio','Precio')}
+    <div class="footerActions"><button class="modernBtn ghost" onclick="limpiarMarca()">Limpiar</button></div>
+    <hr style="border-color:rgba(255,255,255,.12);margin:18px 0">
+    <h3>Diseñá el logo</h3><p class="smallNote">Elegí una herramienta y tocá/dibujá dentro del recuadro. Podés combinar formas.</p>
+    <div class="logoTools"><button class="toolBtn active" onclick="setLogoTool(this,'circle')">Círculo</button><button class="toolBtn" onclick="setLogoTool(this,'square')">Cuadrado</button><button class="toolBtn" onclick="setLogoTool(this,'text')">Inicial</button><button class="toolBtn" onclick="setLogoTool(this,'draw')">Dibujar</button><button class="toolBtn" onclick="setLogoTool(this,'star')">Estrella</button><button class="toolBtn" onclick="clearLogo()">Borrar</button></div>
+    <div style="margin-top:12px"><canvas id="logoCanvas" class="logoCanvas" width="360" height="260"></canvas></div>
+    <div class="footerActions"><button class="modernBtn green" onclick="updateBrandCapture()">Actualizar vista</button><button class="modernBtn primary" onclick="downloadBrandCapture()">📸 Captura PNG</button><button class="modernBtn ghost" onclick="shareBrand()">📧 Enviar por Gmail</button></div>
+  </div>
+  <div><div id="brandCapture" class="companyCapture"><div class="captureTop"><img src="${logoURL}" onerror="this.outerHTML='<b>CERVANTES</b>'"><b>Proyecto de marca</b></div><div id="captureBody"></div></div><p class="smallNote">Nota: por seguridad del navegador, Gmail no siempre permite adjuntar automáticamente. En tablets compatibles, “Enviar por Gmail” abre compartir con archivo; si no, descarga la captura y abre Gmail con el asunto listo.</p></div>
+ </div>`;
+ bindLogoCanvas(); updateBrandCapture(); show('brandGame');
+}
+function field(id,label){return `<div class="field"><label>${label}</label><input id="${id}" oninput="updateBrandCapture()" placeholder="${label}"></div>`}
+function sortearMarca(){producto.value=pick(brandData.productos); publico.value=pick(brandData.publicos); nombreMarca.value=pick(brandData.nombres); slogan.value=pick(brandData.slogans); precio.value=pick(brandData.precios); updateBrandCapture(); toast('Marca sorteada')}
+function limpiarMarca(){['producto','publico','nombreMarca','slogan','precio'].forEach(id=>$(id).value=''); clearLogo(); updateBrandCapture()}
+function updateBrandCapture(){const lc=$('logoCanvas'); const data=lc?lc.toDataURL():''; $('captureBody').innerHTML=`<div class="logoStage"><img src="${data}" style="width:150px;height:112px;object-fit:contain;border:1px solid #dbe4f2;border-radius:18px;background:white"><div><div class="companyName">${nombreMarca?.value||'Nombre de marca'}</div><div class="slogan">“${slogan?.value||'Slogan de la marca'}”</div></div></div><div class="bizRows"><div class="bizBox"><small>Producto</small><strong>${producto?.value||'-'}</strong></div><div class="bizBox"><small>Público objetivo</small><strong>${publico?.value||'-'}</strong></div><div class="bizBox"><small>Precio</small><strong>${precio?.value||'-'}</strong></div><div class="bizBox"><small>Idea rápida</small><strong>Una propuesta pensada para resolver una necesidad concreta con identidad propia.</strong></div></div>`}
+function setLogoTool(btn,t){logoTool=t;document.querySelectorAll('.toolBtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active')}
+function bindLogoCanvas(){const c=$('logoCanvas'),ctx=c.getContext('2d'); ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height); function pos(e){const r=c.getBoundingClientRect(),p=e.touches?e.touches[0]:e;return{x:(p.clientX-r.left)*c.width/r.width,y:(p.clientY-r.top)*c.height/r.height}} function down(e){e.preventDefault();drawing=true;last=pos(e);if(logoTool!=='draw')place(last)} function move(e){if(!drawing||logoTool!=='draw')return;e.preventDefault();const p=pos(e);ctx.strokeStyle='#c9252d';ctx.lineWidth=7;ctx.lineCap='round';ctx.beginPath();ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke();last=p;updateBrandCapture()} function up(){drawing=false} c.addEventListener('mousedown',down);c.addEventListener('mousemove',move);window.addEventListener('mouseup',up);c.addEventListener('touchstart',down);c.addEventListener('touchmove',move);window.addEventListener('touchend',up)}
+function place(p){const c=$('logoCanvas'),ctx=c.getContext('2d'); ctx.fillStyle='#c9252d'; ctx.strokeStyle='#07111f'; ctx.lineWidth=5; if(logoTool==='circle'){ctx.beginPath();ctx.arc(p.x,p.y,45,0,Math.PI*2);ctx.fill();} if(logoTool==='square'){ctx.fillRect(p.x-45,p.y-45,90,90)} if(logoTool==='text'){ctx.font='900 78px Arial';ctx.fillText((nombreMarca?.value||'C')[0].toUpperCase(),p.x-28,p.y+28)} if(logoTool==='star'){ctx.font='80px Arial';ctx.fillText('★',p.x-38,p.y+30)} updateBrandCapture()}
+function clearLogo(){const c=$('logoCanvas'); if(!c)return; const ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);ctx.fillStyle='#fff';ctx.fillRect(0,0,c.width,c.height);updateBrandCapture()}
+function makeCaptureCanvas(){updateBrandCapture();const cn=document.createElement('canvas'),ctx=cn.getContext('2d');cn.width=1100;cn.height=720;ctx.fillStyle='#f4f8ff';ctx.fillRect(0,0,cn.width,cn.height);ctx.fillStyle='#c9252d';ctx.fillRect(0,0,cn.width,86);ctx.fillStyle='white';ctx.font='900 34px Arial';ctx.fillText('CERVANTES · Proyecto de Marca',40,55);ctx.fillStyle='#0b1324';ctx.font='900 72px Arial';ctx.fillText(nombreMarca.value||'Nombre de marca',55,175);ctx.font='32px Arial';ctx.fillStyle='#475569';ctx.fillText('“'+(slogan.value||'Slogan')+'”',58,225);const logo=$('logoCanvas');ctx.drawImage(logo,760,130,260,188);const items=[['Producto',producto.value],['Público objetivo',publico.value],['Precio',precio.value],['Idea rápida','Marca creada en la activación Cervantes']];let x=55,y=310;items.forEach((it,i)=>{let bx=x+(i%2)*500,by=y+Math.floor(i/2)*150;ctx.fillStyle='white';ctx.strokeStyle='#dbe4f2';ctx.lineWidth=2;roundRect(ctx,bx,by,450,105,18,true,true);ctx.fillStyle='#64748b';ctx.font='900 18px Arial';ctx.fillText(it[0].toUpperCase(),bx+22,by+34);ctx.fillStyle='#0b1324';ctx.font='700 26px Arial';wrap(ctx,it[1]||'-',bx+22,by+72,390,30)});return cn}
+function roundRect(ctx,x,y,w,h,r,fill,stroke){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);if(fill)ctx.fill();if(stroke)ctx.stroke()}
+function wrap(ctx,text,x,y,max,line){let words=String(text).split(' '),l='';for(const w of words){let t=l+w+' ';if(ctx.measureText(t).width>max){ctx.fillText(l,x,y);l=w+' ';y+=line}else l=t}ctx.fillText(l,x,y)}
+function downloadBrandCapture(){const cn=makeCaptureCanvas();const a=document.createElement('a');a.href=cn.toDataURL('image/png');a.download='marca-cervantes.png';a.click();toast('Captura descargada')}
+async function shareBrand(){const cn=makeCaptureCanvas();cn.toBlob(async blob=>{const file=new File([blob],'marca-cervantes.png',{type:'image/png'}); if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({title:'Proyecto de marca Cervantes',text:'Te comparto mi marca creada en Cervantes.',files:[file]});} else {downloadBrandCapture(); const subject=encodeURIComponent('Mi proyecto de marca Cervantes'); const body=encodeURIComponent('Hola, adjunto mi captura de marca creada en la activación Cervantes.'); window.open(`https://mail.google.com/mail/?view=cm&fs=1&su=${subject}&body=${body}`,'_blank');}},'image/png')}
 
-        // --- LÓGICA DEL JUEGO ---
-        let currentGameIndex = 0;
-        let score = 0; 
-        let selectedChoice = null; 
-        let timerInterval; // Para guardar la referencia del intervalo del cronómetro
-        const TIME_LIMIT_SECONDS = 180; // 3 minutos
-        let timeLeft = TIME_LIMIT_SECONDS;
-        let gameInProgress = false; // Flag para evitar doble clicks
+// PITCH
+const pitchItems=[
+ {e:'🎒',o:'Mochila antirrobo',m:['ventaja principal','diferencial frente a una mochila común','precio promocional','para quién es ideal','cierre convincente']},
+ {e:'🥤',o:'Botella térmica inteligente',m:['problema que resuelve','beneficio diario','material o durabilidad','precio de lanzamiento','garantía o confianza']},
+ {e:'🎧',o:'Auriculares económicos',m:['calidad de sonido','comodidad','diferencial de precio','uso escolar/deportivo','promoción por tiempo limitado']},
+ {e:'📓',o:'Cuaderno reutilizable',m:['ahorro a largo plazo','impacto ambiental','cómo se borra/reutiliza','público objetivo','precio pack']},
+ {e:'☕',o:'Café listo para llevar',m:['sabor','rapidez','momento de consumo','combo promocional','por qué elegirlo hoy']},
+ {e:'💡',o:'Lámpara LED de estudio',m:['cuidado visual','modos de luz','consumo bajo','beneficio para estudiar','precio especial estudiantes']},
+ {e:'👕',o:'Remera deportiva personalizada',m:['diseño propio','calidad de tela','uso para clubes/colegios','precio por equipo','tiempo de entrega']},
+ {e:'🍫',o:'Snack saludable',m:['ingredientes','energía para el día','diferencial saludable','precio accesible','promo 2x1']},
+ {e:'📱',o:'Soporte plegable para celular',m:['comodidad','uso en clases/videos','portabilidad','precio promocional','diferencial del diseño']},
+ {e:'🧴',o:'Alcohol en gel aromático',m:['seguridad e higiene','aroma diferencial','tamaño práctico','pack familiar','promoción lanzamiento']}
+];
+let pitchTimer=null, pitchSeconds=30;
+function startPitch(){const item=pick(pitchItems);$('pitchGame').innerHTML=`<div class="headerRow"><div class="titleBlock"><h2 style="color:#3df0aa">🎤 Desafío emprendedor</h2><p>Tenés 30 segundos para vender el producto mencionando todos los puntos.</p></div><button class="modernBtn ghost" onclick="clearInterval(pitchTimer);show('business')">← Empresariales</button></div><div class="twoCol"><div class="panel"><div class="pitchObject"><div class="objectEmoji">${item.e}</div><div><span class="tag">Producto a vender</span><h2>${item.o}</h2></div></div><ul class="checkList">${item.m.map(x=>`<li>✅ ${x}</li>`).join('')}</ul><div class="footerActions"><button class="modernBtn green" onclick="startPitch()">🎲 Otro objeto</button><button class="modernBtn primary" onclick="runPitchTimer()">▶️ Iniciar 30s</button></div></div><div class="panel"><div class="timer" id="pitchClock">00:30</div><p>Tip: una venta fuerte empieza con el problema, muestra el beneficio y termina con una oferta concreta.</p><textarea style="width:100%;min-height:180px;border-radius:18px;background:rgba(255,255,255,.08);color:white;border:1px solid var(--stroke);padding:14px" placeholder="El jurado puede anotar acá lo mejor del pitch..."></textarea></div></div>`;show('pitchGame')}
+function runPitchTimer(){clearInterval(pitchTimer);pitchSeconds=30;$('pitchClock').textContent='00:30';pitchTimer=setInterval(()=>{pitchSeconds--;$('pitchClock').textContent='00:'+String(pitchSeconds).padStart(2,'0');if(pitchSeconds<=0){clearInterval(pitchTimer);toast('¡Tiempo!')}} ,1000)}
 
-        // Elementos del DOM
-        const gameContainer = document.getElementById('game-container');
-        const gameContent = document.getElementById('game-content');
-        const feedbackArea = document.getElementById('feedback-area');
-        const actionButtonContainer = document.getElementById('action-button-container');
-        const restartButton = document.getElementById('restart-button');
-        const gameTitle = document.querySelector('#game-container h1');
-        const gameSubtitle = document.querySelector('#game-container p');
-        const timerDisplay = document.getElementById('timer');
-        const feedbackOverlay = document.getElementById('feedback-overlay'); 
-        
-        // Elementos de la UI de inicio/juego
-        const introScreen = document.getElementById('intro-screen');
-        const startButton = document.getElementById('start-button');
-        const timerContainer = document.getElementById('timer-container');
-        const fullscreenButton = document.getElementById('fullscreen-button');
-        const controls = document.getElementById('controls');
+// WHEEL
+const situations=[
+ {t:'Cliente molesto',short:'Cliente molesto',photo:'linear-gradient(135deg,#0f172a,#ef4444)',q:'Un cliente compró un producto y se queja en redes porque llegó tarde. El producto llegó bien, pero la demora fue real. ¿Qué decisión tomarías?',opts:['Responder públicamente con empatía, pedir datos por privado, ofrecer una compensación razonable y revisar el proceso de entrega.','Borrar el comentario para que no afecte la imagen de la empresa y escribirle solo si insiste.','Decirle públicamente que la demora fue culpa del transporte y que la empresa no puede hacerse cargo.'],a:0,fb:'La mejor respuesta cuida reputación, cliente y proceso interno al mismo tiempo.'},
+ {t:'Empleado tarde',short:'Llegadas tarde',photo:'linear-gradient(135deg,#052e16,#00bf7a)',q:'Una persona del equipo llega tarde varias veces. Trabaja bien, pero empieza a generar malestar en sus compañeros. ¿Qué harías?',opts:['Hablar en privado, entender la causa, acordar un compromiso medible y revisar si necesita un ajuste de horario.','Retarlo delante de todos para que el resto vea que hay autoridad.','Ignorarlo porque trabaja bien y lo importante es que cumpla con sus tareas.'],a:0,fb:'Un buen líder corrige sin humillar y busca una solución sostenible.'},
+ {t:'Bajan ventas',short:'Bajan ventas',photo:'linear-gradient(135deg,#1e1b4b,#0877ff)',q:'Las ventas bajaron durante dos semanas. No hay presupuesto para una gran campaña. ¿Qué acción tiene más sentido?',opts:['Revisar qué productos bajaron, hablar con clientes recientes y probar una promoción pequeña medible.','Cambiar el logo y los colores de la empresa para parecer más moderna.','Bajar todos los precios sin analizar costos ni margen para vender más rápido.'],a:0,fb:'Antes de actuar fuerte, conviene medir, escuchar y probar en chico.'},
+ {t:'Stock faltante',short:'Falta stock',photo:'linear-gradient(135deg,#431407,#f97316)',q:'Un producto se está vendiendo muy bien, pero queda poco stock. ¿Qué decisión tomarías?',opts:['Avisar disponibilidad real, priorizar reservas, hablar con proveedor y ofrecer alternativa similar si se agota.','Seguir vendiendo normalmente aunque no se sepa cuándo vuelve a entrar.','Ocultar el problema para no frenar las ventas del día.'],a:0,fb:'Vender sin poder cumplir puede traer más problemas que beneficios.'},
+ {t:'Choque interno',short:'Choque interno',photo:'linear-gradient(135deg,#312e81,#d946ef)',q:'Marketing quiere lanzar una promo agresiva, pero Administración advierte que deja muy poco margen. ¿Qué harías?',opts:['Comparar números, definir un límite de descuento rentable y probar la promo por pocos días.','Hacer caso solo a Marketing porque lo importante es vender más.','Cancelar cualquier promoción para no correr riesgos.'],a:0,fb:'La mejor decisión combina creatividad comercial con números reales.'},
+ {t:'Proveedor falla',short:'Proveedor falla',photo:'linear-gradient(135deg,#111827,#f59e0b)',q:'Un proveedor entregó mal dos pedidos seguidos, pero es barato. Cambiarlo cuesta más. ¿Qué decisión tomarías?',opts:['Pedir reunión, fijar condiciones de calidad y plazos, y buscar un proveedor alternativo como respaldo.','Mantenerlo sin cambios porque es el más barato.','Cortarlo de inmediato sin tener reemplazo y ver después cómo se resuelve.'],a:0,fb:'En empresa no siempre gana lo más barato: importa la confiabilidad.'},
+ {t:'Caja ajustada',short:'Caja ajustada',photo:'linear-gradient(135deg,#064e3b,#14b8a6)',q:'La empresa tiene poco dinero disponible este mes. Hay que elegir entre publicidad, stock o arreglar una deuda. ¿Qué harías primero?',opts:['Ordenar vencimientos, calcular qué afecta más la operación y priorizar lo urgente sin cortar ventas.','Gastar todo en publicidad para intentar vender más rápido.','No pagar nada y esperar a que el mes siguiente mejore solo.'],a:0,fb:'Administrar es priorizar con información, no decidir por impulso.'},
+ {t:'Producto nuevo',short:'Producto nuevo',photo:'linear-gradient(135deg,#172554,#38bdf8)',q:'Quieren lanzar un producto nuevo, pero no saben si a la gente le interesa. ¿Qué harías?',opts:['Hacer una prueba simple: encuesta, preventa o muestra a pocos clientes antes de producir mucho.','Comprar mucho stock de entrada para aprovechar precio mayorista.','Esperar a que la competencia lo lance primero y copiarlo.'],a:0,fb:'Validar antes reduce riesgo y ayuda a aprender rápido.'},
+ {t:'Equipo desmotivado',short:'Desmotivación',photo:'linear-gradient(135deg,#3b0764,#8b5cf6)',q:'El equipo cumple, pero se nota desmotivado y con poca iniciativa. ¿Qué harías?',opts:['Reunirlos, escuchar problemas, reconocer logros y definir objetivos cortos con responsabilidades claras.','Poner más control y exigir reportes cada hora.','Prometer premios grandes aunque no esté confirmado que se puedan pagar.'],a:0,fb:'La motivación real combina escucha, claridad y reconocimiento.'},
+ {t:'Competidor barato',short:'Competidor barato',photo:'linear-gradient(135deg,#450a0a,#fb7185)',q:'Aparece un competidor vendiendo más barato. Algunos clientes preguntan por qué ustedes cuestan más. ¿Qué responderías?',opts:['Explicar valor: calidad, garantía, atención y beneficios; revisar si conviene una promo puntual.','Bajar el precio por debajo del competidor aunque se pierda dinero.','Hablar mal del competidor para asustar a los clientes.'],a:0,fb:'Competir no es solo bajar precio: también es mostrar valor.'}
+];
+let currentSit=null,wheelScore=0,wheelPlayed=0;
+function startWheel(){wheelScore=0;wheelPlayed=0;renderWheel();show('wheelGame')}
+function renderWheel(){currentSit=pick(situations);$('wheelGame').innerHTML=`<div class="headerRow"><div class="titleBlock"><h2 style="color:#3df0aa">🎡 Ruleta de decisiones empresariales</h2><p>Elegí la respuesta más estratégica. Puntaje: ${wheelScore}</p></div><button class="modernBtn ghost" onclick="show('business')">← Empresariales</button></div><div class="wheelWrap"><div class="panel"><div class="wheel"></div><div class="footerActions"><button class="modernBtn green" onclick="renderWheel()">Girar ruleta</button><span class="badgeScore">🏆 ${wheelScore} pts</span></div></div><div class="panel"><div class="situationPhoto" style="background:${currentSit.photo}"></div><span class="tag">${currentSit.t}</span><h2>${currentSit.q}</h2><div>${currentSit.opts.map((o,i)=>`<button class="option" onclick="answerWheel(${i},this)">${String.fromCharCode(65+i)}. ${o}</button>`).join('')}</div><div id="wheelFeedback"></div></div></div>`}
+function answerWheel(i,btn){document.querySelectorAll('.option').forEach(b=>b.disabled=true);wheelPlayed++; if(i===currentSit.a){btn.classList.add('correct');wheelScore+=10;$('wheelFeedback').innerHTML=`<div class="result">✅ Correcto. ${currentSit.fb}</div>`}else{btn.classList.add('wrong');document.querySelectorAll('.option')[currentSit.a].classList.add('correct');$('wheelFeedback').innerHTML=`<div class="result">⚠️ La mejor opción era otra. ${currentSit.fb}</div>`} setTimeout(()=>{if(wheelPlayed<5)renderWheel();else openModal('x',`<h3>Resultado ruleta</h3><div class="scoreBig">${wheelScore}/50</div><p>Buen ejercicio para pensar como equipo comercial, marketing o RRHH.</p><div class="footerActions"><button class="modernBtn green" onclick="closeModal();startWheel()">Jugar otra vez</button><button class="modernBtn ghost" onclick="closeModal();show('business')">Volver</button></div>`)},1600)}
 
+// PUZZLE
+const perfect=[
+ {name:'Logo y nombre',ex:'Arriba de todo: quién es la marca o institución.'},
+ {name:'Título principal',ex:'Una frase clara: “Inscripciones abiertas” o “Creá tu app”.'},
+ {name:'Imagen o banner',ex:'Una foto, placa o imagen que llame la atención.'},
+ {name:'Qué ofrece',ex:'Explicar en simple el producto, servicio, carrera o propuesta.'},
+ {name:'Beneficios',ex:'Por qué conviene: salida laboral, rapidez, descuento, comodidad.'},
+ {name:'Cómo funciona',ex:'Pasos simples: elegí, completá datos, enviá, pagá, consultá.'},
+ {name:'Opiniones o prueba',ex:'Testimonio, caso real, número de estudiantes o ejemplo.'},
+ {name:'Botón importante',ex:'“Consultar”, “Inscribirme”, “Comprar” o “Quiero saber más”.'},
+ {name:'Datos de contacto',ex:'WhatsApp, mail, redes, dirección o formulario.'}
+];
+function startPuzzle(){
+ const shuffled=[...perfect].sort(()=>Math.random()-.5);
+ $('puzzleGame').innerHTML=`<div class="headerRow"><div class="titleBlock"><h2 style="color:#5ac8ff">🧩 Puzzle: armá una app o página web</h2><p>Tocá una pieza para mandarla al armado. Después podés subirla, bajarla o sacarla. Perfecto = 100 pts.</p></div><button class="modernBtn ghost" onclick="show('tech')">← Tecnológicas</button></div><div class="puzzle"><div class="panel"><h3>Piezas disponibles</h3><div id="pieces" class="sortable">${shuffled.map((x,i)=>`<div class="piece" data-name="${x.name}" data-ex="${x.ex}" onclick="addPiece(this)">${x.name}<small>${x.ex}</small></div>`).join('')}</div></div><div class="panel"><h3>Así la estás armando</h3><div id="drop" class="dropzone"></div><div class="footerActions"><button class="modernBtn blue" onclick="scorePuzzle()">Calcular puntaje</button><button class="modernBtn ghost" onclick="startPuzzle()">Reiniciar</button></div><div id="puzzleResult"></div></div></div>`;
+ show('puzzleGame')
+}
+function addPiece(el){
+ const name=el.dataset.name, ex=el.dataset.ex;
+ el.remove();
+ const div=document.createElement('div');
+ div.className='chosenPiece';
+ div.dataset.name=name;
+ div.innerHTML=`${name}<small>${ex}</small><div class="moveBtns"><button onclick="movePiece(this,-1)">↑</button><button onclick="movePiece(this,1)">↓</button><button onclick="removePiece(this)">×</button></div>`;
+ $('drop').appendChild(div);
+}
+function movePiece(btn,dir){
+ const item=btn.closest('.chosenPiece');
+ if(dir<0 && item.previousElementSibling) item.parentNode.insertBefore(item,item.previousElementSibling);
+ if(dir>0 && item.nextElementSibling) item.parentNode.insertBefore(item.nextElementSibling,item);
+}
+function removePiece(btn){
+ const item=btn.closest('.chosenPiece');
+ const name=item.dataset.name;
+ const found=perfect.find(x=>x.name===name);
+ item.remove();
+ const div=document.createElement('div');
+ div.className='piece';
+ div.dataset.name=found.name; div.dataset.ex=found.ex;
+ div.onclick=function(){addPiece(this)};
+ div.innerHTML=`${found.name}<small>${found.ex}</small>`;
+ $('pieces').appendChild(div);
+}
+function scorePuzzle(){
+ const arr=[...$('drop').children].map(x=>x.dataset.name);
+ let score=0,details=[];
+ perfect.forEach((p,i)=>{
+   const pos=arr.indexOf(p.name);
+   if(pos===i) score+=12;
+   else if(pos>-1 && Math.abs(pos-i)<=1) score+=7;
+   else if(pos>-1) {score+=3; details.push(`• ${p.name}: conviene en posición ${i+1}.`)}
+   else details.push(`• Falta: ${p.name}.`);
+ });
+ score=Math.min(100,score);
+ const msg = details.slice(0,7).join('\n') || 'Sin errores';
+ $('puzzleResult').innerHTML=`<div class="result"><div class="scoreBig">${score}/100</div><p>${score===100?'¡Orden perfecto!':'Para mejorar:'}</p><pre style="white-space:pre-wrap;color:#dce8ff">${msg}</pre></div>`;
+}
 
-        // Función para renderizar el juego actual
-        function renderGame(index) {
-            // Si el tiempo se acabó, no renderizar más preguntas
-            if (timeLeft <= 0 || !gameInProgress) {
-                return;
-            }
+// LOGIC
+const logicQs=[
+ {d:'Fácil',q:'🧩 Patrón: 3, 6, 12, 24... ¿qué sigue?',opts:['30','36','48'],a:2},
+ {d:'Fácil',q:'📧 Un formulario pide email. ¿Cuál parece válido?',opts:['lucasgmail.com','lucas@gmail.com','@lucas.com'],a:1},
+ {d:'Fácil',q:'🔐 ¿Qué contraseña parece más segura?',opts:['123456','Cervantes2026','Mate+Fútbol!47'],a:2},
+ {d:'Media',q:'🛒 Si el carrito suma mal el total, ¿qué revisarías primero?',opts:['La fórmula/cálculo del total','El color del botón','El nombre de la app'],a:0},
+ {d:'Media',q:'🚦 En lógica, si algo debe cumplir “ser alumno” Y “tener cuota al día”, significa que...',opts:['Alcanza con una condición','Debe cumplir las dos','No debe cumplir ninguna'],a:1},
+ {d:'Media',q:'📱 Una app tarda mucho en cargar imágenes. ¿Qué solución es más lógica?',opts:['Usar imágenes más livianas y carga progresiva','Agregar más colores','Poner textos más largos'],a:0},
+ {d:'Media',q:'🔎 Si buscás “Ana” y aparece “Mariana”, el problema puede estar en...',opts:['Búsqueda demasiado amplia','El brillo de pantalla','El logo'],a:0},
+ {d:'Difícil',q:'🧠 Si A implica B, y A es verdadero, entonces...',opts:['B necesariamente es verdadero','B necesariamente es falso','No se puede saber nada de B'],a:0},
+ {d:'Difícil',q:'🤖 Una IA responde mal muchas veces sobre un tema. ¿Qué conviene hacer?',opts:['Revisar datos, ejemplos y criterios de evaluación','Cambiar solo el fondo de pantalla','Usarla igual sin verificar'],a:0},
+ {d:'Difícil',q:'📊 Tenés datos repetidos de clientes. Antes de analizarlos conviene...',opts:['Limpiar duplicados y normalizar datos','Hacer un gráfico directo','Borrar la mitad al azar'],a:0},
+ {d:'Media',q:'🧮 Si una promo dice 20% OFF y el precio es $10.000, el descuento es...',opts:['$1.000','$2.000','$8.000'],a:1},
+ {d:'Difícil',q:'🧪 Para saber si un botón nuevo mejora consultas, lo mejor es...',opts:['Comparar resultados antes/después o hacer prueba A/B','Preguntarle solo a un amigo','Cambiar todo el sitio a la vez'],a:0},
+ {d:'Fácil',q:'🐞 Un bug es...',opts:['Un error de funcionamiento','Un usuario nuevo','Una imagen linda'],a:0},
+ {d:'Media',q:'📦 Si vendés más de lo que tenés en stock, el mayor riesgo es...',opts:['Incumplir y perder confianza','Que el logo se vea chico','Que sobren productos'],a:0},
+ {d:'Difícil',q:'🧭 En una app, el “flujo” significa...',opts:['El camino de pantallas que sigue el usuario','El color principal','La velocidad del internet'],a:0},
+ {d:'Media',q:'📌 Si un dato es obligatorio, la app debería...',opts:['Avisar si falta antes de enviar','Cerrarse sola','Inventar cualquier dato'],a:0},
+ {d:'Difícil',q:'🔁 Si una tarea se repite todos los días, en tecnología conviene pensar en...',opts:['Automatizarla','Hacerla más lenta','Escribirla a mano siempre'],a:0},
+ {d:'Media',q:'🧱 Una base de datos sirve para...',opts:['Guardar y organizar información','Decorar una pantalla','Sacar fotos'],a:0}
+];
+let logicIndex=0,logicScore=0,logicSet=[];
+function startLogic(){logicIndex=0;logicScore=0;logicSet=[...logicQs].sort(()=>Math.random()-.5).slice(0,10);renderLogic();show('logicGame')}
+function renderLogic(){const q=logicSet[logicIndex];$('logicGame').innerHTML=`<div class="headerRow"><div class="titleBlock"><h2 style="color:#5ac8ff">🧠 Mini desafío de lógica</h2><p>Pregunta ${logicIndex+1}/${logicSet.length} · Puntaje ${logicScore}</p></div><button class="modernBtn ghost" onclick="show('tech')">← Tecnológicas</button></div><div class="panel"><span class="logicDifficulty">${q.d}</span><h2>${q.q}</h2>${q.opts.map((o,i)=>`<button class="option" onclick="answerLogic(${i},this)">${o}</button>`).join('')}<div id="logicFeedback"></div></div>`}
+function answerLogic(i,btn){const q=logicSet[logicIndex];document.querySelectorAll('.option').forEach(b=>b.disabled=true);if(i===q.a){logicScore+=10;btn.classList.add('correct');$('logicFeedback').innerHTML='<div class="result">✅ Correcto</div>'}else{btn.classList.add('wrong');document.querySelectorAll('.option')[q.a].classList.add('correct');$('logicFeedback').innerHTML='<div class="result">⚠️ Revisá la opción marcada.</div>'}setTimeout(()=>{logicIndex++; if(logicIndex<logicSet.length)renderLogic(); else openModal('x',`<h3>Resultado lógica</h3><div class="scoreBig">${logicScore}/${logicSet.length*10}</div><p>Ideal para relacionar con Desarrollo Web, Analista de Sistemas e IA.</p><div class="footerActions"><button class="modernBtn blue" onclick="closeModal();startLogic()">Jugar otra vez</button><button class="modernBtn ghost" onclick="closeModal();show('tech')">Volver</button></div>`)},1200)}
 
-            // Limpiar áreas
-            gameContent.innerHTML = '';
-            feedbackArea.innerHTML = ''; // Limpiar área de feedback (aunque ya no la usamos para la explicación)
-            actionButtonContainer.innerHTML = '';
-            selectedChoice = null; // Resetear selección
-
-            // Efecto de fade-in
-            gameContent.classList.remove('fade-in');
-            void gameContent.offsetWidth; // Truco para reiniciar la animación
-            gameContent.classList.add('fade-in');
-
-            // --- Pantalla de victoria (si se terminan las preguntas antes del tiempo) ---
-            if (index >= gameData.length) {
-                stopTimer();
-                showFinalScore(false); // Mostrar puntaje final porque se completó el juego
-                return;
-            }
-
-            const game = gameData[index];
-
-            // Restaurar título original
-            gameTitle.innerHTML = '🌟 Desafío <span class="text-blue-300">IA & Datos</span> 🚀';
-            gameSubtitle.textContent = 'Pon a prueba tu intuición y conocimiento';
-
-            // El título de la pregunta ahora incluye el número general de la pregunta
-            let contentHtml = `<h2 class="text-2xl font-bold text-white mb-6 text-center">(${index + 1}/${gameData.length}) ${game.question}</h2>`;
-
-            // Renderizar según el tipo de juego
-            switch (game.type) {
-                case 'ai-human':
-                    let mediaHtml = '';
-                    if (game.content.type === 'image') {
-                        mediaHtml = `
-                            <div class="mb-6 text-center">
-                                <img src="${game.content.src}" alt="${game.content.alt}" class="w-full max-w-md mx-auto rounded-lg shadow-md mb-3 border-4 border-white"
-                                 onerror="this.onerror=null;this.src='https://placehold.co/600x400/1A2980/FFFFFF?text=Error+Cargando+Imagen';">
-                            </div>
-                        `;
-                    } else {
-                        mediaHtml = `<div class="bg-blue-100 p-5 rounded-xl border border-blue-300 text-blue-900 italic text-center text-lg mb-6 shadow-sm bg-opacity-70 font-bold">"${game.content.text}"</div>`;
-                    }
-                    
-                    contentHtml += `
-                        ${mediaHtml}
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            <button id="ai-button" class="choice-button bg-gradient-to-r from-purple-600 to-indigo-700 text-white p-4 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-indigo-800 transition-all shadow-lg" data-answer="ia">🤖 Hecho por IA</button>
-                            <button id="human-button" class="choice-button bg-gradient-to-r from-green-600 to-teal-700 text-white p-4 rounded-xl font-bold text-lg hover:from-green-700 hover:to-teal-800 transition-all shadow-lg" data-answer="humano">👤 Hecho por Humano</button>
-                        </div>
-                    `;
-                    gameContent.innerHTML = contentHtml; 
-                    document.getElementById('ai-button').addEventListener('click', () => handleChoice(game, 'ia'));
-                    document.getElementById('human-button').addEventListener('click', () => handleChoice(game, 'humano'));
-                    break;
-
-                case 'network': 
-                    contentHtml += `
-                        <div class="flex flex-col gap-4">
-                            ${game.options.map((option, idx) => `
-                                <button id="option-${idx}" class="choice-button w-full text-left bg-blue-100 text-blue-900 p-4 rounded-xl font-semibold text-lg hover:bg-blue-200 border-2 border-transparent hover:border-blue-500 transition-all shadow-sm bg-opacity-70" data-answer="${option}">
-                                    ${option}
-                                </button>
-                            `).join('')}
-                        </div>
-                    `;
-                    gameContent.innerHTML = contentHtml; 
-                    game.options.forEach((option, idx) => {
-                        document.getElementById(`option-${idx}`).addEventListener('click', () => handleChoice(game, option));
-                    });
-                    break;
-            }
-        }
-
-        // --- Funciones de Ayuda ---
-
-        // Crear botón de acción principal (Comprobar / Siguiente)
-        function createActionButton(text, onClick, isDisabled = false) {
-            actionButtonContainer.innerHTML = '';
-            const button = document.createElement('button');
-            button.textContent = text;
-            button.className = 'w-full sm:w-auto bg-blue-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-blue-700 transition-all text-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed';
-            button.onclick = onClick;
-            button.disabled = isDisabled;
-            actionButtonContainer.appendChild(button);
-        }
-
-        // Manejar la selección de botones en juegos de elección
-        function handleChoice(game, choice) {
-            selectedChoice = choice;
-            const isCorrect = choice.toLowerCase() === game.answer.toLowerCase();
-
-            // Deshabilitar y colorear botones (feedback inmediato)
-            document.querySelectorAll('.choice-button').forEach(button => {
-                button.disabled = true;
-                const buttonAnswer = button.dataset.answer.toLowerCase();
-
-                // 1. Limpiar todas las clases de hover, gradientes y fondos base
-                button.classList.remove('bg-gradient-to-r', 'from-purple-600', 'to-indigo-700', 'hover:from-purple-700', 'hover:to-indigo-800', 'from-green-600', 'to-teal-700', 'hover:from-green-700', 'hover:to-teal-800', 'bg-blue-100', 'hover:bg-blue-200', 'bg-opacity-70', 'text-blue-900', 'color-white');
-                button.classList.add('text-white'); // Asegurar texto blanco para contraste
-
-                // 2. Aplicar color de feedback
-                if (buttonAnswer === choice.toLowerCase()) {
-                    // Este es el botón que el usuario clickeó
-                    if (isCorrect) {
-                        button.classList.add('bg-green-500'); // VERDE
-                    } else {
-                        button.classList.add('bg-red-500'); // ROJO
-                    }
-                } else if (!isCorrect && buttonAnswer === game.answer.toLowerCase()) {
-                    // Si el usuario se equivocó, este es el botón correcto
-                    button.classList.add('bg-green-500', 'opacity-60'); // VERDE (atenuado)
-                } else {
-                    // Botones no seleccionados y no correctos
-                    button.classList.add('bg-gray-400', 'opacity-50'); // GRIS
-                }
-            });
-
-            checkAnswer(isCorrect, game.explanation);
-        }
-
-        // --- FUNCIÓN showFeedback (CON LÓGICA DE REEMPLAZO Y RETRASO) ---
-        function showFeedback(isCorrect, explanation) {
-            feedbackOverlay.innerHTML = ''; // Limpiar animaciones anteriores
-            actionButtonContainer.innerHTML = ''; // <-- Ocultar botón 'Siguiente' inmediatamente
-            feedbackArea.innerHTML = ''; // <-- Limpiamos el feedbackArea, no lo usaremos para la explicación.
-            
-            if (isCorrect) {
-                score++; 
-                createConfetti(); // <-- LANZAR CONFETI (Inmediato)
-            } else {
-                showBigCross(); // <-- MOSTRAR CRUZ (Inmediato)
-            }
-            
-            // --- ¡MODIFICACIÓN CLAVE! ---
-            // Retrasar la aparición del feedback y el botón 'Siguiente'
-            // para que la animación (cruz/confeti) se vea primero.
-            setTimeout(() => {
-
-                // 1. RENDERIZAR EL TEXTO DE FEEDBACK (AHORA DENTRO DE gameContent)
-                // Esto reemplazará las opciones (que ya están coloreadas) por la explicación.
-                let feedbackHtml = '';
-                if (isCorrect) {
-                    feedbackHtml = `
-                        <div class="p-5 rounded-xl fade-in text-lg shadow-md bg-green-100 border border-green-400 text-green-800 bg-opacity-80">
-                            <h3 class="font-bold text-xl flex items-center mb-2">
-                                <span class="mr-2">🎉</span> ¡Correcto! (+1 punto)
-                            </h3>
-                            <p class="mt-2"><strong class="text-green-900">Explicación:</strong> ${explanation}</p>
-                        </div>
-                    `;
-                } else {
-                    feedbackHtml = `
-                        <div class="p-5 rounded-xl fade-in text-lg shadow-md bg-red-100 border border-red-400 text-red-800 bg-opacity-80">
-                            <h3 class="font-bold text-xl flex items-center mb-2">
-                                <span class="mr-2">❌</span> ¡Incorrecto!
-                            </h3>
-                            <p class="mt-2"><strong class="text-red-900">Explicación:</strong> ${explanation}</p>
-                        </div>
-                    `;
-                }
-                
-                // MODIFICACIÓN: Escribir el feedback en gameContent, no en feedbackArea
-                gameContent.innerHTML = feedbackHtml;
-                
-                // 2. MOSTRAR BOTÓN 'SIGUIENTE' (AHORA)
-                if (currentGameIndex + 1 < gameData.length && timeLeft > 0) {
-                    createActionButton('Siguiente →', () => {
-                        currentGameIndex++;
-                        renderGame(currentGameIndex);
-                    });
-                } else if (timeLeft > 0) { // Se acabaron las preguntas y aún hay tiempo
-                    stopTimer();
-                    showFinalScore(false);
-                }
-                
-                // 3. Ya no se necesita scrollIntoView
-
-            }, 1500); // 1.5 segundos de retraso (coincide con la animación de la cruz)
-        }
-        
-        // Comprobar respuesta de elección
-        function checkAnswer(isCorrect, explanation) {
-            showFeedback(isCorrect, explanation);
-        }
-
-        // --- FUNCIONES DEL CRONÓMETRO ---
-        function startTimer() {
-            clearInterval(timerInterval); // Limpiar cualquier intervalo anterior
-            timeLeft = TIME_LIMIT_SECONDS; // Resetear tiempo
-            gameInProgress = true;
-            updateTimerDisplay(); // Actualizar display inmediatamente
-
-            timerInterval = setInterval(() => {
-                timeLeft--;
-                updateTimerDisplay();
-                if (timeLeft <= 0) {
-                    stopTimer();
-                    showFinalScore(true); // Mostrar puntaje final al terminar el tiempo
-                }
-            }, 1000);
-        }
-
-        function stopTimer() {
-            clearInterval(timerInterval);
-            gameInProgress = false;
-        }
-
-        function updateTimerDisplay() {
-            const minutes = Math.floor(timeLeft / 60);
-            const seconds = timeLeft % 60;
-            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            if (timeLeft <= 30 && timeLeft > 0) { // Menos de 30 segundos, ponerlo en rojo
-                timerDisplay.classList.add('text-red-400', 'font-bold');
-            } else {
-                timerDisplay.classList.remove('text-red-400', 'font-bold');
-            }
-        }
-
-        // --- FUNCIÓN PARA MOSTRAR LA PANTALLA FINAL ---
-        function showFinalScore(timeExpired) {
-            stopTimer(); // Asegurarse de que el timer esté detenido
-            gameTitle.innerHTML = timeExpired ? '⏰ ¡Tiempo Terminado! ⏰' : '🎉 ¡Juego Terminado! 🎉';
-            gameSubtitle.textContent = 'Este es tu puntaje final';
-            feedbackOverlay.innerHTML = ''; // Limpiar cualquier animación
-            gameContent.innerHTML = ''; // Limpiar contenido del juego
-            
-            let finalPercentage = 0;
-            if (gameData.length > 0) {
-                // Calcular porcentaje basado en el TOTAL de preguntas
-                finalPercentage = Math.round((score / gameData.length) * 100);
-            }
-            
-            let congratsMessage = "¡Buen intento! Sigue practicando. 🧠";
-            if (finalPercentage >= 90) {
-                congratsMessage = "¡Excelente! Eres un experto en IA. 🚀";
-            } else if (finalPercentage >= 60) {
-                congratsMessage = "¡Muy bien! Tienes una gran intuición para los datos. 👍";
-            }
-
-            gameContent.innerHTML = `
-                <div class="text-center fade-in">
-                    <div class="text-7xl font-extrabold text-white mb-4">${score} / ${gameData.length}</div>
-                    <div class="text-3xl font-bold text-blue-300 mb-3">${finalPercentage}% de aciertos</div>
-                    <p class="text-xl text-white mt-6 font-semibold">
-                        ${congratsMessage}
-                    </p>
-                    <p class="text-blue-100 mt-3 text-lg">
-                        ¡Presiona "Reiniciar" para mezclar las preguntas y jugar de nuevo!
-                    </p>
-                </div>
-            `;
-            // Limpiar área de feedback y botón de acción
-            feedbackArea.innerHTML = '';
-            actionButtonContainer.innerHTML = '';
-        }
-
-        // --- LÓGICA DE INICIO Y REINICIO ---
-        function startGame() {
-            // Ocultar intro
-            introScreen.style.display = 'none';
-            // Mostrar elementos del juego
-            gameContent.style.display = 'flex';
-            controls.style.display = 'flex';
-            timerContainer.style.display = 'flex';
-            fullscreenButton.style.display = 'block';
-
-            // Resetear estado
-            currentGameIndex = 0;
-            score = 0;
-            feedbackOverlay.innerHTML = ''; 
-            shuffleArray(gameData); 
-            startTimer(); // <-- EL CRONÓMETRO EMPIEZA AQUÍ
-            renderGame(currentGameIndex);
-        }
-
-        function restartGame() {
-            stopTimer();
-            // Ocultar elementos del juego
-            gameContent.style.display = 'none';
-            controls.style.display = 'none';
-            timerContainer.style.display = 'none';
-            fullscreenButton.style.display = 'none';
-            feedbackArea.innerHTML = '';
-            
-            // Mostrar intro
-            introScreen.style.display = 'block';
-
-            // Resetear visualmente el timer
-            timerDisplay.textContent = '03:00';
-            timerDisplay.classList.remove('text-red-400', 'font-bold');
-        }
-        
-        // --- FUNCIONES DE ANIMACIÓN DE FEEDBACK ---
-        function createConfetti() {
-            for (let i = 0; i < 50; i++) {
-                const piece = document.createElement('div');
-                piece.className = 'confetti-piece';
-                const colors = ['#26D0CE', '#1A2980', '#4f46e5', '#a78bfa'];
-                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
-                piece.style.left = (Math.random() * 110) - 5 + 'vw'; 
-                piece.style.top = (Math.random() * -150) + 'px'; 
-                piece.style.animation = `confetti-fall ${Math.random() * 2 + 3}s linear ${Math.random() * 1}s forwards`;
-                piece.style.transform = `rotate(${Math.random() * 360}deg)`;
-                
-                setTimeout(() => {
-                    piece.remove();
-                }, 5000); 
-                feedbackOverlay.appendChild(piece);
-            }
-        }
-
-        function showBigCross() {
-            const cross = document.createElement('div');
-            cross.innerHTML = '❌';
-            cross.className = 'feedback-cross';
-            feedbackOverlay.appendChild(cross);
-            
-            setTimeout(() => {
-                cross.remove();
-            }, 1500); // Coincide con la duración de la animación
-        }
-        
-        // --- FUNCIÓN FULLSCREEN (MODIFICADA CON TRY...CATCH) ---
-        async function toggleFullScreen() { 
-            const doc = document.documentElement;
-            try {
-                if (!document.fullscreenElement) {
-                    if (doc.requestFullscreen) {
-                        await doc.requestFullscreen();
-                    } else if (doc.mozRequestFullScreen) { /* Firefox */
-                        await doc.mozRequestFullScreen();
-                    } else if (doc.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-                        await doc.webkitRequestFullscreen();
-                    } else if (doc.msRequestFullscreen) { /* IE/Edge */
-                        await doc.msRequestFullscreen();
-                    }
-                } else {
-                    if (document.exitFullscreen) {
-                        await document.exitFullscreen();
-                    } else if (document.mozCancelFullScreen) { /* Firefox */
-                        await document.mozCancelFullScreen();
-                    } else if (document.webkitExitFullscreen) { /* Chrome, Safari & Opera */
-                        await document.webkitExitFullscreen();
-                    } else if (document.msExitFullscreen) { /* IE/Edge */
-                        await doc.msExitFullscreen();
-                    }
-                }
-            } catch (err) {
-                console.error("Error al intentar cambiar a pantalla completa (probablemente no permitido en este iframe):", err);
-            }
-        }
-
-        // --- Inicialización ---
-        document.addEventListener('DOMContentLoaded', () => {
-            // Asignar listeners a los botones principales
-            startButton.addEventListener('click', startGame);
-            fullscreenButton.addEventListener('click', toggleFullScreen);
-            restartButton.addEventListener('click', restartGame);
-            
-            // Añadir un fallback para las imágenes que no carguen
-            document.addEventListener('error', (e) => {
-                if (e.target.tagName === 'IMG') {
-                     e.target.src = 'https://placehold.co/600x400/1A2980/FFFFFF?text=Error+Cargando+Imagen';
-                }
-            }, true); // Usar captura de eventos para pillar todos los errores de imagen
-        });
-    </script>
+// AI
+const aiItems=[
+ {img:'https://a.espncdn.com/photo/2022/1203/r1101500_1296x729_16-9.jpg',ans:'humano',txt:'Foto humana/real.'},
+ {img:'https://eldoce.tv/resizer/v2/lionel-messi-y-antonela-roccuzzo-disfrutan-de-su-amor-en-el-caribe-7VSM6XWM5BBZPIUBI7NRMN7QZY.jpg?auth=2b677f0ac7800d9e4ae50a9cda3620967085a4dd03d02a3d3d2639daa930ff99&width=767',ans:'humano',txt:'Foto humana/real.'},
+ {img:'https://i.postimg.cc/W1hWddDm/Chat-GPT-Image-15-jun-2026-12-39-37-p-m.png',ans:'ia',txt:'Imagen generada con IA.'},
+ {img:'https://i.postimg.cc/JzG6ssy5/Chat-GPT-Image-15-jun-2026-12-39-45-p-m.png',ans:'ia',txt:'Imagen generada con IA.'},
+ {img:'https://i.postimg.cc/SxJTnnX6/Chat-GPT-Image-15-jun-2026-12-40-01-p-m.png',ans:'humano',txt:'Foto humana/real.'},
+ {img:'https://i.postimg.cc/zGVtyyLS/Chat-GPT-Image-15-jun-2026-12-40-17-p-m.png',ans:'humano',txt:'Foto humana/real.'},
+ {img:'https://i.postimg.cc/NFBCFbTH/Chat-GPT-Image-15-jun-2026-12-40-39-p-m.png',ans:'ia',txt:'Imagen generada con IA.'}
+];
+let aiScore=0,aiAnswered=0;
+function startAI(){aiScore=0;aiAnswered=0;const arr=[...aiItems].sort(()=>Math.random()-.5);$('aiGame').innerHTML=`<div class="headerRow"><div class="titleBlock"><h2 style="color:#5ac8ff">🤖 IA vs Humano</h2><p>Observá cada imagen y marcá si corresponde a Humano/real o IA.</p></div><button class="modernBtn ghost" onclick="show('tech')">← Tecnológicas</button></div><div class="aiGrid">${arr.map((it,i)=>`<div class="aiCard"><img src="${it.img}" alt="caso ${i+1}"><div class="content"><b>Caso ${i+1}</b><div class="aiBtns"><button onclick="answerAI('${it.ans}','humano',this,'${it.txt.replace(/'/g,'')}')">Humano</button><button onclick="answerAI('${it.ans}','ia',this,'${it.txt.replace(/'/g,'')}')">IA</button></div><div class="result hide"></div></div></div>`).join('')}</div><div class="footerActions"><span class="badgeScore" id="aiScore">🏆 0 pts</span><button class="modernBtn blue" onclick="startAI()">Reiniciar</button></div>`;show('aiGame')}
+function answerAI(ans,choice,btn,txt){const card=btn.closest('.aiCard');card.querySelectorAll('button').forEach(b=>b.disabled=true);const res=card.querySelector('.result');res.classList.remove('hide');if(ans===choice){aiScore+=10;btn.style.outline='3px solid #34d399';res.innerHTML='✅ Correcto. '+txt}else{btn.style.outline='3px solid #fb7185';res.innerHTML='⚠️ Era '+(ans==='ia'?'IA':'Humano')+'. '+txt}aiAnswered++;$('aiScore').textContent='🏆 '+aiScore+' pts';if(aiAnswered===aiItems.length)toast('Juego finalizado: '+aiScore+'/'+(aiItems.length*10))}
+</script>
 </body>
 </html>
-

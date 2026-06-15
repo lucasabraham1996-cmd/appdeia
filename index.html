@@ -323,6 +323,107 @@ canvas.logoCanvas{
   .footerActions{flex-direction:column}
 }
 
+
+/* ===== V7 IA vs Humano mejorado ===== */
+.aiStageWrap{max-width:1000px;margin:0 auto}
+.aiSingleCard{border:1px solid var(--stroke);background:rgba(255,255,255,.08);border-radius:28px;overflow:hidden;padding:18px}
+.aiImageFrame{width:100%;height:min(56dvh,520px);background:rgba(4,13,30,.86);border:1px solid rgba(255,255,255,.12);border-radius:22px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.aiImageFrame img{width:100%;height:100%;object-fit:contain;display:block;background:#08111f}
+.aiProgress{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0}
+.aiBar{flex:1;height:12px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;border:1px solid rgba(255,255,255,.12)}
+.aiBarFill{height:100%;background:linear-gradient(135deg,#0877ff,#00c2ff);border-radius:999px;transition:width .28s ease}
+.aiDecisionBtns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.aiDecisionBtns button{min-height:56px;font-size:18px;font-weight:900;border-radius:18px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18)}
+.aiCaption{margin-top:10px;color:#d8e7ff;font-size:15px}
+@media(max-width:900px){.aiImageFrame{height:min(48dvh,420px)} .aiDecisionBtns{grid-template-columns:1fr} }
+@media(max-width:520px){.aiSingleCard{padding:12px}.aiImageFrame{height:min(42dvh,340px)}.aiDecisionBtns button{min-height:52px;font-size:17px}}
+
+
+/* ===== V8: IA vs Humano UNA imagen por vez ===== */
+#aiGame .aiGrid{display:block!important}
+#aiGame .aiCard{display:none!important}
+.aiOneScreen{
+  width:100%;
+  max-width:980px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.aiOneCard{
+  width:100%;
+  border:1px solid var(--stroke);
+  background:rgba(255,255,255,.08);
+  border-radius:28px;
+  padding:16px;
+  box-shadow:0 24px 70px rgba(0,0,0,.22);
+}
+.aiOneTop{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
+.aiOneProgress{
+  flex:1;
+  height:12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.12);
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.14);
+}
+.aiOneProgress > div{
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(135deg,#0877ff,#00c2ff);
+  transition:width .25s ease;
+}
+.aiOneImageBox{
+  width:100%;
+  height:min(58dvh,540px);
+  min-height:280px;
+  border-radius:24px;
+  background:#061122;
+  border:1px solid rgba(255,255,255,.14);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.aiOneImageBox img{
+  width:100%;
+  height:100%;
+  object-fit:contain!important;
+  display:block;
+  background:#061122;
+}
+.aiOneButtons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:14px;
+}
+.aiOneButtons button{
+  min-height:58px;
+  border-radius:18px;
+  background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.20);
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+}
+@media(max-width:900px){
+  .aiOneImageBox{height:min(54dvh,500px);min-height:250px}
+}
+@media(max-width:560px){
+  .aiOneCard{padding:10px;border-radius:20px}
+  .aiOneTop{flex-direction:column;align-items:stretch}
+  .aiOneImageBox{height:min(50dvh,390px);min-height:220px;border-radius:18px}
+  .aiOneButtons{grid-template-columns:1fr}
+  .aiOneButtons button{min-height:54px}
+}
+
 </style>
 </head>
 <body>
@@ -554,18 +655,63 @@ function renderLogic(){const q=logicSet[logicIndex];$('logicGame').innerHTML=`<d
 function answerLogic(i,btn){const q=logicSet[logicIndex];document.querySelectorAll('.option').forEach(b=>b.disabled=true);if(i===q.a){logicScore+=10;btn.classList.add('correct');$('logicFeedback').innerHTML='<div class="result">✅ Correcto</div>'}else{btn.classList.add('wrong');document.querySelectorAll('.option')[q.a].classList.add('correct');$('logicFeedback').innerHTML='<div class="result">⚠️ Revisá la opción marcada.</div>'}setTimeout(()=>{logicIndex++; if(logicIndex<logicSet.length)renderLogic(); else openModal('x',`<h3>Resultado lógica</h3><div class="scoreBig">${logicScore}/${logicSet.length*10}</div><p>Ideal para relacionar con Desarrollo Web, Analista de Sistemas e IA.</p><div class="footerActions"><button class="modernBtn blue" onclick="closeModal();startLogic()">Jugar otra vez</button><button class="modernBtn ghost" onclick="closeModal();show('tech')">Volver</button></div>`)},1200)}
 
 // AI
-const aiItems=[
- {img:'https://a.espncdn.com/photo/2022/1203/r1101500_1296x729_16-9.jpg',ans:'humano',txt:'Foto humana/real.'},
- {img:'https://eldoce.tv/resizer/v2/lionel-messi-y-antonela-roccuzzo-disfrutan-de-su-amor-en-el-caribe-7VSM6XWM5BBZPIUBI7NRMN7QZY.jpg?auth=2b677f0ac7800d9e4ae50a9cda3620967085a4dd03d02a3d3d2639daa930ff99&width=767',ans:'humano',txt:'Foto humana/real.'},
- {img:'https://i.postimg.cc/W1hWddDm/Chat-GPT-Image-15-jun-2026-12-39-37-p-m.png',ans:'ia',txt:'Imagen generada con IA.'},
- {img:'https://i.postimg.cc/JzG6ssy5/Chat-GPT-Image-15-jun-2026-12-39-45-p-m.png',ans:'ia',txt:'Imagen generada con IA.'},
- {img:'https://i.postimg.cc/SxJTnnX6/Chat-GPT-Image-15-jun-2026-12-40-01-p-m.png',ans:'humano',txt:'Foto humana/real.'},
- {img:'https://i.postimg.cc/zGVtyyLS/Chat-GPT-Image-15-jun-2026-12-40-17-p-m.png',ans:'humano',txt:'Foto humana/real.'},
- {img:'https://i.postimg.cc/NFBCFbTH/Chat-GPT-Image-15-jun-2026-12-40-39-p-m.png',ans:'ia',txt:'Imagen generada con IA.'}
-];
-let aiScore=0,aiAnswered=0;
-function startAI(){aiScore=0;aiAnswered=0;const arr=[...aiItems].sort(()=>Math.random()-.5);$('aiGame').innerHTML=`<div class="headerRow"><div class="titleBlock"><h2 style="color:#5ac8ff">🤖 IA vs Humano</h2><p>Observá cada imagen y marcá si corresponde a Humano/real o IA.</p></div><button class="modernBtn ghost" onclick="show('tech')">← Tecnológicas</button></div><div class="aiGrid">${arr.map((it,i)=>`<div class="aiCard"><img src="${it.img}" alt="caso ${i+1}"><div class="content"><b>Caso ${i+1}</b><div class="aiBtns"><button onclick="answerAI('${it.ans}','humano',this,'${it.txt.replace(/'/g,'')}')">Humano</button><button onclick="answerAI('${it.ans}','ia',this,'${it.txt.replace(/'/g,'')}')">IA</button></div><div class="result hide"></div></div></div>`).join('')}</div><div class="footerActions"><span class="badgeScore" id="aiScore">🏆 0 pts</span><button class="modernBtn blue" onclick="startAI()">Reiniciar</button></div>`;show('aiGame')}
-function answerAI(ans,choice,btn,txt){const card=btn.closest('.aiCard');card.querySelectorAll('button').forEach(b=>b.disabled=true);const res=card.querySelector('.result');res.classList.remove('hide');if(ans===choice){aiScore+=10;btn.style.outline='3px solid #34d399';res.innerHTML='✅ Correcto. '+txt}else{btn.style.outline='3px solid #fb7185';res.innerHTML='⚠️ Era '+(ans==='ia'?'IA':'Humano')+'. '+txt}aiAnswered++;$('aiScore').textContent='🏆 '+aiScore+' pts';if(aiAnswered===aiItems.length)toast('Juego finalizado: '+aiScore+'/'+(aiItems.length*10))}
+const aiItems=[{"img": "https://a.espncdn.com/photo/2022/1203/r1101500_1296x729_16-9.jpg", "ans": "humano", "txt": "Foto humana/real."}, {"img": "https://eldoce.tv/resizer/v2/lionel-messi-y-antonela-roccuzzo-disfrutan-de-su-amor-en-el-caribe-7VSM6XWM5BBZPIUBI7NRMN7QZY.jpg?auth=2b677f0ac7800d9e4ae50a9cda3620967085a4dd03d02a3d3d2639daa930ff99&width=767", "ans": "humano", "txt": "Foto humana/real."}, {"img": "https://i.postimg.cc/W1hWddDm/Chat-GPT-Image-15-jun-2026-12-39-37-p-m.png", "ans": "ia", "txt": "Imagen generada con IA."}, {"img": "https://i.postimg.cc/JzG6ssy5/Chat-GPT-Image-15-jun-2026-12-39-45-p-m.png", "ans": "ia", "txt": "Imagen generada con IA."}, {"img": "https://i.postimg.cc/SxJTnnX6/Chat-GPT-Image-15-jun-2026-12-40-01-p-m.png", "ans": "humano", "txt": "Foto humana/real."}, {"img": "https://i.postimg.cc/zGVtyyLS/Chat-GPT-Image-15-jun-2026-12-40-17-p-m.png", "ans": "humano", "txt": "Foto humana/real."}, {"img": "https://i.postimg.cc/NFBCFbTH/Chat-GPT-Image-15-jun-2026-12-40-39-p-m.png", "ans": "ia", "txt": "Imagen generada con IA."}, {"img": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=1200&q=80", "ans": "humano", "txt": "Foto humana/real."}, {"img": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1200&q=80", "ans": "humano", "txt": "Foto humana/real."}, {"img": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80", "ans": "humano", "txt": "Foto humana/real."}, {"img": "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80", "ans": "humano", "txt": "Foto humana/real."}, {"img": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%221200%22%20height%3D%22800%22%20viewBox%3D%220%200%201200%20800%22%3E%0A%3Cdefs%3E%0A%20%20%3ClinearGradient%20id%3D%22bg%22%20x1%3D%220%22%20x2%3D%221%22%3E%3Cstop%20stop-color%3D%22%230f172a%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231d4ed8%22/%3E%3C/linearGradient%3E%0A%20%20%3CradialGradient%20id%3D%22skin%22%20cx%3D%2250%25%22%20cy%3D%2240%25%22%20r%3D%2265%25%22%3E%3Cstop%20stop-color%3D%22%23ffe7d6%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23e9bfa8%22/%3E%3C/radialGradient%3E%0A%3C/defs%3E%0A%3Crect%20width%3D%221200%22%20height%3D%22800%22%20fill%3D%22url%28%23bg%29%22/%3E%0A%3Ccircle%20cx%3D%22600%22%20cy%3D%22260%22%20r%3D%22128%22%20fill%3D%22url%28%23skin%29%22/%3E%0A%3Cpath%20d%3D%22M470%20238c15-90%2095-135%20130-145%2056-16%20119%204%20153%2041%2022%2025%2038%2062%2039%20104-30-18-61-28-104-26-42%202-98%2015-218%2026z%22%20fill%3D%22%232a1c18%22/%3E%0A%3Cpath%20d%3D%22M380%20690c24-171%20130-246%20220-246%2092%200%20197%2076%20220%20246%22%20fill%3D%22%23141c2d%22/%3E%0A%3Cellipse%20cx%3D%22552%22%20cy%3D%22272%22%20rx%3D%2214%22%20ry%3D%2210%22%20fill%3D%22%231f2937%22/%3E%0A%3Cellipse%20cx%3D%22650%22%20cy%3D%22272%22%20rx%3D%2214%22%20ry%3D%2210%22%20fill%3D%22%231f2937%22/%3E%0A%3Cpath%20d%3D%22M557%20350c33%2022%2062%2022%2086%200%22%20fill%3D%22none%22%20stroke%3D%22%239f304d%22%20stroke-width%3D%2210%22%20stroke-linecap%3D%22round%22/%3E%0A%3Cpath%20d%3D%22M520%20320c18%2016%2042%2026%2080%2026%2036%200%2061-10%2082-28%22%20fill%3D%22none%22%20stroke%3D%22%23d9b5a2%22%20stroke-width%3D%224%22%20opacity%3D%22.4%22/%3E%0A%3Ccircle%20cx%3D%22968%22%20cy%3D%22126%22%20r%3D%2272%22%20fill%3D%22%23ffffff22%22/%3E%0A%3Ccircle%20cx%3D%221030%22%20cy%3D%22174%22%20r%3D%2234%22%20fill%3D%22%23ffffff18%22/%3E%0A%3C/svg%3E", "ans": "ia", "txt": "Imagen generada con IA."}, {"img": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%221200%22%20height%3D%22800%22%20viewBox%3D%220%200%201200%20800%22%3E%0A%3Cdefs%3E%0A%20%20%3ClinearGradient%20id%3D%22sky%22%20x1%3D%220%22%20x2%3D%220%22%20y1%3D%220%22%20y2%3D%221%22%3E%3Cstop%20stop-color%3D%22%23dbeafe%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%2393c5fd%22/%3E%3C/linearGradient%3E%0A%3C/defs%3E%0A%3Crect%20width%3D%221200%22%20height%3D%22800%22%20fill%3D%22url%28%23sky%29%22/%3E%0A%3Ccircle%20cx%3D%22980%22%20cy%3D%22118%22%20r%3D%2262%22%20fill%3D%22%23fff6bf%22/%3E%0A%3Cpath%20d%3D%22M0%20530C137%20469%20219%20487%20313%20434c113-63%20146-116%20255-119%20133-3%20178%2082%20281%2079%20106-3%20127-78%20210-90%2067-10%20104%2015%20141%2045V800H0Z%22%20fill%3D%22%234ade80%22/%3E%0A%3Cpath%20d%3D%22M0%20580c128-44%20182-5%20301-40%2081-23%20155-104%20239-107%20129-5%20193%2085%20298%2074%20104-11%20147-84%20235-85%2059%200%2084%2013%20127%2042V800H0Z%22%20fill%3D%22%2316a34a%22/%3E%0A%3Cpath%20d%3D%22M0%20640c174-23%20211%2013%20339-5%20101-14%20133-67%20241-72%2095-4%20143%2042%20236%2039%20104-4%20143-58%20220-60%2058-2%2093%207%20164%2031V800H0Z%22%20fill%3D%22%2314532d%22/%3E%0A%3Cpath%20d%3D%22M286%20512l82-78%2066%2052%20121-131%20112%20106%2086-63%2062%2092%20108-22%2076%20133-805%203z%22%20fill%3D%22%23334155%22%20opacity%3D%22.95%22/%3E%0A%3Cpath%20d%3D%22M710%20332c22%2010%2039%2035%2048%2055%2018%2038%2035%2036%2068%2038-16%2021-36%2037-65%2043%2011%2029%2015%2052%2010%2075-33-18-45-36-53-65-24%2014-49%2016-73%2010%2018-21%2030-34%2045-64-26-9-44-22-61-43%2036-3%2060-14%2081-49z%22%20fill%3D%22%23ffffffdd%22/%3E%0A%3C/svg%3E", "ans": "ia", "txt": "Imagen generada con IA."}, {"img": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%221200%22%20height%3D%22800%22%20viewBox%3D%220%200%201200%20800%22%3E%0A%3Cdefs%3E%0A%20%20%3ClinearGradient%20id%3D%22bg2%22%20x1%3D%220%22%20x2%3D%221%22%3E%3Cstop%20stop-color%3D%22%237c3aed%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23ec4899%22/%3E%3C/linearGradient%3E%0A%20%20%3CradialGradient%20id%3D%22skin2%22%20cx%3D%2250%25%22%20cy%3D%2235%25%22%20r%3D%2268%25%22%3E%3Cstop%20stop-color%3D%22%23fee7d8%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%23e5b49a%22/%3E%3C/radialGradient%3E%0A%3C/defs%3E%0A%3Crect%20width%3D%221200%22%20height%3D%22800%22%20fill%3D%22url%28%23bg2%29%22/%3E%0A%3Crect%20x%3D%22120%22%20y%3D%2298%22%20width%3D%22960%22%20height%3D%22604%22%20rx%3D%2240%22%20fill%3D%22%23ffffff16%22%20stroke%3D%22%23ffffff55%22/%3E%0A%3Ccircle%20cx%3D%22410%22%20cy%3D%22304%22%20r%3D%22102%22%20fill%3D%22url%28%23skin2%29%22/%3E%0A%3Cpath%20d%3D%22M300%20288c12-73%2064-111%20103-126%2042-16%20108-13%20140%2017%2021%2020%2040%2050%2043%2093-35-18-67-25-118-18-45%207-85%2017-168%2034z%22%20fill%3D%22%23291d1c%22/%3E%0A%3Cpath%20d%3D%22M276%20598c14-101%2082-166%20134-183%2060-20%20123%200%20162%2037%2035%2034%2054%2080%2060%20146%22%20fill%3D%22%231f2937%22/%3E%0A%3Ccircle%20cx%3D%22378%22%20cy%3D%22304%22%20r%3D%2210%22%20fill%3D%22%23111827%22/%3E%3Ccircle%20cx%3D%22452%22%20cy%3D%22304%22%20r%3D%2210%22%20fill%3D%22%23111827%22/%3E%0A%3Cpath%20d%3D%22M375%20368c28%2019%2054%2019%2077%200%22%20fill%3D%22none%22%20stroke%3D%22%238b2348%22%20stroke-width%3D%229%22%20stroke-linecap%3D%22round%22/%3E%0A%3Crect%20x%3D%22652%22%20y%3D%22205%22%20width%3D%22250%22%20height%3D%2240%22%20rx%3D%2212%22%20fill%3D%22%23ffffff80%22/%3E%0A%3Crect%20x%3D%22652%22%20y%3D%22276%22%20width%3D%22320%22%20height%3D%2226%22%20rx%3D%2210%22%20fill%3D%22%23ffffff66%22/%3E%0A%3Crect%20x%3D%22652%22%20y%3D%22332%22%20width%3D%22280%22%20height%3D%2226%22%20rx%3D%2210%22%20fill%3D%22%23ffffff66%22/%3E%0A%3Crect%20x%3D%22652%22%20y%3D%22388%22%20width%3D%22236%22%20height%3D%2226%22%20rx%3D%2210%22%20fill%3D%22%23ffffff66%22/%3E%0A%3Crect%20x%3D%22652%22%20y%3D%22470%22%20width%3D%22164%22%20height%3D%2254%22%20rx%3D%2216%22%20fill%3D%22%23111827%22/%3E%0A%3C/svg%3E", "ans": "ia", "txt": "Imagen generada con IA."}, {"img": "data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%221200%22%20height%3D%22800%22%20viewBox%3D%220%200%201200%20800%22%3E%0A%3Cdefs%3E%0A%20%20%3ClinearGradient%20id%3D%22night%22%20x1%3D%220%22%20x2%3D%220%22%20y1%3D%220%22%20y2%3D%221%22%3E%3Cstop%20stop-color%3D%22%230f172a%22/%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%231e293b%22/%3E%3C/linearGradient%3E%0A%3C/defs%3E%0A%3Crect%20width%3D%221200%22%20height%3D%22800%22%20fill%3D%22url%28%23night%29%22/%3E%0A%3Ccircle%20cx%3D%22950%22%20cy%3D%22120%22%20r%3D%2256%22%20fill%3D%22%23f8fafc%22%20opacity%3D%22.95%22/%3E%0A%3Cpath%20d%3D%22M0%20650c134-120%20239-128%20340-73%2081%2045%20122%2035%20190-11%2059-40%20143-71%20241-39%2088%2030%20140%2040%20223%2010%2072-26%20131-21%20206%2025V800H0Z%22%20fill%3D%22%230ea5e9%22%20opacity%3D%22.8%22/%3E%0A%3Cpath%20d%3D%22M0%20701c132-95%20201-97%20292-61%20100%2040%20164%2039%20242-14%2093-62%20166-56%20257-25%20110%2037%20145%2039%20232%206%2075-29%20113-21%20177%2017V800H0Z%22%20fill%3D%22%230284c7%22%20opacity%3D%22.8%22/%3E%0A%3Cpath%20d%3D%22M120%20570h110l55-88%2092%2072%20110-154%20110%20118%20100-75%2057%20126%20100-10%2072%20137H120Z%22%20fill%3D%22%23111827%22/%3E%0A%3Crect%20x%3D%22813%22%20y%3D%22498%22%20width%3D%2230%22%20height%3D%2256%22%20fill%3D%22%23f8fafc%22%20opacity%3D%22.88%22/%3E%0A%3Crect%20x%3D%22858%22%20y%3D%22470%22%20width%3D%2224%22%20height%3D%2284%22%20fill%3D%22%23f8fafc%22%20opacity%3D%22.76%22/%3E%0A%3Crect%20x%3D%22898%22%20y%3D%22486%22%20width%3D%2220%22%20height%3D%2268%22%20fill%3D%22%23f8fafc%22%20opacity%3D%22.7%22/%3E%0A%3C/svg%3E", "ans": "ia", "txt": "Imagen generada con IA."}];
+
+let aiScore=0, aiAnswered=0, aiIndex=0, aiDeck=[];
+function startAI(){
+  aiScore=0;
+  aiAnswered=0;
+  aiIndex=0;
+  aiDeck=[...aiItems].sort(()=>Math.random()-.5);
+  show('aiGame');
+  renderAIQuestion();
+}
+function renderAIQuestion(){
+  const it=aiDeck[aiIndex];
+  const total=aiDeck.length;
+  const percent=((aiIndex)/total)*100;
+  $('aiGame').innerHTML=`<div class="headerRow"><div class="titleBlock"><h2 style="color:#5ac8ff">🤖 IA vs Humano</h2><p>Una imagen por vez. Mirala completa y elegí si es IA o humana/real.</p></div><button class="modernBtn ghost" onclick="show('tech')">← Tecnológicas</button></div>
+  <div class="aiOneScreen">
+    <div class="aiOneCard">
+      <div class="aiOneTop">
+        <span class="badgeScore">Imagen ${aiIndex+1}/${total}</span>
+        <div class="aiOneProgress"><div style="width:${percent}%"></div></div>
+        <span class="badgeScore">🏆 ${aiScore} pts</span>
+      </div>
+      <div class="aiOneImageBox">
+        <img src="${it.img}" alt="Imagen ${aiIndex+1}" referrerpolicy="no-referrer" loading="eager">
+      </div>
+      <div class="aiOneButtons">
+        <button onclick="answerAI('humano',this)">📷 Humana / real</button>
+        <button onclick="answerAI('ia',this)">🤖 IA</button>
+      </div>
+      <div id="aiFeedback"></div>
+    </div>
+  </div>`;
+}
+function answerAI(choice,btn){
+  const it=aiDeck[aiIndex];
+  document.querySelectorAll('.aiOneButtons button').forEach(b=>b.disabled=true);
+  const ok=choice===it.ans;
+  if(ok){
+    aiScore+=10;
+    btn.style.outline='3px solid #34d399';
+    $('aiFeedback').innerHTML=`<div class="result">✅ Correcto. ${it.txt}</div>`;
+  }else{
+    btn.style.outline='3px solid #fb7185';
+    $('aiFeedback').innerHTML=`<div class="result">⚠️ Era ${it.ans==='ia'?'IA':'humana/real'}. ${it.txt}</div>`;
+  }
+  aiAnswered++;
+  aiIndex++;
+  setTimeout(()=>{
+    if(aiIndex<aiDeck.length){
+      renderAIQuestion();
+    }else{
+      openModal('x',`<h3>Resultado IA vs Humano</h3><div class="scoreBig">${aiScore}/${aiDeck.length*10}</div><p>Completaste todas las imágenes.</p><div class="footerActions"><button class="modernBtn blue" onclick="closeModal();startAI()">Jugar otra vez</button><button class="modernBtn ghost" onclick="closeModal();show('tech')">Volver</button></div>`);
+    }
+  },1100);
+}
+
 </script>
 </body>
 </html>

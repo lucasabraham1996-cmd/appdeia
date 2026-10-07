@@ -534,6 +534,65 @@ body.pseudo-fullscreen .activity{padding:8px}
   .fullscreen-btn .fs-label{display:none}
 }
 
+
+/* ===== FIX HOME CARDS + NAVIGATION ===== */
+.career-card{
+  display:flex;
+  flex-direction:column;
+  min-height:390px;
+}
+.career-card:after{
+  pointer-events:none;
+}
+.career-card > *{
+  position:relative;
+  z-index:2;
+}
+.card-tags{
+  margin-top:18px;
+  margin-bottom:20px;
+}
+.enter{
+  position:static!important;
+  left:auto!important;
+  bottom:auto!important;
+  margin-top:auto;
+  width:100%;
+}
+.career-enter-btn{
+  width:100%;
+  min-height:48px;
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:15px;
+  padding:12px 16px;
+  color:#fff;
+  background:rgba(255,255,255,.16);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  font-weight:950;
+  letter-spacing:.02em;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  transition:.18s ease;
+}
+.career-enter-btn:hover{
+  background:rgba(255,255,255,.25);
+  transform:translateY(-1px);
+}
+@media(max-width:760px){
+  .career-card{
+    min-height:330px;
+  }
+  .card-tags{
+    margin-bottom:14px;
+  }
+  .career-enter-btn{
+    min-height:46px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -570,7 +629,7 @@ body.pseudo-fullscreen .activity{padding:8px}
           <span class="card-tag">📐 Estructura</span>
           <span class="card-tag">🏆 % final</span>
         </div>
-        <div class="enter">ENTRAR AL DESAFÍO <span>→</span></div>
+        <div class="enter"><button type="button" class="career-enter-btn" id="enterDWBtn"><span>🧩 ENTRAR AL DESAFÍO</span><span>→</span></button></div>
       </article>
 
       <article class="career-card ai-card" id="openAI">
@@ -584,7 +643,7 @@ body.pseudo-fullscreen .activity{padding:8px}
           <span class="card-tag">🧬 Patrones</span>
           <span class="card-tag">🖼️ Real vs IA</span>
         </div>
-        <div class="enter">ENTRAR AL LABORATORIO <span>→</span></div>
+        <div class="enter"><button type="button" class="career-enter-btn" id="enterAIBtn"><span>🧠 ENTRAR AL LABORATORIO</span><span>→</span></button></div>
       </article>
     </div>
   </div>
@@ -844,8 +903,64 @@ body.pseudo-fullscreen .activity{padding:8px}
   document.addEventListener('webkitfullscreenchange', updateFullscreenButtons);
   updateFullscreenButtons();
 
-  document.getElementById('openDW').onclick=()=>{ showOnly(dwActivity); startDW(); };
-  document.getElementById('openAI').onclick=()=>{ showOnly(aiActivity); showAIHome(); };
+  const openDWCard=document.getElementById('openDW');
+  const openAICard=document.getElementById('openAI');
+  const enterDWBtn=document.getElementById('enterDWBtn');
+  const enterAIBtn=document.getElementById('enterAIBtn');
+
+  function enterDWActivity(){
+    showOnly(dwActivity);
+    startDW();
+  }
+
+  function enterAIActivity(){
+    showOnly(aiActivity);
+    showAIHome();
+  }
+
+  if(openDWCard){
+    openDWCard.setAttribute('role','button');
+    openDWCard.setAttribute('tabindex','0');
+    openDWCard.addEventListener('click',e=>{
+      if(e.target.closest('#enterDWBtn')) return;
+      enterDWActivity();
+    });
+    openDWCard.addEventListener('keydown',e=>{
+      if(e.key==='Enter' || e.key===' '){
+        e.preventDefault();
+        enterDWActivity();
+      }
+    });
+  }
+
+  if(openAICard){
+    openAICard.setAttribute('role','button');
+    openAICard.setAttribute('tabindex','0');
+    openAICard.addEventListener('click',e=>{
+      if(e.target.closest('#enterAIBtn')) return;
+      enterAIActivity();
+    });
+    openAICard.addEventListener('keydown',e=>{
+      if(e.key==='Enter' || e.key===' '){
+        e.preventDefault();
+        enterAIActivity();
+      }
+    });
+  }
+
+  if(enterDWBtn){
+    enterDWBtn.addEventListener('click',e=>{
+      e.stopPropagation();
+      enterDWActivity();
+    });
+  }
+
+  if(enterAIBtn){
+    enterAIBtn.addEventListener('click',e=>{
+      e.stopPropagation();
+      enterAIActivity();
+    });
+  }
   document.querySelectorAll('[data-home]').forEach(b=>b.onclick=()=>{
     stopDWTimer();
     showOnly(launcher);
